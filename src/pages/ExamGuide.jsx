@@ -21,6 +21,34 @@ export default function ExamGuide() {
   )
 }
 
+function FrameworkPoint({ text }) {
+  const [expanded, setExpanded] = useState(false)
+  // Split on first colon+space after bold label to get title vs detail
+  const match = text.match(/^\*\*([^*]+)\*\*\s*(.*)$/s)
+  const label = match ? match[1] : null
+  const detail = match ? match[2] : text
+
+  if (!label) {
+    // No bold label — render as plain text
+    return <li className="eg-fw-point eg-math-text">{renderWithMath(text)}</li>
+  }
+
+  return (
+    <li className={`eg-fw-point${expanded ? ' eg-fw-expanded' : ''}`}>
+      <button className="eg-fw-point-toggle" onClick={() => setExpanded(e => !e)}>
+        <span className="eg-fw-chevron">{expanded ? '▾' : '▸'}</span>
+        <span className="eg-fw-label">{label}</span>
+        {!expanded && <span className="eg-fw-preview">{detail.replace(/\$[^$]*\$/g, '…').substring(0, 60)}{detail.length > 60 ? '…' : ''}</span>}
+      </button>
+      {expanded && (
+        <div className="eg-fw-detail eg-math-text">
+          {renderWithMath(detail)}
+        </div>
+      )}
+    </li>
+  )
+}
+
 function GuideCard({ problem }) {
   const [open, setOpen] = useState(false)
   const [showExcerpt, setShowExcerpt] = useState(false)
@@ -106,7 +134,7 @@ function GuideCard({ problem }) {
                 <div className="eg-framework-content">
                   <ul className="eg-framework-list">
                     {problem.framework.points.map((pt, i) => (
-                      <li key={i} className="eg-math-text">{renderWithMath(pt)}</li>
+                      <FrameworkPoint key={i} text={pt} />
                     ))}
                   </ul>
                 </div>
@@ -167,13 +195,21 @@ function GuideCard({ problem }) {
             ))}
           </div>
 
-          {/* Key Takeaway */}
+          {/* Key Takeaways */}
           {problem.takeaway && (
             <div className="eg-takeaway">
               <span className="eg-takeaway-icon">★</span>
-              <div>
-                <span className="eg-label">Key Takeaway</span>
-                <div className="eg-math-text">{renderWithMath(problem.takeaway)}</div>
+              <div style={{ flex: 1 }}>
+                <span className="eg-label">Key Takeaways</span>
+                {Array.isArray(problem.takeaway) ? (
+                  <ul className="eg-takeaway-list">
+                    {problem.takeaway.map((t, i) => (
+                      <li key={i} className="eg-math-text">{renderWithMath(t)}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="eg-math-text">{renderWithMath(problem.takeaway)}</div>
+                )}
               </div>
             </div>
           )}

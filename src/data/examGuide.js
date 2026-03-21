@@ -13,11 +13,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **queueing problem** with two separate servers — recognize the topology first.',
-        'Different floors = no pooling. Each desk is an independent $M/M/1$ system.',
-        'The 50/50 split means each desk gets $\\lambda = 15 \\times 0.5 = 7.5$ customers/hr.',
-        'No variability info given → assume $C_A = C_S = 1$ (standard M/M/1 assumption).',
-        'Convert all units to customers/hr: fast desk $\\mu = 60/5 = 12$/hr, slow desk $\\mu = 8$/hr.',
+        '**Identify:** This is a queueing problem. Two desks on different floors means there is no shared queue — so we are dealing with two separate $M/M/1$ systems, not a pooled system.',
+        '**Extract the data:** Total arrivals $\\lambda = 15$/hr, split 50/50 → each desk gets $7.5$/hr. Fast desk: $t_S = 5$ min → $\\mu = 12$/hr. Slow desk: $\\mu = 8$/hr (given directly).',
+        '**Assumptions:** No info on variability, so assume $C_A = C_S = 1$ (the standard assumption when nothing is stated). This makes it a classic $M/M/1$.',
+        '**Watch out:** System-level utilization (75%) looks fine, but individual desk utilization can be wildly different. The slow desk at 94% is the real problem.',
       ],
     },
     questionSteps: [
@@ -41,7 +40,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'System-level utilization can mask severe imbalances at the resource level. Always check individual utilizations. Pooling (single queue) is almost always better than separate queues.',
+    takeaway: [
+      '**Reminder:** System-level $\\rho$ can hide dangerous imbalances. Always check utilization at each individual resource — the slow desk at 94% was the real problem.',
+      '**Tip:** If you see separate queues in a problem, immediately think about pooling. A single shared queue feeding all servers almost always reduces total waiting.',
+      '**Exam pattern:** When asked "how to improve without more resources," think about rebalancing (routing probabilities) or pooling — not hiring.',
+    ],
   },
 
   {
@@ -55,11 +58,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **topology comparison**: 5 slow servers (pooled) vs. 1 fast server.',
-        'Both setups have the **same total capacity** — the question is whether topology matters.',
-        'Convert daily demand to hourly: $\\lambda = 280/24 = 11.67$ orders/hr.',
-        '$\\sigma_{\\text{daily}} \\approx \\text{mean}$ → $C_A \\approx 1$ (Poisson-like arrivals).',
-        'Current: $M/M/5$ system. Machine: $M/M/1$ system. Same $\\rho$, different behavior.',
+        '**Identify:** This is a comparison between two system designs — 5 slow humans vs. 1 fast machine. Both have the same total capacity, so the question is: does the number of servers matter?',
+        '**Extract the data:** The pharmacy runs 24 hours, so convert daily to hourly: $\\lambda = 280/24 = 11.67$/hr. The standard deviation equals the mean ($\\sigma = 280$), which signals $C_A \\approx 1$ (Poisson-like).',
+        '**Frame the comparison:** Current = $M/M/5$ (5 servers, each at $\\mu = 2.4$/hr). Machine = $M/M/1$ (1 server at $\\mu = 12$/hr). Total capacity is 12/hr in both cases, so $\\rho = 97.2\\%$ in both.',
+        '**Watch out:** Same $\\rho$ does NOT mean same performance. At 97% utilization, 5 pooled servers handle variability much better than 1 server. But the machine has a huge advantage in service time ($t_S = 5$ vs 25 min).',
       ],
     },
     questionSteps: [
@@ -78,7 +80,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Same capacity ≠ same performance. At very high utilization (97%), $M/M/5$ has better queue behavior than $M/M/1$. The machine wins only on total time because $t_S$ is 5× shorter.',
+    takeaway: [
+      '**Reminder:** Same total capacity does NOT mean same queue performance. At high $\\rho$, multiple slow servers ($M/M/5$) handle variability better than one fast server ($M/M/1$).',
+      '**Tip:** When comparing system designs, separate $W_q$ (waiting) from $t_S$ (service time). The machine won on total time $W$ only because service was 5× faster — the actual queue was slightly worse.',
+      '**Exam pattern:** If a problem gives you two systems with the same $\\rho$, the exam is testing whether you understand that topology (number of servers) matters.',
+    ],
   },
 
   {
@@ -88,33 +94,36 @@ export const examGuide = [
     badge: 'Queueing + Cost',
     badgeType: 'queue',
     originalExcerpt: `The Chief Actuary, Steve, at a boutique reinsurance firm is asked to evaluate two potential candidates, Hannah and Elaine, for a vacant associate actuarial position. Hannah, who can underwrite an exponential rate of 6 cases per hour, has asked for an hourly salary of $40. Elaine, on the other hand, can process an exponential rate of 7 cases per hour, and intends to use this advantage to negotiate her salary.\n\nLet's denote Elaine's hourly salary as $x for now. Steve estimates that, on average, each case incurs a waiting cost of $100 per hour to the firm while it remains in the pipeline and should be accounted for in the hiring decision.\n\nQuestion(s):\nIf the sales department generates cases at a Poisson rate of 3 per hour, determine the following:\n1. What is the total labor and case waiting cost per hour to the firm if Hannah is hired (denoted C_H)? What about Elaine (denoted C_E)?\n2. Suppose Steve's hiring decision is based on minimizing total labor and case waiting cost per hour. What salary range can Elaine tell Steve if she knows Hannah has asked for $40 per hour?`,
-    storyline: `A reinsurance firm is hiring. Hannah: $\\mu = 6$/hr, salary \\$40/hr. Elaine: $\\mu = 7$/hr, salary \\$x/hr. Each case in the pipeline costs the firm \\$100/hr. Cases arrive at Poisson rate $\\lambda = 3$/hr.`,
+    storyline: `A reinsurance firm is hiring. Hannah: $\\mu = 6$/hr, salary 40/hr. Elaine: $\\mu = 7$/hr, salary $x$/hr. Each case in the pipeline costs the firm 100/hr. Cases arrive at Poisson rate $\\lambda = 3$/hr.`,
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **cost optimization** problem, not just queueing. Total cost = labor + waiting cost.',
-        '"Poisson arrivals" + "exponential service" → $M/M/1$ with $C_A = C_S = 1$.',
-        'Waiting cost applies to cases **in the system** ($L$), not just in the queue ($L_q$).',
-        'For $M/M/1$: $L = \\rho / (1 - \\rho)$.',
-        'Express Elaine\'s cost as a function of $x$, then solve for the break-even.',
+        '**Identify:** This is NOT just a queueing problem — it is a cost optimization. You need to compare total cost (salary + waiting cost) for each candidate.',
+        '**Extract the data:** "Poisson arrivals" and "exponential service" are code words for $M/M/1$ ($C_A = C_S = 1$). $\\lambda = 3$/hr. Hannah: $\\mu = 6$, salary 40. Elaine: $\\mu = 7$, salary $x$.',
+        '**Key formula:** Total cost = salary + 100 $\\times$ $L$ (cases in system). Use $L = \\rho/(1-\\rho)$ for $M/M/1$. The waiting cost uses $L$ (total in system), not $L_q$ (only in queue), because cases being served still cost money.',
+        '**Strategy:** Compute both costs, then set $C_E \\leq C_H$ to find Elaine\'s maximum salary.',
       ],
     },
     questionSteps: [
       {
         question: 'What is the total labor and case waiting cost per hour if Hannah is hired (C_H)? What about Elaine (C_E)?',
         steps: [
-          { insight: 'For $M/M/1$: $L = \\rho/(1-\\rho)$. Total cost = salary + \\$100 × $L$.', work: '**Hannah:** $\\rho = 3/6 = 0.5$\n$L = 0.5 / (1 - 0.5) = 1.0$\n$$C_H = 40 + 100 \\times 1.0 = \\$140/\\text{hr}$$', result: '$C_H = \\$140$/hr' },
-          { insight: 'Elaine is faster → fewer cases in system → lower waiting cost. But salary is unknown.', work: '**Elaine:** $\\rho = 3/7 = 0.429$\n$L = 0.429 / (1 - 0.429) = 0.75$\n$$C_E = x + 100 \\times 0.75 = x + \\$75/\\text{hr}$$', result: '$C_E = (x + 75)$/hr' },
+          { insight: 'For $M/M/1$: $L = \\rho/(1-\\rho)$. Total cost = salary + $100 \\times L$.', work: '**Hannah:** $\\rho = 3/6 = 0.5$\n$L = 0.5 / (1 - 0.5) = 1.0$\n$$C_H = 40 + 100 \\times 1.0 = 140 \\text{ per hr}$$', result: '$C_H = 140$ per hr' },
+          { insight: 'Elaine is faster, so fewer cases pile up in the system, meaning lower waiting cost. But her salary is unknown ($x$).', work: '**Elaine:** $\\rho = 3/7 = 0.429$\n$L = 0.429 / (1 - 0.429) = 0.75$\n$$C_E = x + 100 \\times 0.75 = x + 75 \\text{ per hr}$$', result: '$C_E = (x + 75)$ per hr' },
         ],
       },
       {
         question: 'What salary range can Elaine request?',
         steps: [
-          { insight: 'Steve picks whoever is cheaper. Elaine gets the job if $C_E \\leq C_H$.', work: '$$x + 75 \\leq 140$$\n$$x \\leq \\$65/\\text{hr}$$', result: 'Elaine can ask up to **\\$65/hr** — that is \\$25 MORE than Hannah, because her speed saves \\$25/hr in waiting costs.' },
+          { insight: 'Steve picks whoever is cheaper. Elaine gets the job if $C_E \\leq C_H$.', work: '$$x + 75 \\leq 140$$\n$$x \\leq 65 \\text{ per hr}$$', result: 'Elaine can ask up to $65$/hr — that is $25$ MORE than Hannah, because her speed saves $25$/hr in waiting costs.' },
         ],
       },
     ],
-    takeaway: 'Faster service has quantifiable economic value. Elaine can charge \\$25 more because her speed reduces queue congestion by \\$25/hr. This is the economic value of reducing $L$.',
+    takeaway: [
+      '**Reminder:** Faster service has a dollar value. Elaine can charge 25 more per hour because her speed saves 25/hr in waiting costs. Speed is not free — and its value can be calculated.',
+      '**Tip:** When a problem mentions "waiting cost per unit of time," the total cost formula is: salary + waiting cost × $L$ (total in system, not just in queue). Cases being served also tie up capital.',
+      '**Exam pattern:** "Poisson" + "exponential" = $M/M/1$ with $C_A = C_S = 1$. This simplifies $L_q$ to $\\rho^2/(1-\\rho)$ and $L$ to $\\rho/(1-\\rho)$.',
+    ],
   },
 
   {
@@ -128,11 +137,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'Current: 4 separate $M/G/1$ systems (random split, no lane switching).',
-        'Each line gets $\\lambda = 12/4 = 3$/hr. Service rate $\\mu = 60/12 = 5$/hr. $C_S = 12/12 = 1$.',
-        'Proposed: 1 dedicated express line + 3 regular lines. Must analyze both segments.',
-        'Express customers have **low variability** ($C_S = 1/5 = 0.2$) — dedicated lines work well for low-CV service.',
-        'Regular customers\' $t_S$ must be derived: $12 = 0.5 \\times 5 + 0.5 \\times X \\Rightarrow X = 19$ min.',
+        '**Identify:** This is a pooling vs. dedication trade-off. Currently 4 identical lines (all customers mixed). The proposal: dedicate 1 line to express customers (< 10 items).',
+        '**Current setup:** 4 separate lines, random split → each gets $\\lambda = 3$/hr. $\\mu = 5$/hr. $C_S = 12/12 = 1$. This is four independent $M/G/1$ systems.',
+        '**Express line analysis:** Express customers have very consistent service ($\\sigma = 1$ min, so $C_S = 0.2$). Low variability makes dedicated lines work well — the queue length formula drops by nearly half.',
+        '**Watch out:** You must check what happens to the regular customers too. Removing express customers changes the average service time for the remaining 3 lines. Use the mixture formula: $12 = 0.5 \\times 5 + 0.5 \\times X$ → regular $t_S = 19$ min.',
       ],
     },
     questionSteps: [
@@ -156,7 +164,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Dedicating resources sacrifices pooling efficiency but can dramatically improve service for a specific segment, especially when that segment has low service variability ($C_S = 0.2$). Always check the impact on the *other* segment.',
+    takeaway: [
+      '**Reminder:** Dedicating a resource (anti-pooling) sacrifices overall efficiency but can massively improve service for one segment — especially when that segment has low variability ($C_S = 0.2$).',
+      '**Tip:** When you dedicate a line, always compute the impact on BOTH segments. Express customers improved (18 → 2.6 min), but regular customers may suffer. The exam expects you to analyze both sides.',
+      '**Exam pattern:** If a problem asks "should you implement?", the answer is never just yes or no. Give the trade-off and state what additional information you would need to decide.',
+    ],
   },
 
   // ════════════════════════════════════════════
@@ -169,14 +181,13 @@ export const examGuide = [
     badge: 'EOQ',
     badgeType: 'inventory',
     originalExcerpt: `A drug store chain has two options for purchasing aspirins. They can buy prepackaged aspirin that come already in bottles. Otherwise, they can ask a subcontractor to purchase bulk aspirin and bottle them for the drug stores. In either case the aspirin will be sold under the drug store's own brand at the same price.\n\nIf they subcontract bottling of the aspirin, the subcontractor charges a fix cost of $1,000 for each order and $50 for each carton of 50 bottles. The prepackaged aspirin cost $60 per carton (50 bottles as well) and has a fix ordering charge of $10 per order.\n\nDemand for aspirin is estimated to be 150,000 bottles a year (3,000 cartons). Annual inventory cost equals 30% of the unit price. Assume production runs are completed in negligible amount of time.\n\nQuestion(s):\n1. What is the optimal batch size if they pack their own aspirin? And if they buy the prepackaged aspirin?\n2. From a total cost standpoint, should the drugstore purchase the prepackaged aspirin or subcontract the bottling?`,
-    storyline: `A drug store chain can buy aspirin two ways. Subcontract: $S = \\$1{,}000$/order, $v = \\$50$/carton. Prepackaged: $S = \\$10$/order, $v = \\$60$/carton. Demand: $D = 3{,}000$ cartons/yr. Holding cost: $i = 30\\%$ of unit price.`,
+    storyline: `A drug store chain can buy aspirin two ways. Subcontract: $S = 1{,}000$/order, $v = 50$/carton. Prepackaged: $S = 10$/order, $v = 60$/carton. Demand: $D = 3{,}000$ cartons/yr. Holding cost: $i = 30\\%$.`,
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **supplier comparison** using EOQ. No safety stock needed (no demand uncertainty given).',
-        'Each supplier has different $S$ (ordering cost) and $v$ (unit price) — compute EOQ for each.',
-        'Total cost = purchasing + ordering + holding. Purchasing cost differences usually dominate.',
-        'Use: $EOQ = \\sqrt{\\frac{2DS}{vi}}$',
+        '**Identify:** This is a supplier comparison. Two options with different ordering costs ($S$) and unit prices ($v$). No demand variability is given, so safety stock is not part of this problem.',
+        '**Extract the data:** Subcontract: $S = 1{,}000$, $v = 50$. Prepackaged: $S = 10$, $v = 60$. Demand: $D = 3{,}000$ cartons/yr. Holding rate: $i = 30\\%$.',
+        '**Strategy:** Compute EOQ for each option, then compare the full total cost (purchasing + ordering + holding). Do not just compare EOQ costs — the unit price difference ($10$/carton $\\times$ 3,000 cartons $= 30{,}000$/yr) usually dominates everything else.',
       ],
     },
     questionSteps: [
@@ -190,11 +201,15 @@ export const examGuide = [
       {
         question: 'Which option has lower total cost?',
         steps: [
-          { insight: 'Add up ALL cost components: purchasing + ordering + cycle stock holding.', work: '**Subcontract:**\nPurchase: $3000 \\times 50 = \\$150{,}000$\nOrdering: $(3000/632) \\times 1000 = \\$4{,}747$\nHolding: $(632/2) \\times 50 \\times 0.30 = \\$4{,}740$\n$\\text{Total} = \\$159{,}487$\n\n**Prepackaged:**\nPurchase: $3000 \\times 60 = \\$180{,}000$\nOrdering: $(3000/58) \\times 10 = \\$517$\nHolding: $(58/2) \\times 60 \\times 0.30 = \\$522$\n$\\text{Total} = \\$181{,}039$', result: 'Subcontract wins by ~\\$21,500/yr. The \\$10/carton price advantage saves \\$30,000 in purchasing — dwarfing the higher ordering costs.' },
+          { insight: 'Add up ALL cost components: purchasing + ordering + cycle stock holding.', work: '**Subcontract:**\nPurchase: $3000 \\times 50 = 150{,}000$\nOrdering: $(3000/632) \\times 1000 = 4{,}747$\nHolding: $(632/2) \\times 50 \\times 0.30 = 4{,}740$\nTotal $= 159{,}487$\n\n**Prepackaged:**\nPurchase: $3000 \\times 60 = 180{,}000$\nOrdering: $(3000/58) \\times 10 = 517$\nHolding: $(58/2) \\times 60 \\times 0.30 = 522$\nTotal $= 181{,}039$', result: 'Subcontract wins by ~$21{,}500$/yr. The $10$/carton price advantage saves $30{,}000$ in purchasing — dwarfing the higher ordering costs.' },
         ],
       },
     ],
-    takeaway: 'When comparing suppliers, unit cost differences often dominate ordering/holding differences. Always compute the FULL total cost, not just EOQ-related costs.',
+    takeaway: [
+      '**Reminder:** Unit cost differences almost always dominate ordering and holding cost differences. A $10$/carton saving $\\times$ 3,000 cartons $= 30{,}000$/yr — dwarfing any EOQ-related cost differences.',
+      '**Tip:** Always compute the full total cost: purchasing + ordering + holding. Do not just compare EOQ costs — that misses the biggest line item.',
+      '**Exam pattern:** If two suppliers have different unit prices, the cheaper one almost always wins. The EOQ just tells you how much to order, not who to order from.',
+    ],
   },
 
   {
@@ -204,14 +219,14 @@ export const examGuide = [
     badge: 'EOQ + Periodic',
     badgeType: 'inventory',
     originalExcerpt: `A bar uses 5,000 quart bottles of cava each year. The cava cost $3 per bottle and is served in whole bottles since it loses its bubbles quickly. To replenish the inventory there is a fix cost of $10 per order. Holding costs are 20% of the unit price per bottle per year. It takes 3 weeks for an order to arrive.\n\nWeekly demand is random, with a mean of 100 bottles and a standard deviation of 30. The manager would like to minimize the inventory cost but have enough inventory to satisfy customer demand 95% of the time.\n\nQuestion(s):\n1. Compute the optimal order quantity for this situation.\n2. If a periodic review is used, what is the optimal base stock level?`,
-    storyline: `A bar uses 5,000 bottles of cava/year. $v = \\$3$/bottle, $S = \\$10$/order, $i = 20\\%$. Lead time: 3 weeks. Weekly demand: $\\mu = 100$, $\\sigma = 30$. Target: 95% service level.`,
+    storyline: `A bar uses 5,000 bottles of cava/year. $v = 3$/bottle, $S = 10$/order, $i = 20\\%$. Lead time: 3 weeks. Weekly demand: mean $= 100$, $\\sigma = 30$. Target: 95% service level.`,
     framework: {
       title: 'How to approach this problem',
       points: [
-        'Q1 is standard **EOQ** — work in weekly units since demand is given weekly.',
-        'Q2 switches to **periodic review** — use EOQ to estimate review period $R$, then compute base stock.',
-        'Key difference: periodic review has $VP = LT + R$, requiring more safety stock.',
-        'Weekly holding cost: $h = v \\times i / 52 = 3 \\times 0.2 / 52 = \\$0.012$/bottle/week.',
+        '**Identify:** Two parts — Q1 asks for a standard EOQ (continuous review), Q2 switches to periodic review with a base stock level. These are two different inventory systems.',
+        '**Extract the data:** Demand is given in weekly terms (mean $= 100$/week, $\\sigma = 30$/week), so work in weeks. Holding cost per week: $h = v \\times i / 52 = 3 \\times 0.2 / 52 = 0.012$/bottle/week.',
+        '**Key difference between Q1 and Q2:** In continuous review, $VP = LT = 3$ weeks. In periodic review, $VP = LT + R$, which is longer — meaning you need more safety stock to cover the extra gap.',
+        '**Watch out:** For the periodic review base stock, use the fill rate formula (not the simple service level), because the problem says "satisfy demand 95% of the time" — this is a fill rate target.',
       ],
     },
     questionSteps: [
@@ -229,7 +244,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Periodic review requires more safety stock than continuous review because $VP = LT + R$ instead of just $LT$. The fill rate approach gives a different $z$ than the simple service level — know which method the problem requires.',
+    takeaway: [
+      '**Reminder:** Periodic review always needs more safety stock than continuous review because $VP = LT + R > LT$. The longer vulnerability period means more demand uncertainty to buffer against.',
+      '**Tip:** When a problem says "satisfy demand X% of the time," this is a fill rate target — use the fill rate formula, not the simple cycle service level. The resulting $z$ value will be different.',
+      '**Exam pattern:** Use EOQ to estimate the review period ($R = Q^*/D$), then plug $R$ into the base stock formula. The exam often tests whether you correctly identify $R$ from the EOQ.',
+    ],
   },
 
   {
@@ -243,11 +262,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This problem tests **both** inventory decisions: batch size (EOQ) and safety stock (SS/ROP).',
-        'Key insight: $Q$ and $SS$ are **independent** — changing one does not affect the other.',
-        'Continuous review ("can be started at any time") → $VP = LT = 1$ day (no review period).',
-        'Annual demand: $D = 365 \\times 80 = 29{,}200$ L/yr.',
-        'For 99% service level: $z = 2.33$.',
+        '**Identify:** This problem tests both inventory decisions at once — how much to order (EOQ) and when to order (ROP/SS). It has 8 sub-questions that methodically walk through each concept.',
+        '**Core insight you need:** Batch size ($Q$) and safety stock ($SS$) are completely independent. $Q$ depends on ordering vs. holding costs. $SS$ depends on service level, demand variability, and vulnerability period. Changing $Q$ does NOT change $SS$.',
+        '**Extract the data:** "Can be started at any time" = continuous review → $VP = LT = 1$ day. Annual demand $D = 365 \\times 80 = 29{,}200$ L/yr. Service level 99% → $z = 2.33$.',
+        '**Watch out:** Q5 asks about stockout frequency — this connects $Q$ to stockouts indirectly: smaller $Q$ means more order cycles per year, which means more chances to stock out (even though SS per cycle stays the same).',
       ],
     },
     questionSteps: [
@@ -294,7 +312,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: '$Q$ and $SS$ are independent decisions. $Q$ optimizes ordering vs. holding costs. $SS$ protects against demand variability during $VP$. Changing one does not affect the other. More orders/year = more chances for stockout, even with the same per-cycle service level.',
+    takeaway: [
+      '**Reminder:** $Q$ and $SS$ are completely independent. $Q$ balances ordering vs. holding costs. $SS$ protects against demand uncertainty during $VP$. They share no variables — changing one does not affect the other.',
+      '**Tip:** Smaller $Q$ means more order cycles per year. More cycles = more chances to stock out, even with the same per-cycle service level. So stockout frequency depends on $Q$, even though $SS$ does not.',
+      '**Exam pattern:** If the problem asks "does SS change if Q changes?", the answer is always NO. If it asks about stockout frequency, compute: stockouts/yr $= (1 - SL) \\times D/Q$.',
+    ],
   },
 
   {
@@ -308,11 +330,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **policy audit** — evaluate the current policy, then propose improvements.',
-        'First check: are ordering and holding costs balanced? (At EOQ they should be roughly equal.)',
-        'Reverse-engineer the implied safety stock and service level from the current ROP.',
-        'Continuous review → $VP = LT = 4$ days.',
-        'Reality check: EOQ may not be practical with 100 cheese types and perishability constraints.',
+        '**Identify:** This is a policy audit — you are given a current policy ($Q = 10$, $ROP = 5$) and asked to evaluate whether it makes sense. Think like a consultant reviewing someone else\'s decisions.',
+        '**Quick audit trick:** At EOQ, ordering cost ≈ holding cost. If they are wildly unbalanced, the batch size is wrong. Compute both costs and compare.',
+        '**Reverse-engineer the service level:** From the current ROP, compute the implied safety stock ($SS = ROP - \\bar{D} \\times VP$), then find $z = SS / (\\sigma \\times \\sqrt{VP})$. Look up $z$ in the table to find what service level the store is actually running at.',
+        '**Watch out:** The EOQ formula gives $Q^* = 47$ kg, but with 100 cheese types that means 2.4 tons of cheese in the store. Always reality-check EOQ against storage space and perishability.',
       ],
     },
     questionSteps: [
@@ -336,7 +357,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Always audit by checking: (1) are ordering ≈ holding costs? (2) what service level does the current SS imply? Here, ordering was 18× higher and stockout risk was 16%. But EOQ must be tempered by real-world constraints (perishability, storage).',
+    takeaway: [
+      '**Reminder:** To audit a policy, check two things: (1) are ordering ≈ holding costs? If not, $Q$ is wrong. (2) What service level does the current $SS$ imply? Reverse-engineer $z$ to find out.',
+      '**Tip:** EOQ is a theoretical optimum. Always reality-check it against physical constraints — storage space, perishability, minimum order quantities. A cheese store cannot stock 47 kg × 100 types = 4.7 tons.',
+      '**Exam pattern:** When given a current policy ($Q$ and $ROP$), first evaluate it before proposing changes. Show that you understand both what is wrong and why.',
+    ],
   },
 
   // ════════════════════════════════════════════
@@ -353,11 +378,11 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'Full **supplier comparison** with inventory policy design: EOQ + SS + ROP for each.',
-        'Health-related product → assume $SL = 99\\% \\Rightarrow z = 2.33$.',
-        '**TRAP**: "checks inventory daily at 8:00" means $R = 1$ day → $VP = LT + R$, NOT just $LT$.',
-        'Separate **non-differential costs** (purchasing, transport per unit) from **differential costs** (ordering, cycle stock holding).',
-        'Annual demand: $D = 100 \\times 365 = 36{,}500$ boxes/yr.',
+        '**Identify:** This is a full supplier comparison — design the complete inventory policy (EOQ + SS + ROP) for each supplier, then compare total annual costs.',
+        '**Assumption:** This is a health product (spinal implants). Stockouts are dangerous → assume 99% service level ($z = 2.33$).',
+        '**TRAP — do not miss this:** "checks inventory daily at 8:00" means periodic review with $R = 1$ day. Therefore $VP = LT + R$, NOT just $LT$. For the US supplier: $VP = 7 + 1 = 8$ days, not 7. This is the #1 exam mistake.',
+        '**Organize your costs:** Separate non-differential costs (purchasing per box, transport per box — these are paid regardless of batch size) from differential costs (ordering cost per order, cycle stock holding). Compute EOQ only from the differential costs.',
+        '**Data setup:** Annual demand $D = 100 \\times 365 = 36{,}500$ boxes/yr. US: $v = €500$, $S = €100$, transport $= €10$/box. Portugal: $v = €300$, $S = €150$, transport $= €7.50$/box.',
       ],
     },
     questionSteps: [
@@ -371,7 +396,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'The $VP = LT + R$ trap is the #1 exam pitfall. Unit cost differences dominate — Portugal\'s €200/box savings × 36,500 boxes = €7.3M. Always state the complete policy: Q, ROP, and review schedule.',
+    takeaway: [
+      '**Reminder:** "Checks inventory daily at 8:00" means $R = 1$ day → $VP = LT + R$, NOT $LT$. This trap cost many students 5+ points on this exact exam. Always ask: continuous or periodic review?',
+      '**Tip:** Unit cost differences dominate everything else. Portugal saves €200/box × 36,500 = €7.3M in purchasing alone. Ordering and holding cost differences are rounding errors by comparison.',
+      '**Exam pattern:** Always conclude with a clear policy statement: "Order [Q] boxes from [supplier] whenever inventory falls below [ROP] boxes. Review daily at 8 AM." This shows you understand the full system.',
+    ],
   },
 
   {
@@ -385,11 +414,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **capacity analysis** — identify all resource types and compute how many of each are needed.',
-        'Three resource types: employees, precision scales, sterilization units.',
-        'An employee does BOTH picking and checking → 40 min/kit per employee.',
-        'Available time per resource: $4 \\times 60 = 240$ min/shift.',
-        'Always round UP (can\'t have 0.67 of a person) and consider practical utilization targets.',
+        '**Identify:** This is a capacity/resource planning problem. You need to figure out how many of each resource type (employees, scales, machines) are required to meet a daily target of 100 kits.',
+        '**Map out the resources:** There are three distinct resource types — employees, precision scales, and sterilization units. One employee does both picking (30 min) and checking (10 min), so each employee uses 40 min per kit.',
+        '**Calculate capacity per unit:** Each resource is available for $4 \\times 60 = 240$ minutes per shift. Divide available time by usage time per kit to get how many kits one resource unit can handle.',
+        '**Watch out:** Always round UP when computing resource counts (you cannot hire 0.67 of a person). Also, running at 98% utilization is risky — aim for ~83% to handle real-world variability. And check sequencing: the last kit entering sterilization needs 60 min, so it must enter by 11:00 to finish by 12:00.',
       ],
     },
     questionSteps: [
@@ -402,7 +430,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Capacity analysis requires identifying ALL distinct resources, not just "workers." The bottleneck is sterilization (60 min/kit). Plan for <85% utilization and consider sequencing constraints.',
+    takeaway: [
+      '**Reminder:** Capacity analysis requires identifying ALL distinct resource types — not just "employees." Employees, scales, and sterilization units are separate constraints. The bottleneck (sterilization, 60 min/kit) determines the system.',
+      '**Tip:** Never plan for 100% utilization. At 98%, one hiccup cascades into delays. Target ~83% utilization for human-operated processes. The exam rewards you for mentioning this practical consideration.',
+      '**Exam pattern:** After computing the minimum resources, add a sentence about sequencing (first kit enters sterilization at 8:40, last must enter by 11:00) and about practical capacity buffers. This shows managerial judgment.',
+    ],
   },
 
   {
@@ -416,11 +448,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **queueing SLA** problem — compute $W_q$ and check against the 3-minute target.',
-        'Single queue, $S$ servers → use the general queueing formula.',
-        'Phone calls → assume Poisson arrivals: $C_A = 1$.',
-        '$C_S = \\sigma/t_S = 5/20 = 0.25$ (low variability — operators are consistent).',
-        'If $S = 4$ fails, try $S = 5$ and show the dramatic improvement.',
+        '**Identify:** This is a queueing problem with a service level agreement (SLA). You need to compute the average wait time $W_q$ and check if it meets the ≤ 3 minute contractual target.',
+        '**System setup:** Single queue feeding $S$ operators. Phone calls → assume Poisson arrivals ($C_A = 1$). Service variability is given: $C_S = \\sigma/t_S = 5/20 = 0.25$ — operators are fairly consistent.',
+        '**Strategy:** Compute $W_q$ with $S = 4$. If it fails the SLA, try $S = 5$ and show the improvement. This demonstrates the nonlinear relationship between utilization and wait times — adding just one server can have a dramatic effect.',
+        '**Watch out:** Going from $\\rho = 83\\%$ to $67\\%$ does not sound like a big change, but it reduces $W_q$ by nearly 80%. Queues are exponential, not linear.',
       ],
     },
     questionSteps: [
@@ -432,7 +463,11 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'One extra server dropped $W_q$ from 10.75 to 2.35 min — a 78% reduction! Going from $\\rho = 83\\%$ to $67\\%$ has a massive nonlinear effect. When evaluating SLAs, always compute $W_q$ explicitly.',
+    takeaway: [
+      '**Reminder:** Queues are nonlinear. One extra server dropped $W_q$ from 10.75 to 2.35 min (78% reduction). Going from $\\rho = 83\\%$ to $67\\%$ sounds modest but the impact is massive.',
+      '**Tip:** When the SLA fails, try $S+1$ servers. Show the before/after comparison — the exam loves seeing you demonstrate the nonlinear effect of adding one server.',
+      '**Exam pattern:** Follow the 4-step structure: (1) system structure, (2) arrival characterization, (3) service characterization, (4) compute $\\rho$, $L_q$, $W_q$. This systematic approach avoids mistakes.',
+    ],
   },
 
   {
@@ -446,11 +481,10 @@ export const examGuide = [
     framework: {
       title: 'How to approach this problem',
       points: [
-        'This is a **strategic analysis** — no formulas, but OM concepts (pooling, supply chain design) apply.',
-        'Identify the consultant\'s rationale: inventory pooling, disintermediation, standardization.',
-        'Analyze both **pros** (cost savings, efficiency) and **cons** (demand destruction, local complexity).',
-        'The key tension: supply-side optimization vs. demand-side relationships.',
-        'For Miguel: weigh business results vs. ethical/organizational concerns.',
+        '**Identify:** This is a strategic analysis question — no calculations needed, but you must apply OM concepts (pooling, supply chain centralization, the strategic triangle) to structure your argument.',
+        '**Consultant\'s logic:** The proposal is textbook centralization — consolidate 25 country warehouses into 1 hub. The theory says this reduces safety stock by a factor of $\\sqrt{25} = 5$ through demand pooling. Plus: eliminate distributors (save 15% margin), simplify upstream logistics.',
+        '**Why it failed:** The theory ignored the demand side. Distributors were not just moving boxes — they were driving sales through hospital relationships. The express carrier could not replicate that. Cost savings are meaningless if revenue drops 60%.',
+        '**For Miguel\'s case:** This is an ethics + management question. Balance his correct business judgment (sales recovered) against his unethical methods (fabricated exports). Also consider: did the company fail to listen?',
       ],
     },
     questionSteps: [
@@ -468,6 +502,10 @@ export const examGuide = [
         ],
       },
     ],
-    takeaway: 'Supply chain optimization cannot ignore the demand side. The "strategic triangle" matters: efficiency vs. responsiveness vs. customer relationships. Always consider who drives demand, not just who moves inventory.',
+    takeaway: [
+      '**Reminder:** Supply chain optimization that destroys demand is worse than no optimization at all. The consultants saved on inventory costs but lost 60% of revenue. Always consider who drives demand.',
+      '**Tip:** For Part IV questions, structure your answer as: (1) consultant\'s rationale with OM theory, (2) pros with quantified pooling math, (3) cons with real-world factors the theory ignores, (4) your recommendation.',
+      '**Exam pattern:** The exam always tests both sides of trade-offs. Never say centralization is purely good or bad. Show that you understand the strategic triangle: cost, service, and range — pick two.',
+    ],
   },
 ]
