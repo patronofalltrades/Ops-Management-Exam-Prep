@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OM Exam Lab — Queueing & Inventory</title>
+<meta name="description" content="Operations Management Final Exam study tool. Interactive formulas, flash cards, and problem bank for IESE MBA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════ TOKENS ════════════════ */
+:root{
+--fd:'Newsreader',Georgia,serif;
+--fb:'DM Sans',system-ui,sans-serif;
+--fm:'IBM Plex Mono','Fira Code',monospace;
+--bg:#FAFAF8;--bg2:#F2F1ED;--bg3:#fff;--bgc:#F6F5F1;
+--tx:#18181B;--tx2:#52524E;--tx3:#8C8C86;
+--bd:#E4E3DE;--bd2:#D0CFCA;
+--ac:#B33D0B;--ac2:#962F06;--acl:#FFF4EE;
+--blue:#1D4ED8;--bluel:#EFF6FF;--blued:#DBEAFE;
+--green:#047857;--greenl:#ECFDF5;
+--amber:#92400E;--amberl:#FFFBEB;--amberd:#FEF3C7;
+--purple:#6D28D9;--purplel:#F5F3FF;
+--red:#B91C1C;--redl:#FEF2F2;
+--r:8px;--r2:12px;
+}
+[data-theme="dark"]{
+--bg:#111110;--bg2:#1A1A18;--bg3:#222220;--bgc:#1E1E1C;
+--tx:#EDEDEA;--tx2:#A0A098;--tx3:#6E6E66;
+--bd:#2E2E2C;--bd2:#3A3A38;
+--ac:#F07030;--ac2:#FF8A50;--acl:#2A1A10;
+--blue:#93C5FD;--bluel:#0C1B2E;--blued:#172554;
+--green:#6EE7B7;--greenl:#0B2418;
+--amber:#FCD34D;--amberl:#2A2008;--amberd:#422006;
+--purple:#C4B5FD;--purplel:#1A0E30;
+--red:#FCA5A5;--redl:#2A0C0C;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);font-size:16px;line-height:1.7;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acl);color:var(--ac)}
+
+/* ════════════════ HEADER ════════════════ */
+.hdr{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--bd);padding:0 24px}
+.hdr-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;height:54px;gap:16px}
+.hdr-logo{font-family:var(--fd);font-size:19px;font-weight:600;color:var(--ac);white-space:nowrap;letter-spacing:-.02em}
+.hdr-logo span{font-weight:400;color:var(--tx3);font-size:13px;margin-left:6px;font-family:var(--fb)}
+.hdr-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+.hdr-btn{width:32px;height:32px;border:1px solid var(--bd);border-radius:7px;background:var(--bg3);color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.15s}
+.hdr-btn:hover{border-color:var(--ac);color:var(--ac)}
+
+/* ════════════════ TABS ════════════════ */
+.tabs-bar{background:var(--bg);border-bottom:1px solid var(--bd);position:sticky;top:54px;z-index:90;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-inner{max-width:1100px;margin:0 auto;display:flex;gap:0;padding:0 24px}
+.tab-btn{padding:12px 20px;font-size:14px;font-weight:600;color:var(--tx3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;font-family:var(--fb)}
+.tab-btn:hover{color:var(--tx)}
+.tab-btn.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tab-btn.soon{color:var(--tx3);opacity:.45;cursor:not-allowed}
+.tab-btn.soon::after{content:'soon';font-size:9px;margin-left:4px;padding:1px 5px;border-radius:3px;background:var(--bd);color:var(--tx3);vertical-align:middle;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+
+/* ════════════════ PANELS ════════════════ */
+.panel{display:none;max-width:1100px;margin:0 auto;padding:28px 24px 100px}
+.panel.active{display:block}
+
+/* ════════════════ TYPOGRAPHY ════════════════ */
+.h1{font-family:var(--fd);font-size:28px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.h2{font-size:20px;font-weight:700;margin-top:36px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ac);color:var(--tx)}
+.h3{font-size:16px;font-weight:700;margin-top:24px;margin-bottom:10px;padding-left:10px;border-left:3px solid var(--ac);color:var(--tx)}
+.h4{font-size:14px;font-weight:700;margin-top:18px;margin-bottom:6px;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em}
+.sub{font-size:15px;color:var(--tx2);font-weight:300;margin-bottom:24px}
+p{margin-bottom:12px}
+code{font-family:var(--fm);font-size:13px;background:var(--bgc);padding:1px 5px;border-radius:3px;color:var(--ac)}
+strong{font-weight:600}
+
+/* ════════════════ FORMULA BLOCKS ════════════════ */
+.fbox{background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;margin:12px 0;font-family:var(--fm);font-size:13.5px;line-height:2;white-space:pre-wrap;overflow-x:auto}
+.fbox .fl{font-family:var(--fb);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:4px;display:block}
+
+/* ════════════════ CALLOUT BOXES ════════════════ */
+.cb{border-left:4px solid;border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:12px 0}
+.cb .ct{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.cb p{margin:0;font-size:14px;line-height:1.6}
+.cb-tip{background:var(--amberl);border-color:var(--amber)}.cb-tip .ct{color:var(--amber)}.cb-tip p{color:var(--amber)}
+.cb-method{background:var(--bluel);border-color:var(--blue)}.cb-method .ct{color:var(--blue)}.cb-method p{color:var(--blue)}
+.cb-key{background:var(--purplel);border-color:var(--purple)}.cb-key .ct{color:var(--purple)}.cb-key p{color:var(--purple)}
+.cb-warn{background:var(--redl);border-color:var(--red)}.cb-warn .ct{color:var(--red)}.cb-warn p{color:var(--red)}
+.cb-concept{background:var(--greenl);border-color:var(--green)}.cb-concept .ct{color:var(--green)}.cb-concept p{color:var(--green)}
+
+/* ════════════════ TABLES ════════════════ */
+.tw{overflow-x:auto;margin:12px 0;border-radius:var(--r);border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--bgc);font-weight:700;text-align:left;padding:8px 12px;border-bottom:2px solid var(--bd);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--tx2)}
+td{padding:7px 12px;border-bottom:1px solid var(--bd);font-family:var(--fm);font-size:13px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--acl)}
+td.hl{background:var(--amberd);font-weight:600}
+
+/* ════════════════ PROBLEM CARDS ════════════════ */
+.prob{border:1px solid var(--bd);border-radius:var(--r2);margin:14px 0;overflow:hidden;transition:.15s}
+.ph{background:var(--bg2);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;gap:12px}
+.ph h4{font-size:14px;font-weight:700;color:var(--tx);margin:0;flex:1}
+.badge{font-size:10px;font-family:var(--fm);padding:3px 8px;border-radius:4px;background:var(--acl);color:var(--ac);font-weight:600;white-space:nowrap}
+.badge-q{background:var(--bluel);color:var(--blue)}
+.badge-i{background:var(--greenl);color:var(--green)}
+.pb{padding:16px;display:none;font-size:14px;line-height:1.7}
+.prob.open .pb{display:block}
+.pd{background:var(--bgc);border-radius:var(--r);padding:10px 14px;margin:8px 0;font-family:var(--fm);font-size:12.5px;line-height:1.8;white-space:pre-wrap}
+.sol-t{background:none;border:1px solid var(--ac);color:var(--ac);padding:5px 14px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;margin:10px 0;font-family:var(--fb)}
+.sol-t:hover{background:var(--acl)}
+.sol-c{display:none;margin-top:8px}
+.sol-c.show{display:block}
+.chevron{transition:transform .2s;font-size:12px;color:var(--tx3)}
+.prob.open .chevron{transform:rotate(90deg)}
+
+/* ════════════════ CALCULATORS ════════════════ */
+.calc{border:1px solid var(--bd);border-radius:var(--r2);margin:14px 0;padding:18px;background:var(--bg3)}
+.calc h4{font-size:15px;font-weight:700;margin-bottom:12px}
+.cg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 14px}
+.cg label{font-size:12px;color:var(--tx2);display:flex;flex-direction:column;gap:2px}
+.cg input{padding:6px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:13px;background:var(--bg);color:var(--tx);width:100%}
+.cg input:focus{border-color:var(--ac);outline:none}
+.cr{margin-top:14px;padding:12px;background:var(--greenl);border:1px solid var(--green);border-radius:var(--r);font-family:var(--fm);font-size:13px;color:var(--green);line-height:1.9;white-space:pre-wrap}
+
+/* ════════════════ FLASH CARDS ════════════════ */
+.fc-container{max-width:560px;margin:0 auto}
+.fc-stats{display:flex;gap:16px;margin-bottom:16px;font-size:13px;color:var(--tx2)}
+.fc-stats span{font-family:var(--fm);font-weight:600;color:var(--tx)}
+.fc-card{min-height:260px;border:1px solid var(--bd);border-radius:var(--r2);background:var(--bg3);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 28px;text-align:center;cursor:pointer;user-select:none;transition:all .3s;position:relative}
+.fc-card:hover{border-color:var(--ac);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.fc-cat{position:absolute;top:12px;left:16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:4px}
+.fc-cat-q{background:var(--bluel);color:var(--blue)}
+.fc-cat-i{background:var(--greenl);color:var(--green)}
+.fc-cat-n{background:var(--purplel);color:var(--purple)}
+.fc-cat-c{background:var(--amberl);color:var(--amber)}
+.fc-q{font-family:var(--fd);font-size:20px;font-weight:600;line-height:1.4;color:var(--tx)}
+.fc-a{font-family:var(--fm);font-size:14px;line-height:1.8;color:var(--tx);display:none;white-space:pre-wrap;text-align:left;width:100%}
+.fc-card.flipped .fc-q{display:none}
+.fc-card.flipped .fc-a{display:block}
+.fc-hint{font-size:12px;color:var(--tx3);margin-top:12px}
+.fc-card.flipped .fc-hint{display:none}
+.fc-actions{display:flex;gap:8px;margin-top:16px;justify-content:center}
+.fc-btn{padding:8px 20px;border-radius:6px;border:1px solid var(--bd);background:var(--bg3);color:var(--tx);cursor:pointer;font-size:13px;font-weight:600;font-family:var(--fb);transition:.15s}
+.fc-btn:hover{border-color:var(--ac);color:var(--ac)}
+.fc-btn-know{border-color:var(--green);color:var(--green)}
+.fc-btn-know:hover{background:var(--greenl)}
+.fc-btn-skip{border-color:var(--amber);color:var(--amber)}
+.fc-btn-skip:hover{background:var(--amberl)}
+.fc-btn-miss{border-color:var(--red);color:var(--red)}
+.fc-btn-miss:hover{background:var(--redl)}
+
+/* ════════════════ CONCEPT CARDS ════════════════ */
+.cc{border:1px solid var(--bd);border-radius:var(--r2);margin:14px 0;padding:20px;background:var(--bg3)}
+.cc h4{font-size:16px;font-weight:700;margin-bottom:8px}
+.cc p{font-size:14px;margin-bottom:8px}
+
+/* ════════════════ RESPONSIVE ════════════════ */
+@media(max-width:700px){
+  .hdr-inner{padding:0}
+  .hdr-logo span{display:none}
+  .panel{padding:20px 16px 80px}
+  .cg{grid-template-columns:1fr 1fr}
+  .h1{font-size:22px}
+  .fc-card{min-height:220px;padding:24px 20px}
+  .tabs-inner{padding:0 12px}
+  .tab-btn{padding:10px 12px;font-size:13px}
+}
+@media print{
+  .hdr,.tabs-bar{display:none!important}
+  .panel{display:block!important;padding:0}
+  .pb,.sol-c{display:block!important}
+  body{font-size:10pt}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header class="hdr">
+<div class="hdr-inner">
+  <div class="hdr-logo">OM Exam Lab<span>Prof. Yavuz · IESE MBA 2027</span></div>
+  <div class="hdr-right">
+    <button class="hdr-btn" onclick="toggleTheme()" id="thm" title="Toggle dark mode">🌙</button>
+    <button class="hdr-btn" onclick="window.print()" title="Print">🖨</button>
+  </div>
+</div>
+</header>
+
+<!-- ════════════════ TABS ════════════════ -->
+<nav class="tabs-bar">
+<div class="tabs-inner">
+  <button class="tab-btn active" data-tab="concepts">Concepts</button>
+  <button class="tab-btn" data-tab="formulas">Formulas</button>
+  <button class="tab-btn" data-tab="flashcards">Flash Cards</button>
+  <button class="tab-btn" data-tab="problems">Problem Bank</button>
+  <button class="tab-btn soon" data-tab="simulator">Case Simulator</button>
+  <button class="tab-btn soon" data-tab="visualizer">Visualizer</button>
+</div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- TAB 1: CONCEPTS                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="panel active" id="p-concepts">
+<h1 class="h1">Conceptual Discovery</h1>
+<p class="sub">Core intuitions behind every exam topic. Queueing first, then inventory — matching exam order.</p>
+
+<h2 class="h2">1. Queueing Theory</h2>
+<div class="cb cb-concept"><span class="ct">Core insight</span><p>Queues form even when average demand &lt; average capacity. The culprit is <strong>variability</strong> — random fluctuations in both arrivals and service times create temporary imbalances that accumulate into waiting lines.</p></div>
+
+<h3 class="h3">The Two Fundamental Laws</h3>
+<div class="cc">
+<h4>1st Law: Higher utilization → exponentially more waiting</h4>
+<p>As ρ approaches 100%, Lq explodes. Going from 80% to 90% utilization roughly doubles queue length. Going from 90% to 95% doubles it again. This is why you NEED idle capacity as a buffer against variability.</p>
+</div>
+<div class="cc">
+<h4>2nd Law: Higher variability → even more waiting at the same ρ</h4>
+<p>The Lq formula includes (CA² + CS²)/2. When CA=CS=1 (Poisson/exponential), this factor = 1. When variability is lower (e.g., CS=0.25), this factor drops to 0.53 — cutting queues nearly in half at the same utilization. Reducing variability is as powerful as adding capacity.</p>
+</div>
+
+<h3 class="h3">Pooling Principle</h3>
+<div class="cc">
+<h4>One queue feeding S servers always beats S separate queues</h4>
+<p>With pooling, when one server finishes early, it immediately helps the common queue. With separate queues, that idle capacity is wasted while another queue builds up. The math: pooled Lq uses exponent √(2(S+1)) which grows slower than S separate systems. Pooling is free performance — same capacity, less waiting.</p>
+</div>
+<div class="cb cb-tip"><span class="ct">Strategic trade-off</span><p>Pooling is operationally optimal but may not be strategically best. Separating queues (express lanes, priority classes, VIP lines) sacrifices efficiency for differentiation and willingness-to-pay segmentation. The exam tests whether you can argue BOTH sides.</p></div>
+
+<h3 class="h3">The Strategic Triangle</h3>
+<div class="cc">
+<h4>Cost — Range — Service: pick two</h4>
+<p>No firm can simultaneously minimize cost (high ρ), offer maximum product range (high CVS from variety), and guarantee fast service (low Wq). Queueing theory formalizes this impossibility. Exam Part IV (strategic) often tests this tension.</p>
+</div>
+
+<h2 class="h2">2. Capacity Analysis</h2>
+<div class="cc">
+<h4>Little's Law: WIP = TH × TT</h4>
+<p>Universal. Requires NO assumptions about distributions. If you know any two of {items in system, throughput rate, time in system}, you can find the third. The exam uses this to convert between "how many kits are being processed" and "how long does each kit take."</p>
+</div>
+<div class="cc">
+<h4>Bottleneck identification</h4>
+<p>List every resource. For each: capacity = available time / time per unit. The resource with the LOWEST capacity relative to demand is the bottleneck. It determines system throughput. Adding capacity to non-bottleneck resources does NOT increase output. (Exam 2024 Part II: employees, scales, sterilization units — sterilization was bottleneck.)</p>
+</div>
+
+<h2 class="h2">3. Inventory Management</h2>
+<h3 class="h3">The Two Fundamental Decisions</h3>
+<div class="cc">
+<h4>How much to order? → EOQ (cycle stock)</h4>
+<p>Balances ordering cost (decreases with larger Q) against holding cost (increases with larger Q). At the optimum, the two cost curves cross. The total cost curve is FLAT around the optimum — a 10% error in Q only increases costs by ~0.5%. This means practical constraints (truck sizes, pallet quantities) can shift Q without significant penalty.</p>
+</div>
+<div class="cc">
+<h4>When to order? → ROP (safety stock)</h4>
+<p>Safety stock buffers against demand uncertainty during the vulnerable period (time between ordering and receiving). Without safety stock, you stock out ~50% of replenishment cycles. The key variables: service level (managerial choice), demand variability (σ), and vulnerable period length (depends on review type).</p>
+</div>
+
+<h3 class="h3">Review Types</h3>
+<div class="cc">
+<h4>Continuous review: VP = LT</h4>
+<p>You monitor inventory constantly and order the moment IP drops below ROP. You're only exposed to uncertainty during the lead time. Order quantity is fixed (Q = EOQ).</p>
+</div>
+<div class="cc">
+<h4>Periodic review: VP = LT + R</h4>
+<p>You check inventory every R days. You could miss a demand spike between reviews. So the vulnerable period is LONGER: LT + R. This requires MORE safety stock. The exam tests this distinction heavily — the 2024 exam used daily review (R=1), making VP = LT+1.</p>
+</div>
+<div class="cb cb-warn"><span class="ct">The #1 exam trap</span><p>Students forget to add R to the vulnerable period in periodic review. If LT=7 and R=1, VP=8 not 7. SS = z×σ×√8 not z×σ×√7. This single mistake cost many students 5+ points on the 2024 exam.</p></div>
+
+<h3 class="h3">Newsvendor (Single-Period)</h3>
+<div class="cc">
+<h4>One ordering opportunity, uncertain demand, asymmetric costs</h4>
+<p>When you can only order once (seasonal goods, perishables, fashion), the optimal quantity depends entirely on the ratio Cu/(Cu+Co). This critical fractile IS the optimal service level — derived from economics, not chosen by a manager. High margin (Cu >> Co) → order aggressively. Low margin → order conservatively.</p>
+</div>
+<div class="cb cb-tip"><span class="ct">Formula connection</span><p>Q* = μ + z*σ is structurally identical to the safety stock formula ROP = D̄₁×VP + z×σ×√VP. The only difference: in safety stock, z comes from a chosen service level; in newsvendor, z comes from the cost-optimal critical fractile.</p></div>
+
+<h3 class="h3">Supplier Comparison (2024 Exam Pattern)</h3>
+<div class="cc">
+<h4>Separate differential from non-differential costs</h4>
+<p>For each supplier: 1) Compute EOQ from differential costs only (ordering + cycle holding). 2) Compute SS from that supplier's lead time. 3) Add ALL costs (purchasing, transport, cycle holding, ordering, SS holding) for the total. 4) Compare totals. Purchasing cost differences typically dominate everything else — in 2024, Portugal saved €7.4M/yr vs. the US, mostly from the €200/box price difference.</p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- TAB 2: FORMULAS                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="panel" id="p-formulas">
+<h1 class="h1">Formula Reference</h1>
+<p class="sub">Every formula the exam tests. Matches the official cheat sheet. Queueing → Capacity → Inventory → Newsvendor.</p>
+
+<h2 class="h2">1. Queueing</h2>
+<div class="fbox"><span class="fl">Utilization</span>ρ = λ / (S × μ)</div>
+<div class="fbox"><span class="fl">Avg queue length (# waiting)</span>Lq = [ρ^√(2(S+1)) / (1 − ρ)] × [(CA² + CS²) / 2]</div>
+<div class="fbox"><span class="fl">Avg wait in queue</span>Wq = Lq / λ</div>
+<div class="fbox"><span class="fl">Avg time in system</span>W = Wq + tS    where tS = 1/μ</div>
+<div class="fbox"><span class="fl">Avg # in system</span>L = Lq + ρ × S</div>
+<div class="fbox"><span class="fl">Variables</span>λ = arrival rate    μ = service rate per server    S = # servers
+tA = 1/λ (avg inter-arrival time)    tS = 1/μ (avg service time)
+CA = σA / tA (CV of arrivals)    CS = σS / tS (CV of service)
+PCE = tS / W = 1 − Wq/W</div>
+<div class="cb cb-tip"><span class="ct">CV quick rules</span><p>"Poisson arrivals" or "exponential inter-arrivals" → CA = 1. "Exponential service" → CS = 1. "Deterministic" / fixed → CV = 0. Given σ and mean → CV = σ/mean.</p></div>
+
+<h2 class="h2">2. Capacity & Little's Law</h2>
+<div class="fbox"><span class="fl">Little's Law</span>WIP = TH × TT</div>
+<div class="fbox"><span class="fl">Bathtub</span>WIP_end = WIP_start + (Inflow − Outflow) × Time</div>
+<div class="fbox"><span class="fl">Resource capacity</span>Capacity = Available time / Time per unit
+Resources needed = ⌈Demand / Capacity per resource⌉    (round UP)</div>
+
+<h2 class="h2">3. Inventory — Cycle Stock (EOQ)</h2>
+<div class="fbox"><span class="fl">Economic Order Quantity</span>EOQ = √(2·D·S / (v·i))</div>
+<div class="fbox"><span class="fl">Total Cost at EOQ</span>TC* = √(2·D·S·v·i)    (ordering + holding only)</div>
+<div class="fbox"><span class="fl">Annual cost components</span>Ordering cost = (D/Q) × S
+Holding cost (cycle) = (Q/2) × v × i
+Holding cost (SS) = SS × v × i
+D = annual demand, S = ordering cost, v = unit value, i = holding rate</div>
+
+<h2 class="h2">4. Inventory — Safety Stock & ROP</h2>
+<div class="fbox"><span class="fl">Safety Stock</span>SS = z × σ₁ × √VP</div>
+<div class="fbox"><span class="fl">Safety Stock (variable LT)</span>SS = z × √(σ₁² × VP + σ_VP² × D̄₁²)</div>
+<div class="fbox"><span class="fl">Reorder Point</span>ROP = D̄₁ × VP + SS</div>
+<div class="fbox"><span class="fl">Periodic Review — Order-Up-To</span>S = D̄₁ × (LT + R) + z × σ₁ × √(LT + R)</div>
+<div class="fbox"><span class="fl">Vulnerable Period</span>Continuous review:  VP = LT
+Periodic review:    VP = LT + R</div>
+<div class="fbox"><span class="fl">Stockout frequency</span>Stockouts/year = (1 − Service Level) × (D / Q)</div>
+
+<h2 class="h2">5. Newsvendor</h2>
+<div class="fbox"><span class="fl">Critical Fractile</span>α = Cu / (Cu + Co)
+Cu = p − c    (underage cost)
+Co = c − v    (overage cost)</div>
+<div class="fbox"><span class="fl">Optimal Order Quantity (Normal demand)</span>Q* = μ + z* × σ    where z* = Φ⁻¹(α)</div>
+
+<h2 class="h2">6. z-Value Table</h2>
+<div class="tw">
+<table>
+<tr><th>SL</th><th>z</th><th>SL</th><th>z</th><th>SL</th><th>z</th></tr>
+<tr><td>50%</td><td>0.00</td><td>80%</td><td>0.84</td><td class="hl">95%</td><td class="hl">1.64</td></tr>
+<tr><td>60%</td><td>0.25</td><td>83.3%</td><td>0.97</td><td class="hl">99%</td><td class="hl">2.33</td></tr>
+<tr><td>70%</td><td>0.52</td><td class="hl">90%</td><td class="hl">1.28</td><td class="hl">99.9%</td><td class="hl">3.09</td></tr>
+</table>
+</div>
+<p style="font-size:13px;color:var(--tx3)">Highlighted values appear on the official exam cheat sheet.</p>
+
+<h2 class="h2">7. Interactive Calculators</h2>
+
+<div class="calc" id="c-queue">
+<h4>Queueing Calculator</h4>
+<div class="cg">
+  <label>λ (arrivals/hr)<input type="number" id="q-lam" value="10" oninput="calcQ()"></label>
+  <label>tS avg (min)<input type="number" id="q-ts" value="20" oninput="calcQ()"></label>
+  <label>σS (min)<input type="number" id="q-ss" value="5" oninput="calcQ()"></label>
+  <label>S (servers)<input type="number" id="q-S" value="4" oninput="calcQ()"></label>
+  <label>CA<input type="number" id="q-ca" value="1" step="0.1" oninput="calcQ()"></label>
+</div>
+<div class="cr" id="q-res"></div>
+</div>
+
+<div class="calc" id="c-eoq">
+<h4>EOQ Calculator</h4>
+<div class="cg">
+  <label>D (annual)<input type="number" id="e-D" value="36500" oninput="calcE()"></label>
+  <label>S (order cost €)<input type="number" id="e-S" value="100" oninput="calcE()"></label>
+  <label>v (unit cost €)<input type="number" id="e-v" value="500" oninput="calcE()"></label>
+  <label>i (holding %)<input type="number" id="e-i" value="10" oninput="calcE()"></label>
+</div>
+<div class="cr" id="e-res"></div>
+</div>
+
+<div class="calc" id="c-ss">
+<h4>Safety Stock & ROP Calculator</h4>
+<div class="cg">
+  <label>D̄₁ (daily)<input type="number" id="s-d" value="100" oninput="calcS()"></label>
+  <label>σ₁ (daily)<input type="number" id="s-sig" value="30" oninput="calcS()"></label>
+  <label>LT (days)<input type="number" id="s-lt" value="7" oninput="calcS()"></label>
+  <label>R (review, 0=continuous)<input type="number" id="s-r" value="1" oninput="calcS()"></label>
+  <label>SL (%)<input type="number" id="s-sl" value="99" oninput="calcS()"></label>
+</div>
+<div class="cr" id="s-res"></div>
+</div>
+
+<div class="calc" id="c-nv">
+<h4>Newsvendor Calculator</h4>
+<div class="cg">
+  <label>p (sell price €)<input type="number" id="n-p" value="6" oninput="calcN()"></label>
+  <label>c (cost €)<input type="number" id="n-c" value="2" oninput="calcN()"></label>
+  <label>v (salvage €)<input type="number" id="n-v" value="1" oninput="calcN()"></label>
+  <label>μ (mean demand)<input type="number" id="n-mu" value="500" oninput="calcN()"></label>
+  <label>σ (std dev)<input type="number" id="n-sig" value="120" oninput="calcN()"></label>
+</div>
+<div class="cr" id="n-res"></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- TAB 3: FLASH CARDS                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="panel" id="p-flashcards">
+<h1 class="h1">Flash Cards</h1>
+<p class="sub">Click card to flip. Rate your recall. Cards you miss appear more often. Progress saved locally.</p>
+
+<div class="fc-container">
+<div class="fc-stats">
+  Remaining: <span id="fc-rem">0</span> · Correct: <span id="fc-right">0</span> · Missed: <span id="fc-wrong">0</span>
+  <button class="hdr-btn" onclick="resetFC()" title="Reset" style="margin-left:auto;font-size:12px">↺</button>
+</div>
+<div class="fc-card" id="fc-card" onclick="flipCard()">
+  <div class="fc-cat" id="fc-cat"></div>
+  <div class="fc-q" id="fc-front"></div>
+  <div class="fc-a" id="fc-back"></div>
+  <div class="fc-hint">Click to reveal answer</div>
+</div>
+<div class="fc-actions" id="fc-actions" style="display:none">
+  <button class="fc-btn fc-btn-miss" onclick="rateCard(0)">Missed</button>
+  <button class="fc-btn fc-btn-skip" onclick="rateCard(1)">Fuzzy</button>
+  <button class="fc-btn fc-btn-know" onclick="rateCard(2)">Got it</button>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- TAB 4: PROBLEM BANK                                                -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="panel" id="p-problems">
+<h1 class="h1">Problem Bank</h1>
+<p class="sub">12 problems: 4 queueing gym + 4 inventory gym + 4-part final exam (2024). Click to expand. Toggle solutions.</p>
+
+<h2 class="h2">Queueing Gym</h2>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 1: Customer Service — Separate Queues</h4><span class="badge badge-q">Queueing</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>λ=15 customers/hr. 2 desks on different floors (no pooling possible). Fast rep: 5 min/customer (μ=12/hr). Slow rep: μ=8/hr. Customers assigned 50/50 randomly. Assume CA=CS=1.</p>
+<p><strong>Q1:</strong> System utilization? <strong>Q2:</strong> Expected # waiting? <strong>Q3:</strong> How to improve without more resources?</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">System utilization: ρ = 15/(12+8) = 75%
+But each desk sees λ=7.5/hr (50/50 split):
+
+Fast desk (S=1): ρ = 7.5/12 = 62.5%
+  Lq = [0.625^√4 / (1-0.625)] × 1 = 0.625²/0.375 = 1.04
+  Wq = 1.04/7.5 = 8.3 min
+
+Slow desk (S=1): ρ = 7.5/8 = 93.75%  ← danger zone!
+  Lq = [0.9375^2 / 0.0625] × 1 = 14.06
+  Wq = 14.06/7.5 = 112.5 min  ← nearly 2 hours!
+
+Total Lq = 1.04 + 14.06 = 15.1 people waiting
+
+Q3 — Improve without more resources:
+• Route more customers to fast server (60/40 or 70/30)
+• Ideally: common queue feeding both desks (pooling)
+• Cross-train slow rep to increase their speed</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 2: 24hr Pharmacy — Automation Impact</h4><span class="badge badge-q">Queueing</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>λ=280 orders/day (σ=280). 5 employees: tS=25 min (σ=25). Machine alternative: tS=5 min (σ=5). 24hr operation.</p>
+<p><strong>Q1:</strong> Current Wq and tS? <strong>Q2:</strong> Impact of replacing employees with machine?</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">λ = 280/24 = 11.67/hr; CA ≈ 1 (σ_daily ≈ mean)
+Current: μ = 60/25 = 2.4/hr; S=5; capacity=12/hr
+  ρ = 11.67/12 = 97.2%  ← extremely high
+  CS = 25/25 = 1
+  Lq is very large at 97% utilization → long waits
+
+Machine (S=1): μ = 60/5 = 12/hr; capacity=12/hr
+  ρ = 11.67/12 = 97.2%  ← same utilization!
+  But S=1 with 97% is WORSE than S=5 at 97%
+  The exponent √(2×2)=2 vs √(2×6)=3.46
+
+Key insight: Same total capacity but different topology.
+5 servers pooled >> 1 fast server at same ρ.
+The machine doesn't help unless capacity increases.</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 3: Hiring Decision — Cost Optimization</h4><span class="badge badge-q">Queueing + Cost</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>λ=3/hr (Poisson). Hannah: μ=6/hr, $40/hr. Elaine: μ=7/hr, $x/hr. Waiting cost: $100/hr per case in system.</p>
+<p><strong>Q1:</strong> Total cost CH and CE? <strong>Q2:</strong> Max salary Elaine can request?</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Both M/M/1 (Poisson arrivals, exponential service, S=1, CA=CS=1)
+
+Hannah: ρ = 3/6 = 0.5
+  Lq = 0.5²/(1-0.5) × 1 = 0.5
+  L = Lq + ρ = 0.5 + 0.5 = 1.0
+  CH = $40 + $100×1.0 = $140/hr
+
+Elaine: ρ = 3/7 = 0.429
+  Lq = 0.429²/(1-0.429) × 1 = 0.184/0.571 = 0.322
+  L = 0.322 + 0.429 = 0.751
+  CE = x + $100×0.751 = x + $75.10/hr
+
+Elaine wins if CE < CH:
+  x + 75.10 < 140 → x < $64.90/hr</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 4: Express Checkout — Pooling vs Separation</h4><span class="badge badge-q">Queueing + Strategy</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>λ=12/hr, 4 lines (separate S=1 queues, random split). tS=12 min, σ=12. 50% qualify for express: tS=5 min, σ=1 min.</p>
+<p><strong>Q1:</strong> Current performance? <strong>Q2:</strong> Express line performance? <strong>Q3:</strong> Should you implement?</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Q1 — Current: each queue gets λ=3/hr, μ=5/hr, ρ=0.6, CS=1
+  Lq = 0.6²/0.4 × 1 = 0.9 per queue
+  Wq = 0.9/3 = 18 min; W = 30 min
+
+Q2 — Express (1 dedicated line): λ=6/hr, μ=12/hr, ρ=0.5
+  CS = 1/5 = 0.2; Lq = 0.5²/0.5 × (1+0.04)/2 = 0.26
+  Wq = 0.26/6 hr = 2.6 min; W = 7.6 min ← huge improvement
+
+Regular (3 lines): λ=2/hr each
+  tS_regular: 0.5×5 + 0.5×x = 12 → x = 19 min
+  μ = 60/19 = 3.16/hr; ρ = 2/3.16 = 63.3%
+  Wait time slightly higher for regular customers
+
+Q3 — Implement? Express customers: W drops from 30→8 min.
+Regular customers: W increases somewhat (19 min service).
+Net: likely yes if express customers are more price-sensitive.
+Need: data on margin per customer type to decide.</div></div>
+</div></div>
+
+<h2 class="h2">Inventory Gym</h2>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 1: The Big Headache — EOQ Comparison</h4><span class="badge badge-i">EOQ</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>D=3,000 cartons/yr. Subcontract: S=$1,000, v=$50. Prepackaged: S=$10, v=$60. i=30%.</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Subcontract: EOQ = √(2×3000×1000/(50×0.30)) = √400,000 = 632
+  TC = √(2×3000×1000×50×0.30) + 3000×50 = 9,487 + 150,000 = $159,487
+
+Prepackaged: EOQ = √(2×3000×10/(60×0.30)) = √3,333 = 58
+  TC = √(2×3000×10×60×0.30) + 3000×60 = 1,039 + 180,000 = $181,039
+
+→ Subcontract saves ~$21,500/yr (lower unit cost dominates)</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 2: Celebration Time — EOQ + Periodic Review</h4><span class="badge badge-i">EOQ + Periodic</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>D=5,000 bottles/yr. v=$3, S=$10, i=20%. LT=3 weeks. Weekly: μ=100, σ=30. SL=95%.</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Q1 — Continuous: EOQ = √(2×5000×10/(3×0.2)) = √166,667 ≈ 408
+  VP = LT = 3 wks; z(95%)=1.64
+  SS = 1.64×30×√3 = 85 bottles
+  ROP = 100×3 + 85 = 385 bottles
+
+Q2 — Periodic (R ≈ 4 weeks based on EOQ):
+  VP = LT+R = 3+4 = 7 weeks
+  S = 100×7 + 1.64×30×√7 = 700 + 130 = 830 bottles</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 3: Frozen Delights — Full Inventory (8 parts)</h4><span class="badge badge-i">EOQ + SS + ROP</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>D̄=80 L/day, σ=20, S=€200, v=€10, i=15%, LT=1 day, SL=99%. Current Q=800 (10-day supply).</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Q1: Current batch = 80×10 = 800 L
+Q2: D=29,200; EOQ = √(2×29200×200/(10×0.15)) = √7,786,667 ≈ 2,791 L
+Q3: TC(800)=7,900; TC(2791)=4,183 → saves 3,717€/yr
+Q4: z(99%)=2.33; SS = 2.33×20×√1 = 47 L
+Q5: Orders/yr = 29200/800 = 36.5; stockouts = 0.01×36.5 = 0.37
+    → ~1 stockout every 3 years
+Q6: SS stays the SAME (doesn't depend on Q)
+Q7: ROP = 80×1 + 47 = 127 L
+Q8: Same ROP = 127 L (SS doesn't change with Q)</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Ex 4: Emmental Cheese — Policy Audit</h4><span class="badge badge-i">EOQ + Stockout</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>D̄=1 kg/day, σ=0.5, S=€3, v=€5, i=20%, LT=4 days. Current: Q=10, ROP=5. Continuous review.</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Q1: EOQ = √(2×365×3/(5×0.20)) = √2,190 ≈ 47 kg
+    Current Q=10 is far below optimal → over-ordering frequency
+
+Q2: Expected demand during LT = 1×4 = 4 kg
+    Current SS = ROP − D̄₁×VP = 5 − 4 = 1 kg
+    z = 1/(0.5×√4) = 1.0 → SL = 84.1%
+    Stockout prob = 15.9% per cycle
+    Orders/yr = 365/10 = 36.5 → ~5.8 stockouts/yr
+
+Q3: For 1% stockout: z=2.33
+    SS = 2.33×0.5×√4 = 2.33 → ROP = 4+2.33 ≈ 7 kg</div></div>
+</div></div>
+
+<h2 class="h2">Final Exam 2024 — Medcorp</h2>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Part I: Sourcing Screws — Supplier Comparison (20 pts)</h4><span class="badge badge-i">EOQ + SS + Periodic</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>D̄=100 boxes/day, σ=30. Review daily (R=1). i=10%, warehouse=2,000. SL=99%. <strong>US:</strong> v=500€, S=100€, transport=40€/kg (0.25kg/box), LT=7. <strong>Portugal:</strong> v=300€, S=150€, transport=30€/kg, LT=1.</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">US: Transport/box = 40×0.25 = 10€ (non-differential)
+  VP = LT+R = 7+1 = 8 days
+  SS = 2.33×30×√8 = 197 → SS cost = 197×0.1×500 = 9,850€/yr
+  ROP = 100×8+197 = 997
+  EOQ = √(2×36500×100/(0.1×500)) = 382
+  Total = 18,250,000+365,000+9,850+9,555+9,550 = 18,643,955€/yr
+
+Portugal: Transport/box = 7.5€ (non-differential)
+  VP = 1+1 = 2 days
+  SS = 2.33×30×√2 = 99 → SS cost = 99×0.1×300 = 2,970€/yr
+  ROP = 100×2+99 = 299
+  EOQ = √(2×36500×150/(0.1×300)) = 604
+  Total = 10,950,000+273,750+2,970+9,065+9,060 = 11,244,845€/yr
+
+→ Portugal saves ~7.4M€/yr (unit cost difference dominates)</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Part II: Kit Preparation — Capacity (20 pts)</h4><span class="badge badge-q">Capacity</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>100 kits/day. Shift: 4 hrs. Picking: 30 min (employee). Checking: 10 min (employee+scale). Sterilization: 60 min (machine, 1 kit/unit).</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">Employee: 30+10 = 40 min/kit; capacity = 240/40 = 6 kits/shift
+  Need ⌈100/6⌉ = 17 employees
+
+Scale: 10 min/kit; capacity = 240/10 = 24/shift
+  Need ⌈100/24⌉ = 5 scales
+
+Sterilization: 60 min/kit; capacity = 240/60 = 4/shift
+  Need ⌈100/4⌉ = 25 units ← bottleneck
+
+Practical note: 17 employees at 98% utilization = no slack.
+Better: 20 employees + 30 machines → ~83% utilization</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Part III: Call Center — Queueing SLA (20 pts)</h4><span class="badge badge-q">Queueing SLA</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p>λ=10 calls/hr. tS=20 min, σS=5 min. S=4 operators. SLA: Wq ≤ 3 min. CA=1.</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">S=4: μ=3/hr; ρ=10/12=83.3%; CS=5/20=0.25
+  Lq = [0.833^√(2×5)/(1-0.833)] × [(1+0.0625)/2]
+     = [0.833^3.16/0.167] × 0.531 = 1.81
+  Wq = 1.81/10 = 0.181 hr = 10.8 min → FAILS SLA ✗
+
+S=5: ρ=10/15=66.7%
+  Lq = [0.667^√(2×6)/(1-0.667)] × 0.531
+     = [0.667^3.46/0.333] × 0.531 = 0.44
+  Wq = 0.44/10 = 0.044 hr = 2.6 min → MEETS SLA ✓
+
+→ Need 5 operators (+1 from current)</div></div>
+</div></div>
+
+<div class="prob" onclick="this.classList.toggle('open')"><div class="ph"><h4>Part IV: Red Carpet — Strategic (30+10 pts)</h4><span class="badge">Strategy</span><span class="chevron">▸</span></div>
+<div class="pb" onclick="event.stopPropagation()">
+<p><strong>IV.1:</strong> Consultant's rationale? Pros/cons? <strong>IV.2:</strong> What about Miguel?</p>
+<button class="sol-t" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Toggle Solution</button>
+<div class="sol-c"><div class="pd">PROS of centralization:
+• Inventory pooling: SS drops by √25 = 5× across 25 countries
+  (SS_pooled = z·√25·σ₁·√VP vs 25×z·σ₁·√VP)
+• Disintermediation: save 15% distributor margin
+• Economies of scale in transport, simpler upstream logistics
+• Ethical: removes bribery-dependent distribution
+
+CONS:
+• Longer/variable delivery to peripheral countries
+• Loss of local relationships that DRIVE demand
+• Healthcare systems differ by country (EU ≠ US)
+• Last-mile requires hospital access, not just logistics
+• Alienates distributors who know surgeons personally
+
+MIGUEL: Saved sales (60% recovery in 1 month) but acted
+unethically (fabricated export, diverted inventory).
+Should be disciplined but not fired. Company should learn
+to pilot locally before global rollout.</div></div>
+</div></div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PLACEHOLDER PANELS                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="panel" id="p-simulator" style="text-align:center;padding-top:80px">
+<h1 class="h1">Case Simulator</h1>
+<p class="sub">Coming soon. Guided walkthroughs for MORSA, Etihad, and Medcorp with live scoring.</p>
+</div>
+<div class="panel" id="p-visualizer" style="text-align:center;padding-top:80px">
+<h1 class="h1">Queue & Inventory Visualizer</h1>
+<p class="sub">Coming soon. Animated queue simulation and inventory level charts with interactive controls.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<script>
+// ═══ THEME ═══
+function toggleTheme(){const h=document.documentElement,n=h.dataset.theme==='dark'?'light':'dark';h.dataset.theme=n;document.getElementById('thm').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('omt',n)}
+(()=>{const s=localStorage.getItem('omt');if(s){document.documentElement.dataset.theme=s;if(s==='dark')document.getElementById('thm').textContent='☀️'}})();
+
+// ═══ TABS ═══
+const tabMap={concepts:'p-concepts',formulas:'p-formulas',flashcards:'p-flashcards',problems:'p-problems',simulator:'p-simulator',visualizer:'p-visualizer'};
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(btn.classList.contains('soon'))return;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabMap[btn.dataset.tab]).classList.add('active');
+    window.scrollTo({top:0});
+  });
+});
+
+// ═══ CALCULATORS ═══
+const zLU=[[.999,3.09],[.99,2.33],[.95,1.64],[.90,1.28],[.85,1.04],[.80,.84],[.75,.67],[.70,.52],[.60,.25],[.50,0]];
+function zFromSL(sl){for(const[a,z]of zLU)if(sl>=a)return z;return 0}
+function zFromAlpha(a){const t=[[.99,2.33],[.95,1.64],[.9,1.28],[.85,1.04],[.8,.84],[.75,.67],[.7,.52],[.65,.39],[.6,.25],[.55,.13],[.5,0]];for(const[x,z]of t)if(a>=x)return z;return 0}
+
+function calcQ(){
+  const l=+document.getElementById('q-lam').value,ts=+document.getElementById('q-ts').value,ss=+document.getElementById('q-ss').value,S=+document.getElementById('q-S').value,ca=+document.getElementById('q-ca').value;
+  if(!l||!ts||!S)return;
+  const mu=60/ts,rho=l/(S*mu),cs=ss/ts;
+  if(rho>=1){document.getElementById('q-res').textContent=`ρ = ${rho.toFixed(3)} ≥ 1 → UNSTABLE. Add servers.`;return}
+  const exp=Math.sqrt(2*(S+1)),lq=(Math.pow(rho,exp)/(1-rho))*((ca*ca+cs*cs)/2),wq=lq/l*60,w=wq+ts,L=lq+rho*S;
+  document.getElementById('q-res').textContent=`μ = ${mu.toFixed(2)}/hr  |  ρ = ${(rho*100).toFixed(1)}%  |  CS = ${cs.toFixed(3)}\nLq = ${lq.toFixed(2)} customers waiting\nWq = ${wq.toFixed(1)} min\nW  = ${w.toFixed(1)} min (total)\nL  = ${L.toFixed(2)} in system\nPCE = ${(ts/w*100).toFixed(1)}%`;
+}
+
+function calcE(){
+  const D=+document.getElementById('e-D').value,S=+document.getElementById('e-S').value,v=+document.getElementById('e-v').value,i=+document.getElementById('e-i').value/100;
+  if(!D||!S||!v||!i)return;
+  const eoq=Math.sqrt(2*D*S/(v*i)),oc=(D/eoq)*S,hc=(eoq/2)*v*i;
+  document.getElementById('e-res').textContent=`EOQ = ${eoq.toFixed(0)} units\nOrdering = ${oc.toFixed(0)}€/yr  |  Holding = ${hc.toFixed(0)}€/yr\nTotal (ord+hold) = ${(oc+hc).toFixed(0)}€/yr\nOrders/year = ${(D/eoq).toFixed(1)}`;
+}
+
+function calcS(){
+  const d=+document.getElementById('s-d').value,sig=+document.getElementById('s-sig').value,lt=+document.getElementById('s-lt').value,r=+document.getElementById('s-r').value,sl=+document.getElementById('s-sl').value/100;
+  if(!d||!sig)return;
+  const z=zFromSL(sl),vp=lt+(r||0),ss=z*sig*Math.sqrt(vp),rop=d*vp+ss;
+  document.getElementById('s-res').textContent=`VP = LT+R = ${lt}+${r} = ${vp} days\nz(${(sl*100).toFixed(0)}%) = ${z}\nSS = ${z}×${sig}×√${vp} = ${ss.toFixed(1)} units\nROP = ${d}×${vp}+${ss.toFixed(0)} = ${rop.toFixed(0)}\nAnnual SS cost = ${ss.toFixed(0)} × v × i`;
+}
+
+function calcN(){
+  const p=+document.getElementById('n-p').value,c=+document.getElementById('n-c').value,v=+document.getElementById('n-v').value,mu=+document.getElementById('n-mu').value,sig=+document.getElementById('n-sig').value;
+  if(!p||!c||!mu||!sig)return;
+  const cu=p-c,co=c-v,alpha=cu/(cu+co),z=zFromAlpha(alpha),q=mu+z*sig;
+  document.getElementById('n-res').textContent=`Cu = ${cu}  |  Co = ${co}\nα = ${cu}/(${cu}+${co}) = ${alpha.toFixed(3)}\nz* ≈ ${z.toFixed(2)}\nQ* = ${mu}+${z.toFixed(2)}×${sig} = ${q.toFixed(0)} units`;
+}
+calcQ();calcE();calcS();calcN();
+
+// ═══ FLASH CARDS ═══
+const deck=[
+{cat:'q',q:'Write the formula for queue utilization (ρ)',a:'ρ = λ / (S × μ)\n\nλ = arrival rate\nS = # servers\nμ = service rate per server'},
+{cat:'q',q:'Write the Lq formula',a:'Lq = [ρ^√(2(S+1)) / (1−ρ)] × [(CA²+CS²)/2]'},
+{cat:'q',q:'How do you get Wq from Lq?',a:'Wq = Lq / λ\n(Little\'s Law applied to the queue)'},
+{cat:'q',q:'What is W (total time in system)?',a:'W = Wq + tS\n\nWq = wait in queue\ntS = service time = 1/μ'},
+{cat:'q',q:'If arrivals are "Poisson," what is CA?',a:'CA = 1\n\n(Poisson process → exponential inter-arrivals → CV = 1)'},
+{cat:'q',q:'If service times are "deterministic," what is CS?',a:'CS = 0\n\n(No variability → (CA²+CS²)/2 drops to CA²/2)'},
+{cat:'q',q:'What does PCE measure?',a:'PCE = tS / W = 1 − Wq/W\n\nFraction of time spent being served vs total time.\nMost services: PCE < 15%.'},
+{cat:'q',q:'Why does pooling reduce wait times?',a:'One common queue feeding S servers:\n• Idle capacity in one server helps the shared queue\n• Separate queues waste idle capacity\n• Same total ρ, lower Lq due to √(2(S+1)) exponent'},
+{cat:'q',q:'At 83% utilization, Medcorp\'s call center had Wq = 10.8 min. Adding 1 server (→67% ρ) gave Wq = ?',a:'Wq = 2.6 min\n\nDropping ρ from 83% to 67% cut wait time by 76%.\nThis is the 1st Law in action: Lq is exponential in ρ.'},
+{cat:'c',q:'State Little\'s Law',a:'WIP = TH × TT\n\nWIP = work in progress (# items in system)\nTH = throughput (flow rate)\nTT = throughput time'},
+{cat:'c',q:'How do you find the bottleneck?',a:'For each resource:\n  capacity = available time / time per unit\nBottleneck = resource with LOWEST capacity\n(or: resource needing the MOST units to meet demand)'},
+{cat:'i',q:'Write the EOQ formula',a:'EOQ = √(2·D·S / (v·i))\n\nD = annual demand\nS = ordering cost\nv = unit value\ni = annual holding cost rate'},
+{cat:'i',q:'What is the total cost at EOQ?',a:'TC* = √(2·D·S·v·i)\n\n(Only ordering + holding of cycle stock.\nPurchasing, transport, SS holding are separate.)'},
+{cat:'i',q:'Safety stock formula (fixed LT)',a:'SS = z × σ₁ × √VP\n\nz = safety factor (from service level)\nσ₁ = std dev of ONE period\'s demand\nVP = vulnerable period'},
+{cat:'i',q:'VP in continuous review vs periodic review?',a:'Continuous: VP = LT\nPeriodic:   VP = LT + R\n\nR = review period. Forgetting +R is the #1 exam trap.'},
+{cat:'i',q:'Reorder point formula',a:'ROP = D̄₁ × VP + SS\n\nCompare INVENTORY POSITION (not on-hand) to ROP.\nIP = on-hand + on-order − backorders'},
+{cat:'i',q:'Does safety stock change when Q changes?',a:'NO. SS depends only on z, σ₁, and VP.\nChanging Q changes order frequency (D/Q)\nbut NOT the safety stock level.'},
+{cat:'i',q:'Order-up-to level formula (periodic review)',a:'S = D̄₁ × (LT+R) + z × σ₁ × √(LT+R)\n\nEach review: order Q = S − IP'},
+{cat:'i',q:'How many stockouts per year?',a:'Stockouts/yr = (1−SL) × (D/Q)\n\nSL = service level\nD/Q = order cycles per year'},
+{cat:'n',q:'Write the newsvendor critical fractile',a:'α = Cu / (Cu + Co)\n\nCu = p−c (underage cost)\nCo = c−v (overage cost)'},
+{cat:'n',q:'Optimal newsvendor Q* for Normal demand',a:'Q* = μ + z* × σ\n\nz* = Φ⁻¹(α)\nα = critical fractile'},
+{cat:'n',q:'If Cu = €4 and Co = €1, what is the optimal service level?',a:'α = 4/(4+1) = 0.80\n\nOrder enough to satisfy demand 80% of the time.\nz* = Φ⁻¹(0.80) ≈ 0.84'},
+{cat:'i',q:'z-value for 95% service level?',a:'z = 1.64\n\n(Exam cheat sheet: 90%→1.28, 95%→1.64, 99%→2.33, 99.9%→3.09)'},
+{cat:'i',q:'z-value for 99% service level?',a:'z = 2.33'},
+{cat:'q',q:'The "bathtub formula" is…',a:'WIP_end = WIP_start + (Inflow − Outflow) × Time'},
+{cat:'i',q:'In 2024 exam, why was VP=8 for US supplier, not 7?',a:'Because orders are placed daily at 8:00 → R=1 day.\nPeriodic review: VP = LT + R = 7 + 1 = 8.\nThis increased SS from ~185 to 197 boxes.'},
+];
+
+let fcState={idx:0,right:0,wrong:0,order:[],weights:[]};
+function initFC(){
+  fcState.order=deck.map((_,i)=>i);
+  fcState.weights=deck.map(()=>1);
+  shuffleFC();fcState.right=0;fcState.wrong=0;
+  showCard();
+}
+function shuffleFC(){
+  const w=fcState.weights;const total=w.reduce((a,b)=>a+b,0);
+  const weighted=[];
+  for(let i=0;i<deck.length;i++){const n=Math.max(1,Math.round(w[i]/total*deck.length));for(let j=0;j<n;j++)weighted.push(i)}
+  for(let i=weighted.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[weighted[i],weighted[j]]=[weighted[j],weighted[i]]}
+  fcState.order=weighted;fcState.idx=0;
+}
+function showCard(){
+  if(fcState.idx>=fcState.order.length)shuffleFC();
+  const c=deck[fcState.order[fcState.idx]];
+  const catMap={q:['Queueing','fc-cat-q'],i:['Inventory','fc-cat-i'],n:['Newsvendor','fc-cat-n'],c:['Capacity','fc-cat-c']};
+  const[label,cls]=catMap[c.cat]||['General',''];
+  document.getElementById('fc-cat').textContent=label;
+  document.getElementById('fc-cat').className='fc-cat '+cls;
+  document.getElementById('fc-front').textContent=c.q;
+  document.getElementById('fc-back').textContent=c.a;
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-actions').style.display='none';
+  document.getElementById('fc-rem').textContent=fcState.order.length-fcState.idx;
+  document.getElementById('fc-right').textContent=fcState.right;
+  document.getElementById('fc-wrong').textContent=fcState.wrong;
+}
+function flipCard(){
+  document.getElementById('fc-card').classList.add('flipped');
+  document.getElementById('fc-actions').style.display='flex';
+}
+function rateCard(score){
+  const ci=fcState.order[fcState.idx];
+  if(score===0){fcState.weights[ci]=Math.min(5,fcState.weights[ci]+1);fcState.wrong++}
+  else if(score===2){fcState.weights[ci]=Math.max(0.2,fcState.weights[ci]*0.5);fcState.right++}
+  fcState.idx++;showCard();
+}
+function resetFC(){fcState.weights=deck.map(()=>1);fcState.right=0;fcState.wrong=0;shuffleFC();showCard()}
+initFC();
+</script>
+</body>
+</html>
