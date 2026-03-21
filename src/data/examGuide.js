@@ -258,7 +258,7 @@ export const examGuide = [
     badge: 'EOQ + SS + ROP',
     badgeType: 'inventory',
     originalExcerpt: `Frozen Delights is reviewing an inventory control system for manufacturing ice‐cream. Currently it orders a 10 day supply of ice‐cream whenever on‐hand inventory falls below the reorder point. The cost of launching an order is estimated at 200€. Manufacturing can be started at any time and lead time is one day. Sales are estimated to be normally distributed with an average of 80 liters/day and a standard deviation of 20 liters/day. The manufacturing variable cost amounts to 10€/liter and the manufacturing capacity is very large. Current health regulations establish that ice cream cannot be stored for a period longer than 4 months.\n\nFrozen Delights assumes a 15% annual cost of inventory holding when making manufacturing decisions and wishes to ensure a 99% safety level on its products.\n\nQuestion(s):\n1. Compute the current batch size.\n2. What is the optimal batch size?\n3. Compute the annual savings of using the optimal batch size.\n4. What is the safety stock that they should have?\n5. Stockout frequency with current batch size?\n6. If they move to using the optimal batch size, the safety stock would: increase, stay the same, or decrease?\n7. What should the optimal reorder point be (with the current batch size)?\n8. What should the optimal reorder point be (with the optimal batch size)?`,
-    storyline: `Frozen Delights manufactures ice cream. Current policy: 10-day supply orders. $S = €200$/order, $LT = 1$ day, daily demand $\\bar{D} = 80$ L ($\\sigma = 20$), $v = €10$/L, $i = 15\\%$, service level $= 99\\%$. Continuous review (can order anytime).`,
+    storyline: `Frozen Delights manufactures ice cream. Current policy: 10-day supply orders. $S = 200$/order, $LT = 1$ day, daily demand $\\bar{D} = 80$ L ($\\sigma = 20$), $v = 10$/L, $i = 15\\%$, service level $= 99\\%$. Continuous review (can order anytime).`,
     framework: {
       title: 'How to approach this problem',
       points: [
@@ -284,7 +284,7 @@ export const examGuide = [
       {
         question: 'Compute the annual savings.',
         steps: [
-          { insight: 'Compare only differential costs: ordering + cycle stock holding. Manufacturing cost is the same regardless of $Q$.', work: '**Current** ($Q = 800$):\nOrdering: $29200/800 \\times 200 = €7{,}300$\nHolding: $400 \\times 10 \\times 0.15 = €600$\nTotal $= €7{,}900$\n\n**Optimal** ($Q = 2790$):\nOrdering: $29200/2790 \\times 200 = €2{,}093$\nHolding: $1395 \\times 10 \\times 0.15 = €2{,}093$\nTotal $= €4{,}186$', result: 'Savings $= €7{,}900 - €4{,}186 = €3{,}714$/yr' },
+          { insight: 'Compare only differential costs: ordering + cycle stock holding. Manufacturing cost is the same regardless of $Q$.', work: '**Current** ($Q = 800$):\nOrdering: $29200/800 \\times 200 = 7{,}300$\nHolding: $400 \\times 10 \\times 0.15 = 600$\nTotal $= 7{,}900$\n\n**Optimal** ($Q = 2790$):\nOrdering: $29200/2790 \\times 200 = 2{,}093$\nHolding: $1395 \\times 10 \\times 0.15 = 2{,}093$\nTotal $= 4{,}186$', result: 'Savings $= 7{,}900 - 4{,}186 = 3{,}714$/yr' },
         ],
       },
       {
@@ -326,7 +326,7 @@ export const examGuide = [
     badge: 'EOQ + Stockout',
     badgeType: 'inventory',
     originalExcerpt: `A small store specialized in high quality cheese wants to check its purchasing policy. Although the store has approximately 100 references of cheese, to start the analysis, the owner decides to study a particular example of their supply of Swiss Emmental, which can be taken as a representative reference. These are the conclusions drawn from the preliminary analysis:\n\ni. The provider charges 3 € as a fixed cost for each order and 5 €/kg for the cheese.\nii. On average, they sell 1 kg of Swiss Emmental daily, with a standard deviation of σ = 0.5 kg.\n\nThe supplier guarantees the delivery of an order in 4 days. The store is open every day of the year and estimates its cost of capital to be 20% annually. Emmental inventory in the store is continuously checked, and the owner always makes an order for a quantity of 10 kg when the stock in the store falls below 5 kg.\n\nQuestion(s):\n1. Do you think the Emmental purchasing policy is appropriate? Otherwise, do you propose other order size and/or reorder point?\n2. How likely will the store run out of Emmental with its current policy?\n3. How should the reorder point change if the store wants the probability of stock-out to be 1% in each replenishment cycle?`,
-    storyline: `A cheese store audits its Swiss Emmental policy. $S = €3$/order, $v = €5$/kg. Daily demand: $\\bar{D} = 1$ kg, $\\sigma = 0.5$. $LT = 4$ days, $i = 20\\%$. Continuous review. Current: $Q = 10$ kg, $ROP = 5$ kg.`,
+    storyline: `A cheese store audits its Swiss Emmental policy. $S = 3$/order, $v = 5$/kg. Daily demand: $\\bar{D} = 1$ kg, $\\sigma = 0.5$. $LT = 4$ days, $i = 20\\%$. Continuous review. Current: $Q = 10$ kg, $ROP = 5$ kg.`,
     framework: {
       title: 'How to approach this problem',
       points: [
@@ -340,7 +340,7 @@ export const examGuide = [
       {
         question: 'Is the purchasing policy appropriate?',
         steps: [
-          { insight: 'Check cost balance. If ordering $\\gg$ holding, batch is too small.', work: '$SS = ROP - \\bar{D} \\times VP = 5 - 1 \\times 4 = 1$ kg\nMaintenance: $(SS + Q/2) \\times v \\times i = (1+5) \\times 5 \\times 0.20 = €6$/yr\nOrdering: $(365/10) \\times 3 = €109.50$/yr', result: 'Ordering cost (€110) ≫ Holding cost (€6). Batch is way too small!' },
+          { insight: 'Check cost balance. If ordering $\\gg$ holding, batch is too small.', work: '$SS = ROP - \\bar{D} \\times VP = 5 - 1 \\times 4 = 1$ kg\nMaintenance: $(SS + Q/2) \\times v \\times i = (1+5) \\times 5 \\times 0.20 = 6$/yr\nOrdering: $(365/10) \\times 3 = 109.50$/yr', result: 'Ordering cost (110) ≫ Holding cost (6). Batch is way too small!' },
           { insight: 'Compute optimal $Q$ with EOQ.', work: '$$EOQ = \\sqrt{\\frac{2 \\times 365 \\times 3}{5 \\times 0.20}} = \\sqrt{2{,}190} \\approx 47 \\text{ kg}$$', result: '$EOQ = 47$ kg (vs current 10 kg). But with 100 cheese types × 47 kg = 2.4 tons in store — may not be practical. Plus cheese ordered every ~47 days may spoil.' },
         ],
       },
@@ -374,7 +374,7 @@ export const examGuide = [
     badge: 'EOQ + SS + Periodic',
     badgeType: 'inventory',
     originalExcerpt: `Medcorp Spain's daily demand for the 10 mm titanium screws is, on average, 100 boxes, with a standard deviation of 30 boxes. Each box weights 250 g.\n\nAs of now, they are purchasing them from their American Headquarters. The purchasing cost is 500€ for a box of 10 screws (this includes import taxes). When importing them, they need to pay 100€/order for the customs declaration. The screws are shipped via FedEx at 40€/kg. The lead time, which includes customs clearance at the Madrid Barajas airport and transfer to the warehouse, is seven days. Medcorp Spain pays Medcorp US when it places its order.\n\nAlternatively, they could source the screws from a Portuguese supplier, who would charge 300€ for a box of 10 screws (without import taxes, as both countries are part of the European Union). Coming from Portugal, the lead time would be one day, and the transportation costs (Portuguese LTL) would be 30€/kg. The quality of each batch of Portuguese screws would need to be checked by a third-party company, who would run some physical tests (dimensional and stress resistance). These tests cost 150€ per purchase order. Medcorp Spain would need to pay the Portuguese supplier when it placed its order.\n\nRegardless of who supplies the screws, storing them for a year costs Medcorp Spain 10% of the box's value. The Madrid warehouse can store up to 2,000 boxes of 10 mm titanium screws.\n\nFollowing the usual administrative procedures, the company checks inventory levels and decides what orders to place every day at 8:00.\n\nI.1. (20 points) What should Medcorp's inventory policy for titanium screws be?`,
-    storyline: `Medcorp Spain needs titanium screws. Daily demand: $\\bar{D} = 100$ boxes ($\\sigma = 30$). Inventory checked daily at 8 AM ($R = 1$ day). $i = 10\\%$, warehouse max $= 2{,}000$ boxes. SL $= 99\\%$ (health product).\n\nUS: $v = €500$, $S = €100$, transport $= €10$/box, $LT = 7$ days.\nPortugal: $v = €300$, $S = €150$, transport $= €7.50$/box, $LT = 1$ day.`,
+    storyline: `Medcorp Spain needs titanium screws. Daily demand: $\\bar{D} = 100$ boxes ($\\sigma = 30$). Inventory checked daily at 8 AM ($R = 1$ day). $i = 10\\%$, warehouse max $= 2{,}000$ boxes. SL $= 99\\%$ (health product).\n\nUS: $v = 500$, $S = 100$, transport $= 10$/box, $LT = 7$ days.\nPortugal: $v = 300$, $S = 150$, transport $= 7.50$/box, $LT = 1$ day.`,
     framework: {
       title: 'How to approach this problem',
       points: [
@@ -382,23 +382,23 @@ export const examGuide = [
         '**Assumption:** This is a health product (spinal implants). Stockouts are dangerous → assume 99% service level ($z = 2.33$).',
         '**TRAP — do not miss this:** "checks inventory daily at 8:00" means periodic review with $R = 1$ day. Therefore $VP = LT + R$, NOT just $LT$. For the US supplier: $VP = 7 + 1 = 8$ days, not 7. This is the #1 exam mistake.',
         '**Organize your costs:** Separate non-differential costs (purchasing per box, transport per box — these are paid regardless of batch size) from differential costs (ordering cost per order, cycle stock holding). Compute EOQ only from the differential costs.',
-        '**Data setup:** Annual demand $D = 100 \\times 365 = 36{,}500$ boxes/yr. US: $v = €500$, $S = €100$, transport $= €10$/box. Portugal: $v = €300$, $S = €150$, transport $= €7.50$/box.',
+        '**Data setup:** Annual demand $D = 100 \\times 365 = 36{,}500$ boxes/yr. US: $v = 500$, $S = 100$, transport $= 10$/box. Portugal: $v = 300$, $S = 150$, transport $= 7.50$/box.',
       ],
     },
     questionSteps: [
       {
         question: 'What should Medcorp\'s inventory policy for titanium screws be?',
         steps: [
-          { insight: 'First compute non-differential costs for each supplier.', work: '**US:** Purchase $= 500 \\times 36500 = €18{,}250{,}000$/yr, Transport $= 10 \\times 36500 = €365{,}000$/yr\n**Portugal:** Purchase $= 300 \\times 36500 = €10{,}950{,}000$/yr, Transport $= 7.5 \\times 36500 = €273{,}750$/yr', result: null },
-          { insight: '$VP = LT + R$ because of daily periodic review.', work: '**US:** $VP = 7 + 1 = 8$ days\n$SS = 2.33 \\times 30 \\times \\sqrt{8} = 198$ boxes → holding $= 198 \\times 0.10 \\times 500 = €9{,}900$/yr\n$ROP = 100 \\times 8 + 198 = 998$ boxes\n\n**Portugal:** $VP = 1 + 1 = 2$ days\n$SS = 2.33 \\times 30 \\times \\sqrt{2} = 99$ boxes → holding $= 99 \\times 0.10 \\times 300 = €2{,}970$/yr\n$ROP = 100 \\times 2 + 99 = 299$ boxes', result: null },
-          { insight: 'Compute EOQ for each.', work: '**US:** $EOQ = \\sqrt{\\frac{2 \\times 36500 \\times 100}{0.10 \\times 500}} = 382$ boxes\nOrdering $= €9{,}555$/yr, Cycle holding $= €9{,}550$/yr\n\n**Portugal:** $EOQ = \\sqrt{\\frac{2 \\times 36500 \\times 150}{0.10 \\times 300}} = 604$ boxes\nOrdering $= €9{,}065$/yr, Cycle holding $= €9{,}060$/yr', result: null },
-          { insight: 'Add ALL costs for total comparison.', work: '**US Total:** $18{,}250{,}000 + 365{,}000 + 9{,}900 + 9{,}555 + 9{,}550 = €18{,}644{,}005$\n**Portugal Total:** $10{,}950{,}000 + 273{,}750 + 2{,}970 + 9{,}065 + 9{,}060 = €11{,}244{,}845$', result: '**Portugal saves ~€7.4M/yr.** Policy: order 604 boxes from Portugal whenever inventory falls below 299 boxes. Check daily at 8 AM.' },
+          { insight: 'First compute non-differential costs for each supplier.', work: '**US:** Purchase $= 500 \\times 36500 = 18{,}250{,}000$/yr, Transport $= 10 \\times 36500 = 365{,}000$/yr\n**Portugal:** Purchase $= 300 \\times 36500 = 10{,}950{,}000$/yr, Transport $= 7.5 \\times 36500 = 273{,}750$/yr', result: null },
+          { insight: '$VP = LT + R$ because of daily periodic review.', work: '**US:** $VP = 7 + 1 = 8$ days\n$SS = 2.33 \\times 30 \\times \\sqrt{8} = 198$ boxes → holding $= 198 \\times 0.10 \\times 500 = 9{,}900$/yr\n$ROP = 100 \\times 8 + 198 = 998$ boxes\n\n**Portugal:** $VP = 1 + 1 = 2$ days\n$SS = 2.33 \\times 30 \\times \\sqrt{2} = 99$ boxes → holding $= 99 \\times 0.10 \\times 300 = 2{,}970$/yr\n$ROP = 100 \\times 2 + 99 = 299$ boxes', result: null },
+          { insight: 'Compute EOQ for each.', work: '**US:** $EOQ = \\sqrt{\\frac{2 \\times 36500 \\times 100}{0.10 \\times 500}} = 382$ boxes\nOrdering $= 9{,}555$/yr, Cycle holding $= 9{,}550$/yr\n\n**Portugal:** $EOQ = \\sqrt{\\frac{2 \\times 36500 \\times 150}{0.10 \\times 300}} = 604$ boxes\nOrdering $= 9{,}065$/yr, Cycle holding $= 9{,}060$/yr', result: null },
+          { insight: 'Add ALL costs for total comparison.', work: '**US Total:** $18{,}250{,}000 + 365{,}000 + 9{,}900 + 9{,}555 + 9{,}550 = 18{,}644{,}005$\n**Portugal Total:** $10{,}950{,}000 + 273{,}750 + 2{,}970 + 9{,}065 + 9{,}060 = 11{,}244{,}845$', result: '**Portugal saves ~7.4M/yr.** Policy: order 604 boxes from Portugal whenever inventory falls below 299 boxes. Check daily at 8 AM.' },
         ],
       },
     ],
     takeaway: [
       '**Reminder:** "Checks inventory daily at 8:00" means $R = 1$ day → $VP = LT + R$, NOT $LT$. This trap cost many students 5+ points on this exact exam. Always ask: continuous or periodic review?',
-      '**Tip:** Unit cost differences dominate everything else. Portugal saves €200/box × 36,500 = €7.3M in purchasing alone. Ordering and holding cost differences are rounding errors by comparison.',
+      '**Tip:** Unit cost differences dominate everything else. Portugal saves 200/box × 36,500 = 7.3M in purchasing alone. Ordering and holding cost differences are rounding errors by comparison.',
       '**Exam pattern:** Always conclude with a clear policy statement: "Order [Q] boxes from [supplier] whenever inventory falls below [ROP] boxes. Review daily at 8 AM." This shows you understand the full system.',
     ],
   },
