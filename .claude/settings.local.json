@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -fsSL -o /tmp/fnm.zip \"https://github.com/Schniz/fnm/releases/latest/download/fnm-macos.zip\")",
+      "Bash(unzip -o /tmp/fnm.zip -d /tmp/fnm-install)",
+      "Bash(chmod +x /tmp/fnm-install/fnm)",
+      "Bash(mv /tmp/fnm-install/fnm /Users/haniframadhan/.local/bin/fnm)",
+      "Bash(rm -rf /tmp/fnm.zip /tmp/fnm-install)",
+      "WebFetch(domain:openrouter.ai)"
+    ]
+  }
+}
