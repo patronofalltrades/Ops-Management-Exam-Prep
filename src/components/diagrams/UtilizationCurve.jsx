@@ -5,12 +5,12 @@ import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler)
 
 const PRESETS = [
-  { label: 'Custom', S: 1, CA: 1, CS: 1, mu: 10 },
-  { label: 'Medcorp Call Center (S=4, CS=0.25)', S: 4, CA: 1, CS: 0.25, mu: 3 },
-  { label: 'Pharmacy (S=5, CS=1)', S: 5, CA: 1, CS: 1, mu: 2.4 },
-  { label: 'Express Checkout (S=1, CS=0.2)', S: 1, CA: 1, CS: 0.2, mu: 12 },
-  { label: 'IQ After-Sales (S=4, CS=0.25)', S: 4, CA: 1, CS: 0.25, mu: 1 },
-  { label: 'IQ Pooled Europe (S=40, CS=0.25)', S: 40, CA: 1, CS: 0.25, mu: 1 },
+  { label: 'Custom', S: 1, CA: 1, CS: 1, mu: 10, desc: 'Set your own parameters.' },
+  { label: 'Medcorp Call Center (S=4, CS=0.25)', S: 4, CA: 1, CS: 0.25, mu: 3, desc: '2024 Exam Part III. 4 operators handling hospital order calls. Low service variability (CS=0.25) because operators follow a standard script. At \u03C1=83%, Wq=10.75 min — fails the 3-min SLA.' },
+  { label: 'Pharmacy (S=5, CS=1)', S: 5, CA: 1, CS: 1, mu: 2.4, desc: '2024 Gym. 5 pharmacy technicians preparing orders. High variability (CS=1) because order complexity varies widely. At \u03C1=97%, queues are enormous despite 5 servers.' },
+  { label: 'Express Checkout (S=1, CS=0.2)', S: 1, CA: 1, CS: 0.2, mu: 12, desc: '2024 Gym. Dedicated express lane for <10 items. Very low variability (CS=0.2) because all baskets are small. Even at moderate \u03C1, queues stay short thanks to consistency.' },
+  { label: 'IQ After-Sales (S=4, CS=0.25)', S: 4, CA: 1, CS: 0.25, mu: 1, desc: '2023 Exam. 4 engineers per center handling printer overflow alerts remotely. At \u03C1=75%, average wait is 17 min — printers risk catching fire after 1 hour total.' },
+  { label: 'IQ Pooled Europe (S=40, CS=0.25)', S: 40, CA: 1, CS: 0.25, mu: 1, desc: '2023 Exam. Pool all 10 European centers into one queue (40 engineers, \u03BB=30/hr). Same \u03C1=75% but wait drops from 17 min to 19 seconds — the power of pooling!' },
 ]
 
 function computeLq(rho, S, CA, CS) {
@@ -65,7 +65,7 @@ export default function UtilizationCurve() {
   const options = {
     responsive: true, maintainAspectRatio: false, parsing: false,
     scales: {
-      x: { type: 'linear', min: 0, max: 100, title: { display: true, text: 'Utilization (%)', color: txColor, font: { family: 'system-ui' } }, ticks: { color: txColor, stepSize: 10 }, grid: { color: bdColor + '60' } },
+      x: { type: 'linear', min: 0, max: 100, title: { display: true, text: 'Utilization \u03C1 (%)', color: txColor, font: { family: 'system-ui' } }, ticks: { color: txColor, stepSize: 10 }, grid: { color: bdColor + '60' } },
       y: { min: 0, max: 50, title: { display: true, text: 'Avg Queue Length (Lq)', color: txColor, font: { family: 'system-ui' } }, ticks: { color: txColor }, grid: { color: bdColor + '60' } },
     },
     plugins: { legend: { display: false }, tooltip: { enabled: true } },
@@ -108,15 +108,19 @@ export default function UtilizationCurve() {
             </label>
           </div>
 
+          {PRESETS[preset].desc && preset > 0 && (
+            <div className="diagram-preset-desc">{PRESETS[preset].desc}</div>
+          )}
+
           <div className="diagram-slider-row">
-            <span className="diagram-slider-label">{rhoSlider}%</span>
+            <span className="diagram-slider-label">{'\u03C1'} = {rhoSlider}%</span>
             <input type="range" min={1} max={99} value={rhoSlider} onChange={e => setRhoSlider(+e.target.value)} className="diagram-slider" />
           </div>
 
           <div className="diagram-chart-wrap"><Line data={data} options={options} /></div>
 
           <div className="diagram-readout">
-            <div><strong>rho</strong> = {(rho * 100).toFixed(0)}%</div>
+            <div><strong>{'\u03C1'}</strong> = {(rho * 100).toFixed(0)}%</div>
             <div><strong>Lq</strong> = {currentLq.toFixed(2)}</div>
             <div><strong>Wq</strong> = {currentWq.toFixed(1)} min</div>
             <div><strong>W</strong> = {currentW.toFixed(1)} min</div>

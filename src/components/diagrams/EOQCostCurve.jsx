@@ -7,13 +7,13 @@ try { ChartJS.register(annotationPlugin) } catch {}
 ChartJS.register(LineElement, PointElement, LinearScale, Tooltip, Legend, Filler)
 
 const PRESETS = [
-  { label: 'Custom', D: 3000, S: 100, v: 50, i: 0.3 },
-  { label: 'Big Headache — Subcontract', D: 3000, S: 1000, v: 50, i: 0.3 },
-  { label: 'Big Headache — Prepackaged', D: 3000, S: 10, v: 60, i: 0.3 },
-  { label: 'Medcorp US Screws', D: 36500, S: 100, v: 500, i: 0.1 },
-  { label: 'Medcorp Portugal Screws', D: 36500, S: 150, v: 300, i: 0.1 },
-  { label: 'Frozen Delights', D: 29200, S: 200, v: 10, i: 0.15 },
-  { label: 'Emmental Cheese', D: 365, S: 3, v: 5, i: 0.2 },
+  { label: 'Custom', D: 3000, S: 100, v: 50, i: 0.3, desc: 'Set your own parameters.' },
+  { label: 'Big Headache — Subcontract', D: 3000, S: 1000, v: 50, i: 0.3, desc: 'OM Gym. Drug store subcontracts aspirin bottling. High ordering cost (1,000/order) but low unit price (50/carton). EOQ = 632 cartons, ordered every ~77 days. Large infrequent orders.' },
+  { label: 'Big Headache — Prepackaged', D: 3000, S: 10, v: 60, i: 0.3, desc: 'OM Gym. Same store buys prepackaged aspirin. Low ordering cost (10/order) but higher unit price (60/carton). EOQ = 58 cartons, ordered every ~7 days. Frequent small orders.' },
+  { label: 'Medcorp US Screws', D: 36500, S: 100, v: 500, i: 0.1, desc: '2024 Exam. Titanium screws from US headquarters. High unit cost (500/box), moderate ordering cost (100/order for customs). EOQ = 382 boxes. The flat curve means even suboptimal Q barely affects cost — but the unit price dominates total cost.' },
+  { label: 'Medcorp Portugal Screws', D: 36500, S: 150, v: 300, i: 0.1, desc: '2024 Exam. Same screws from Portuguese supplier. Lower unit cost (300/box) saves 7.3M/yr in purchasing alone, dwarfing any EOQ differences. EOQ = 604 boxes.' },
+  { label: 'Frozen Delights', D: 29200, S: 200, v: 10, i: 0.15, desc: 'OM Gym. Ice cream manufacturer. Current batch (800 L) is far below EOQ (2,790 L). Switching to EOQ saves 3,714/yr in ordering + holding costs. Notice how flat the curve is around the optimum.' },
+  { label: 'Emmental Cheese', D: 365, S: 3, v: 5, i: 0.2, desc: 'OM Gym. Small cheese store. EOQ = 47 kg but impractical (100 types \u00D7 47 kg = 2.4 tons of cheese!). Current Q = 10 kg has ordering cost 18\u00D7 higher than holding — way too small. Real-world constraints override the formula.' },
 ]
 
 function useNumInput(init) {
@@ -119,6 +119,10 @@ export default function EOQCostCurve() {
             <label className="diagram-label">v (unit price)<input type="number" {...vBind} onFocus={e => e.target.select()} onChange={e => { vBind.onChange(e); setPreset(0) }} /></label>
             <label className="diagram-label">i (hold rate)<input type="number" step={0.01} {...iBind} onFocus={e => e.target.select()} onChange={e => { iBind.onChange(e); setPreset(0) }} /></label>
           </div>
+
+          {PRESETS[preset].desc && preset > 0 && (
+            <div className="diagram-preset-desc">{PRESETS[preset].desc}</div>
+          )}
 
           <div className="diagram-slider-row">
             <span className="diagram-slider-label">Q = {Q} (EOQ = {Math.round(eoq)})</span>

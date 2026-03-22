@@ -1100,6 +1100,19 @@ code {
   color: var(--ac);
 }
 
+.diagram-preset-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--tx2);
+  padding: 10px 14px;
+  background: var(--bluel);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 var(--r) var(--r) 0;
+  margin-bottom: 12px;
+  font-family: var(--fb);
+  animation: fadeInDown 0.2s ease-out;
+}
+
 .diagram-slider-row {
   display: flex;
   align-items: center;

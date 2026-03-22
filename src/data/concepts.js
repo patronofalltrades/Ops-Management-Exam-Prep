@@ -44,7 +44,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Measuring variability: the Coefficient of Variation (CV)",
-                official: "Variability is measured by:\n$$ CV = \\frac{\\sigma}{\\text{mean}} $$\nFor arrivals: $C_A$. For service: $C_S$.\n\nCommon cases:\n• \"Poisson arrivals\" → $C_A = 1$\n• \"Exponential service\" → $C_S = 1$\n• \"Deterministic\" → $C_S = 0$\n• Given $\\sigma$ and mean → compute $C_S = \\sigma / t_S$",
+                official: "Variability is measured by the Coefficient of Variation — standard deviation divided by the mean:\n\nFor arrivals:\n$$ C_A = \\frac{\\sigma_A}{t_A} $$\nFor service:\n$$ C_S = \\frac{\\sigma_S}{t_S} $$\n\nwhere $t_A$ is the average inter-arrival time and $t_S$ is the average service time.\n\nCommon cases to recognize immediately:\n• \"Poisson arrivals\" or \"exponential inter-arrivals\" → $C_A = 1$\n• \"Exponential service times\" → $C_S = 1$\n• \"Deterministic\" or \"exactly X minutes\" → $C_S = 0$\n• Given $\\sigma_S$ and $t_S$ → compute $C_S = \\sigma_S / t_S$\n• No variability info given → assume $C_A = C_S = 1$ (M/M/1 default)",
                 dumb: "CV tells you how unpredictable something is. If every customer takes exactly 5 minutes (CV=0), life is beautiful. If some take 1 minute and others take 30, life is chaos. The exam gives you clues: 'Poisson' means CV=1, 'deterministic' means CV=0.",
                 example: {
                     story: "Alex manages a supermarket with 4 checkout lines. The average service time is 12 minutes with a standard deviation of 12 minutes. He also measured express customers (fewer than 10 items): they take 5 minutes on average with a standard deviation of just 1 minute.",
