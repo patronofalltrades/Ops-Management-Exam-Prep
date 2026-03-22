@@ -1741,6 +1741,19 @@ td.hl {
   color: var(--tx);
 }
 
+.eg-sol-dumb {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: var(--amberl);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 var(--r) var(--r) 0;
+  font-family: var(--fb);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--amber);
+  font-style: italic;
+}
+
 .eg-sol-work {
   margin: 10px 0 10px 32px;
 }

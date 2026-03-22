@@ -247,6 +247,9 @@ function GuideCard({ problem }) {
                                 <span className="eg-sol-step-num">{si + 1}</span>
                                 <div className="eg-sol-insight">
                                   <div className="eg-math-text">{renderWithMath(step.insight)}</div>
+                                  {step.dumb && (
+                                    <div className="eg-sol-dumb">{renderWithMath(step.dumb)}</div>
+                                  )}
                                 </div>
                               </div>
 
