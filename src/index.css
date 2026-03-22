@@ -979,21 +979,59 @@ code {
 .diagram-card {
   border: 1px solid var(--bd);
   border-radius: var(--r2);
-  padding: 20px;
   margin: 18px 0;
   background: var(--bg3);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.diagram-card:hover {
+  border-color: var(--bd2);
+}
+
+.diagram-header {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--fb);
+  transition: background 0.15s;
+}
+
+.diagram-header:hover {
+  background: var(--bgc);
+}
+
+.diagram-chevron {
+  font-size: 11px;
+  color: var(--tx3);
+  margin-top: 4px;
+  flex-shrink: 0;
 }
 
 .diagram-title {
-  font-size: 16px;
+  font-family: var(--fb);
+  font-size: 15px;
   font-weight: 700;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
+  color: var(--tx);
 }
 
 .diagram-desc {
+  font-family: var(--fb);
   font-size: 13px;
   color: var(--tx2);
-  margin: 0 0 14px;
+  margin: 0;
+}
+
+.diagram-body {
+  padding: 0 20px 20px;
+  animation: fadeInDown 0.2s ease-out;
 }
 
 .diagram-controls {
@@ -1010,6 +1048,7 @@ code {
   font-size: 11px;
   font-weight: 600;
   color: var(--tx2);
+  font-family: var(--fb);
 }
 
 .diagram-label select,
@@ -1019,7 +1058,7 @@ code {
   border-radius: 5px;
   background: var(--bg);
   color: var(--tx);
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 12px;
   min-width: 80px;
 }
@@ -1042,7 +1081,7 @@ code {
   color: var(--tx2);
   font-size: 11px;
   font-weight: 600;
-  font-family: var(--fm);
+  font-family: var(--fb);
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1069,7 +1108,7 @@ code {
 }
 
 .diagram-slider-label {
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 13px;
   font-weight: 600;
   color: var(--tx);
@@ -1094,7 +1133,7 @@ code {
   padding: 10px 14px;
   background: var(--bgc);
   border-radius: var(--r);
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 13px;
   color: var(--tx);
 }

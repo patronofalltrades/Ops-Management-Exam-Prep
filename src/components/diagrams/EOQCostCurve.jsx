@@ -3,7 +3,6 @@ import { Line } from 'react-chartjs-2'
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, Tooltip, Legend, Filler } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 
-// Register annotation if available, otherwise skip
 try { ChartJS.register(annotationPlugin) } catch {}
 ChartJS.register(LineElement, PointElement, LinearScale, Tooltip, Legend, Filler)
 
@@ -17,11 +16,20 @@ const PRESETS = [
   { label: 'Emmental Cheese', D: 365, S: 3, v: 5, i: 0.2 },
 ]
 
+function useNumInput(init) {
+  const [raw, setRaw] = useState(String(init))
+  const num = parseFloat(raw) || 0
+  const set = (val) => setRaw(String(val))
+  const bind = { value: raw, onChange: (e) => setRaw(e.target.value) }
+  return [num, bind, set]
+}
+
 export default function EOQCostCurve() {
-  const [D, setD] = useState(3000)
-  const [S, setS] = useState(100)
-  const [v, setV] = useState(50)
-  const [i, setI] = useState(0.3)
+  const [open, setOpen] = useState(false)
+  const [D, dBind, setD] = useNumInput(3000)
+  const [S, sBind, setS] = useNumInput(100)
+  const [v, vBind, setV] = useNumInput(50)
+  const [i, iBind, setI] = useNumInput(0.3)
   const [Q, setQ] = useState(200)
   const [preset, setPreset] = useState(0)
 
@@ -34,11 +42,12 @@ export default function EOQCostCurve() {
   }
 
   const h = v * i
-  const eoq = Math.sqrt((2 * D * S) / h)
+  const eoq = h > 0 ? Math.sqrt((2 * D * S) / h) : 0
   const maxQ = Math.min(Math.max(Math.round(eoq * 3), 500), 5000)
 
   const curveData = useMemo(() => {
     const ordering = [], holding = [], total = []
+    if (h <= 0 || D <= 0 || S <= 0) return { ordering, holding, total }
     const step = Math.max(1, Math.round(maxQ / 200))
     for (let q = step; q <= maxQ; q += step) {
       const oc = (D / q) * S
@@ -50,10 +59,10 @@ export default function EOQCostCurve() {
     return { ordering, holding, total }
   }, [D, S, h, maxQ])
 
-  const currentOC = (D / Q) * S
+  const currentOC = Q > 0 ? (D / Q) * S : 0
   const currentHC = (Q / 2) * h
   const currentTC = currentOC + currentHC
-  const eoqTC = Math.sqrt(2 * D * S * v * i)
+  const eoqTC = Math.sqrt(2 * D * S * v * i) || 0
 
   const style = getComputedStyle(document.documentElement)
   const acColor = style.getPropertyValue('--ac').trim() || '#B33D0B'
@@ -64,129 +73,69 @@ export default function EOQCostCurve() {
 
   const data = {
     datasets: [
-      {
-        label: 'Ordering Cost',
-        data: curveData.ordering,
-        borderColor: acColor,
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.3,
-      },
-      {
-        label: 'Holding Cost',
-        data: curveData.holding,
-        borderColor: blueColor,
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.3,
-      },
-      {
-        label: 'Total Cost',
-        data: curveData.total,
-        borderColor: greenColor,
-        borderWidth: 3,
-        pointRadius: 0,
-        tension: 0.3,
-      },
-      {
-        label: 'Your Q',
-        data: [{ x: Q, y: 0 }, { x: Q, y: currentTC * 1.1 }],
-        borderColor: txColor,
-        borderWidth: 2,
-        borderDash: [6, 4],
-        pointRadius: [0, 0],
-      },
-      {
-        label: 'EOQ',
-        data: [{ x: Math.round(eoq), y: 0 }, { x: Math.round(eoq), y: eoqTC * 1.1 }],
-        borderColor: greenColor,
-        borderWidth: 2,
-        borderDash: [3, 3],
-        pointRadius: [0, 4],
-        pointBackgroundColor: greenColor,
-      },
+      { label: 'Ordering Cost', data: curveData.ordering, borderColor: acColor, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+      { label: 'Holding Cost', data: curveData.holding, borderColor: blueColor, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+      { label: 'Total Cost', data: curveData.total, borderColor: greenColor, borderWidth: 3, pointRadius: 0, tension: 0.3 },
+      { label: 'Your Q', data: [{ x: Q, y: 0 }, { x: Q, y: currentTC * 1.1 }], borderColor: txColor, borderWidth: 2, borderDash: [6, 4], pointRadius: [0, 0] },
+      { label: 'EOQ', data: [{ x: Math.round(eoq), y: 0 }, { x: Math.round(eoq), y: eoqTC * 1.1 }], borderColor: greenColor, borderWidth: 2, borderDash: [3, 3], pointRadius: [0, 4], pointBackgroundColor: greenColor },
     ],
   }
 
   const yMax = Math.max(currentTC * 1.5, eoqTC * 3, 1000)
 
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    parsing: false,
+    responsive: true, maintainAspectRatio: false, parsing: false,
     scales: {
-      x: {
-        type: 'linear',
-        min: 0,
-        max: maxQ,
-        title: { display: true, text: 'Order Quantity (Q)', color: txColor },
-        ticks: { color: txColor },
-        grid: { color: bdColor + '60' },
-      },
-      y: {
-        min: 0,
-        max: yMax,
-        title: { display: true, text: 'Annual Cost', color: txColor },
-        ticks: { color: txColor },
-        grid: { color: bdColor + '60' },
-      },
+      x: { type: 'linear', min: 0, max: maxQ, title: { display: true, text: 'Order Quantity (Q)', color: txColor, font: { family: 'system-ui' } }, ticks: { color: txColor }, grid: { color: bdColor + '60' } },
+      y: { min: 0, max: yMax, title: { display: true, text: 'Annual Cost', color: txColor, font: { family: 'system-ui' } }, ticks: { color: txColor }, grid: { color: bdColor + '60' } },
     },
     plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: { color: txColor, usePointStyle: true, pointStyle: 'line', font: { size: 11 } },
-      },
+      legend: { display: true, position: 'bottom', labels: { color: txColor, usePointStyle: true, pointStyle: 'line', font: { size: 11, family: 'system-ui' } } },
       tooltip: { enabled: true },
     },
   }
 
   return (
     <div className="diagram-card">
-      <h4 className="diagram-title">EOQ Cost Curves</h4>
-      <p className="diagram-desc">See how ordering and holding costs trade off. The total cost curve is flat around EOQ.</p>
+      <button className="diagram-header" onClick={() => setOpen(o => !o)}>
+        <span className="diagram-chevron">{open ? '▾' : '▸'}</span>
+        <div>
+          <h4 className="diagram-title">EOQ Cost Curves</h4>
+          <p className="diagram-desc">See how ordering and holding costs trade off. The total cost curve is flat around EOQ.</p>
+        </div>
+      </button>
 
-      <div className="diagram-controls">
-        <label className="diagram-label">
-          Preset
-          <select value={preset} onChange={e => applyPreset(+e.target.value)}>
-            {PRESETS.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
-          </select>
-        </label>
-        <label className="diagram-label">
-          D (demand/yr)
-          <input type="number" value={D} onChange={e => { setD(+e.target.value); setPreset(0) }} />
-        </label>
-        <label className="diagram-label">
-          S (order cost)
-          <input type="number" value={S} onChange={e => { setS(+e.target.value); setPreset(0) }} />
-        </label>
-        <label className="diagram-label">
-          v (unit price)
-          <input type="number" value={v} onChange={e => { setV(+e.target.value); setPreset(0) }} />
-        </label>
-        <label className="diagram-label">
-          i (hold rate)
-          <input type="number" value={i} step={0.01} onChange={e => { setI(+e.target.value); setPreset(0) }} />
-        </label>
-      </div>
+      {open && (
+        <div className="diagram-body">
+          <div className="diagram-controls">
+            <label className="diagram-label">
+              Preset
+              <select value={preset} onChange={e => applyPreset(+e.target.value)}>
+                {PRESETS.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
+              </select>
+            </label>
+            <label className="diagram-label">D (demand/yr)<input type="number" {...dBind} onFocus={e => e.target.select()} onChange={e => { dBind.onChange(e); setPreset(0) }} /></label>
+            <label className="diagram-label">S (order cost)<input type="number" {...sBind} onFocus={e => e.target.select()} onChange={e => { sBind.onChange(e); setPreset(0) }} /></label>
+            <label className="diagram-label">v (unit price)<input type="number" {...vBind} onFocus={e => e.target.select()} onChange={e => { vBind.onChange(e); setPreset(0) }} /></label>
+            <label className="diagram-label">i (hold rate)<input type="number" step={0.01} {...iBind} onFocus={e => e.target.select()} onChange={e => { iBind.onChange(e); setPreset(0) }} /></label>
+          </div>
 
-      <div className="diagram-slider-row">
-        <span className="diagram-slider-label">Q = {Q} (EOQ = {Math.round(eoq)})</span>
-        <input type="range" min={1} max={maxQ} value={Q} onChange={e => setQ(+e.target.value)} className="diagram-slider" />
-      </div>
+          <div className="diagram-slider-row">
+            <span className="diagram-slider-label">Q = {Q} (EOQ = {Math.round(eoq)})</span>
+            <input type="range" min={1} max={maxQ} value={Q} onChange={e => setQ(+e.target.value)} className="diagram-slider" />
+          </div>
 
-      <div className="diagram-chart-wrap">
-        <Line data={data} options={options} />
-      </div>
+          <div className="diagram-chart-wrap"><Line data={data} options={options} /></div>
 
-      <div className="diagram-readout">
-        <div><strong>Q</strong> = {Q}</div>
-        <div><strong>EOQ</strong> = {Math.round(eoq)}</div>
-        <div><strong>Ordering</strong> = {currentOC.toFixed(0)}</div>
-        <div><strong>Holding</strong> = {currentHC.toFixed(0)}</div>
-        <div><strong>Total</strong> = {currentTC.toFixed(0)}</div>
-      </div>
+          <div className="diagram-readout">
+            <div><strong>Q</strong> = {Q}</div>
+            <div><strong>EOQ</strong> = {Math.round(eoq)}</div>
+            <div><strong>Ordering</strong> = {currentOC.toFixed(0)}</div>
+            <div><strong>Holding</strong> = {currentHC.toFixed(0)}</div>
+            <div><strong>Total</strong> = {currentTC.toFixed(0)}</div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
