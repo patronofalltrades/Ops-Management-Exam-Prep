@@ -155,6 +155,16 @@ export default function Formulas() {
       </F>
 
       <F
+        label="Fill Rate (periodic review)"
+        symbols={['$f$ = fill rate (fraction of demand satisfied)', '$\\sigma$ = std dev of demand per period', '$VP$ = vulnerable period ($LT + R$)', '$\\lambda$ = demand per period', '$R$ = review period', '$L(z)$ = standard loss function (from table)']}
+        why="Fill rate measures what fraction of total demand you actually deliver — stricter than cycle service level. A 95% fill rate is NOT the same as 95% cycle SL."
+        when={'Problem says "satisfy demand X% of the time" in a periodic review context. The fill rate approach gives a LOWER z than the simple service level, because it accounts for partial fulfillment within each cycle.'}
+        how={'Solve for $L(z)$, then look up $z$ in the loss function table (not the regular z-table). The loss function $L(z)$ gives the expected shortage per unit of standard deviation.'}>
+        {'$$ f = 1 - \\frac{\\sigma \\sqrt{VP} \\cdot L(z)}{\\lambda \\cdot R} $$'}
+      </F>
+      <Tip>{"L(z) is the standard loss function — it is NOT the same as the z-table. Your exam cheat sheet may include an L(z) table. To use it: solve the fill rate equation for L(z), then look up the corresponding z value. A fill rate of 95% typically gives z ≈ 0.35, much lower than cycle SL 95% which gives z = 1.64."}</Tip>
+
+      <F
         label="Stockouts"
         symbols={['$SL$ = service level (e.g. 0.99)', '$D$ = annual demand', '$Q$ = order quantity', '$D/Q$ = order cycles per year']}
         why="99% per cycle sounds great, but with 36 orders/year that is 1 stockout every 3 years. Smaller Q = more chances."
