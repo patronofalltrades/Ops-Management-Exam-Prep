@@ -4,7 +4,7 @@ export const examGuide = [
   // ════════════════════════════════════════════
   {
     id: 'eg-q1',
-    section: 'Queueing Gym',
+    section: 'OM Gym — Queueing',
     title: 'Exercise 1: Customer Service',
     badge: 'Queueing',
     badgeType: 'queue',
@@ -49,7 +49,7 @@ export const examGuide = [
 
   {
     id: 'eg-q2',
-    section: 'Queueing Gym',
+    section: 'OM Gym — Queueing',
     title: 'Exercise 2: 24 Hrs. Pharmacy',
     badge: 'Queueing',
     badgeType: 'queue',
@@ -89,7 +89,7 @@ export const examGuide = [
 
   {
     id: 'eg-q3',
-    section: 'Queueing Gym',
+    section: 'OM Gym — Queueing',
     title: 'Exercise 3: A Hiring Decision',
     badge: 'Queueing + Cost',
     badgeType: 'queue',
@@ -128,7 +128,7 @@ export const examGuide = [
 
   {
     id: 'eg-q4',
-    section: 'Queueing Gym',
+    section: 'OM Gym — Queueing',
     title: 'Exercise 4: Express Checkout',
     badge: 'Queueing + Strategy',
     badgeType: 'queue',
@@ -176,7 +176,7 @@ export const examGuide = [
   // ════════════════════════════════════════════
   {
     id: 'eg-i1',
-    section: 'Inventory Gym',
+    section: 'OM Gym — Inventory',
     title: 'Exercise 1: The Big Headache',
     badge: 'EOQ',
     badgeType: 'inventory',
@@ -214,7 +214,7 @@ export const examGuide = [
 
   {
     id: 'eg-i2',
-    section: 'Inventory Gym',
+    section: 'OM Gym — Inventory',
     title: 'Exercise 2: Celebration Time',
     badge: 'EOQ + Periodic',
     badgeType: 'inventory',
@@ -253,7 +253,7 @@ export const examGuide = [
 
   {
     id: 'eg-i3',
-    section: 'Inventory Gym',
+    section: 'OM Gym — Inventory',
     title: 'Exercise 3: Frozen Delights',
     badge: 'EOQ + SS + ROP',
     badgeType: 'inventory',
@@ -321,7 +321,7 @@ export const examGuide = [
 
   {
     id: 'eg-i4',
-    section: 'Inventory Gym',
+    section: 'OM Gym — Inventory',
     title: 'Exercise 4: Purchasing Emmental Cheese',
     badge: 'EOQ + Stockout',
     badgeType: 'inventory',
@@ -506,6 +506,249 @@ export const examGuide = [
       '**Reminder:** Supply chain optimization that destroys demand is worse than no optimization at all. The consultants saved on inventory costs but lost 60% of revenue. Always consider who drives demand.',
       '**Tip:** For Part IV questions, structure your answer as: (1) consultant\'s rationale with OM theory, (2) pros with quantified pooling math, (3) cons with real-world factors the theory ignores, (4) your recommendation.',
       '**Exam pattern:** The exam always tests both sides of trade-offs. Never say centralization is purely good or bad. Show that you understand the strategic triangle: cost, service, and range — pick two.',
+    ],
+  },
+
+  // ════════════════════════════════════════════
+  // FINAL EXAM 2022 — BIOTOPIN / NEWBIO
+  // ════════════════════════════════════════════
+  {
+    id: 'eg-22-1',
+    section: 'Final Exam 2022',
+    title: 'Part I: Central Warehouse Operations',
+    badge: 'Capacity + Inventory + Queueing',
+    badgeType: 'queue',
+    originalExcerpt: `NEWBIO produces BIOTOPIN via a 20-day biological process in 10 reactors of 50,000L each (96% yield). Bottled in 50ml syringes. Yearly sales: Normal with mean 144M units, std dev 7.75M. Central warehouse next to plant, single dock, 30 min paperwork per truck. Min order = 10,000 units. Price = 50/unit, COGS = 10/unit.\n\nMaria Freud (COO) faces: (1) inventory mismatch — sometimes too much, sometimes too little; (2) truck drivers complaining about delays.\n\nWhat inventory policy do you recommend? What causes truck delays and what should Maria do?`,
+    storyline: `NEWBIO manufactures BIOTOPIN, a biological cancer drug. 10 reactors, 50,000L each, 20-day process, 96% yield. Bottled in 50ml syringes (1L = 1,000ml = 20 syringes). Yearly demand: $\\mu = 144M$ units, $\\sigma = 7.75M$. Single warehouse dock, 30 min paperwork per truck. This problem combines capacity, inventory, AND queueing.`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** This is a three-part problem: (1) capacity check — can we produce enough? (2) inventory policy — how much safety stock? (3) queueing — why are trucks waiting?',
+        '**Capacity first:** 1 reactor produces $50{,}000 \\times 0.96 / 0.05 = 960{,}000$ units every 20 days. That is $960{,}000 \\times 365/20 = 17.52M$/yr per reactor. 10 reactors = $175.2M$/yr. Utilization $= 144/175.2 = 82\\%$.',
+        '**Inventory:** Warehouse is next to plant, so $LT$ = production lead time = 20 days. Continuous review (warehouse monitors stock). Batch size = minimum production batch = $0.96M$ units.',
+        '**Queueing:** Trucks arrive at rate $\\lambda = 144M / (365 \\times 24 \\times 10{,}000) = 1.64$/hr. Service = 30 min/truck ($\\mu = 2$/hr). Single dock ($S = 1$). This is an $M/G/1$ system.',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'What inventory policy should Maria use for BIOTOPIN?',
+        steps: [
+          { insight: 'Set batch size = minimum production batch (producing more only adds holding cost). Convert yearly demand variability to monthly using square-root law.', work: '$Q^* = 0.96M$ units (one reactor batch)\n$\\sigma_{\\text{monthly}} = 7.75M / \\sqrt{12} = 2.24M$ units\n$VP = LT = 20$ days $= 2/3$ months\nAssume $SL = 99.87\\% \\Rightarrow z = 3$', result: null },
+          { insight: 'Compute safety stock and reorder point.', work: '$$SS = z \\times \\sigma_1 \\times \\sqrt{VP} = 3 \\times 2.24M \\times \\sqrt{2/3} \\approx 5.5M \\text{ units}$$\n$$ROP = \\bar{D}_1 \\times VP + SS = (144M/12) \\times (2/3) + 5.5M = 13.5M \\text{ units}$$', result: 'When inventory falls to 13.5M units, schedule production of 0.96M units.' },
+        ],
+      },
+      {
+        question: 'What causes truck delays and what should Maria do?',
+        steps: [
+          { insight: 'Model the dock as a queueing system. Trucks arrive randomly, each takes 30 min of paperwork.', work: '$\\lambda = 1.64$ trucks/hr, $\\mu = 2$ trucks/hr, $S = 1$\n$\\rho = 1.64/2 = 82\\%$\n$C_A = 1$ (natural arrivals), $C_S \\approx 0.3$ (limited variability)\n$$L_q = \\frac{0.82^{\\sqrt{2 \\times 2}}}{1 - 0.82} \\times \\frac{1 + 0.09}{2} \\approx 2.04 \\text{ trucks}$$\n$$W_q = 2.04 / 1.64 = 1.24 \\text{ hrs} = 74.6 \\text{ min}$$', result: null },
+          { insight: 'Average 75-minute delay is very troubling. Recommend reducing service time (online paperwork) or reducing variability before adding a second dock.', work: 'Priority 1: Move paperwork online to cut $t_S$\nPriority 2: Standardize the process to reduce $C_S$\nPriority 3: Only if neither works, build a second dock ($S = 2$)', result: 'Average truck wait = 75 min. Fix the process first, add capacity second.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** Always check capacity first before designing inventory policy. If production cannot meet demand, no amount of safety stock will help.',
+      '**Tip:** When a problem combines inventory AND queueing, solve them separately. Inventory policy answers "how much stock?" Queueing answers "why are trucks waiting?"',
+      '**Exam pattern:** The square-root law for converting annual $\\sigma$ to monthly: $\\sigma_{\\text{month}} = \\sigma_{\\text{year}} / \\sqrt{12}$. This comes up whenever demand is given in different time units than the vulnerability period.',
+    ],
+  },
+
+  {
+    id: 'eg-22-2',
+    section: 'Final Exam 2022',
+    title: 'Part II: Distribution in Latin America',
+    badge: 'Inventory + Supplier Comparison',
+    badgeType: 'inventory',
+    originalExcerpt: `LdM (Mexico) sells BIOTOPIN at 120/unit. Monthly demand: Normal, mean 12,000, std dev 2,000. Holding cost 48% of procurement cost.\n\nOption A — Kuehne+Nagel (sea): 2,000/pallet (20,000 units), LT = 15 days.\nOption B — Aeromexico (air): 3,000/pallet (10,000 units), LT = 2 days.\n\nWhich logistics provider should LdM use?`,
+    storyline: `Laboratorios de Mexico sells BIOTOPIN across Latin America. Monthly demand: $\\mu = 12{,}000$, $\\sigma = 2{,}000$. Holding cost $i = 48\\%$ (highly leveraged company). Two shipping options: sea freight (cheap, slow, big batches) vs air freight (expensive, fast, small batches).`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** Supplier/logistics comparison — same product, different transport modes. Compute total cost for each: holding + transportation.',
+        '**Key insight:** Air freight costs more per shipment but the shorter LT drastically reduces safety stock, and the smaller batch reduces cycle stock. With a 48% holding rate, inventory savings can outweigh higher shipping costs.',
+        '**Data conversion:** Sea: $Q = 20{,}000$, $LT = 15$ days $= 0.5$ months. Air: $Q = 10{,}000$, $LT = 2$ days $= 2/30$ months.',
+        '**Watch out:** Also consider in-transit inventory (Little\'s Law). Longer transit = more inventory stuck on ships/planes.',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'Which logistics provider should LdM use?',
+        steps: [
+          { insight: 'Compute total cost for Kuehne+Nagel (sea freight).', work: '$Q_{KN} = 20{,}000$, $VP = 0.5$ months\n$SS_{KN} = 3 \\times 2{,}000 \\times \\sqrt{0.5} = 4{,}243$ units\nHolding: $(10{,}000 + 4{,}243) \\times 50 \\times 0.48 = 342k$/yr\nTransport: $(12 \\times 12{,}000 / 20{,}000) \\times 2{,}000 = 14{,}400$/yr\n**Total = 356.5k/yr**', result: null },
+          { insight: 'Compute total cost for Aeromexico (air freight).', work: '$Q_{AM} = 10{,}000$, $VP = 2/30$ months\n$SS_{AM} = 3 \\times 2{,}000 \\times \\sqrt{2/30} = 1{,}549$ units\nHolding: $(5{,}000 + 1{,}549) \\times 50 \\times 0.48 = 157k$/yr\nTransport: $(12 \\times 12{,}000 / 10{,}000) \\times 3{,}000 = 43.2k$/yr\n**Total = 200k/yr**', result: '**Aeromexico saves ~156k/yr.** Faster delivery + smaller batches dramatically reduce inventory costs, more than offsetting the higher shipping price.' },
+          { insight: 'In-transit inventory further favors air. Use Little\'s Law.', work: 'Sea in-transit: $\\lambda \\times LT = (12 \\times 12{,}000/30) \\times 15 = 6{,}000$ units\nAir in-transit: $(12 \\times 12{,}000/30) \\times 2 = 800$ units', result: 'Air freight has 7x less in-transit inventory, making it even more appealing.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** When holding cost rate is high (48%), inventory savings dominate transportation cost differences. Faster delivery = less SS = less cash tied up.',
+      '**Tip:** Always consider in-transit inventory using Little\'s Law: items on the ship/plane are still your inventory. Longer transit = more working capital locked up.',
+      '**Exam pattern:** This is the same structure as the 2024 exam (US vs Portugal) — compute total cost for each option including SS, cycle stock holding, and transport. The one with lower total wins.',
+    ],
+  },
+
+  {
+    id: 'eg-22-3',
+    section: 'Final Exam 2022',
+    title: 'Part III: Growth Strategy',
+    badge: 'Strategy',
+    badgeType: 'strategy',
+    originalExcerpt: `NEWBIO expects highest growth in Latin America. CEO Elsa considers: (A) Open a LatAm plant, (B) Subcontract production to LdM, (C) Bulk shipments for local bottling, (D) Consignment stock at LdM. Any other ideas?\n\nWhat would you advise?`,
+    storyline: `NEWBIO sees Latin America as strategic for growth. Asia is blocked by cheap Chinese/Indian competitors (35/unit). Four options on the table, each with hidden costs or risks. The exam wants you to analyze all four AND propose something better.`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** Strategic analysis — evaluate four proposals on operational feasibility, cost, risk, and quality.',
+        '**Key tension:** Short-term vs long-term. Current demand is tiny (one reactor at low utilization would suffice), but growth is expected.',
+        '**Think about:** Quality control (biological drug!), capital intensity, supply chain flexibility, and what happens if demand does NOT grow as expected.',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'Evaluate each option and recommend a strategy.',
+        steps: [
+          { insight: 'Analyze each option for feasibility.', work: '**New plant:** Huge capex, current demand too low to justify even 1 reactor. Maybe long-term.\n**Subcontract to LdM:** Lose quality control over a biological drug — extremely risky.\n**Bulk shipment + local bottling:** Unclear how to maintain cold chain integrity. No customization in BIOTOPIN, so postponement adds no value.\n**Consignment stock:** NEWBIO absorbs LdM\'s holding cost. With 48% rate, this erodes profitability.', result: null },
+          { insight: 'None of the four is great. Propose a phased approach.', work: '**Short term:** Sound inventory management (switch to air freight as shown in Part II).\n**Medium term:** Find a different/additional distribution partner, possibly in South America (closer to larger markets, potentially lower holding costs than LdM).\n**Long term:** If demand grows as expected, build a plant with strategic partners in South America.', result: 'No single option is best. Phased approach: optimize logistics now, explore new partners, invest in production later when demand justifies it.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** For strategic questions, evaluate EVERY option the problem lists — do not skip any. Show you considered each one seriously.',
+      '**Tip:** The best answer for "which option?" is often "none of the above, but here is a phased plan." The exam rewards creative thinking beyond the given choices.',
+      '**Exam pattern:** Strategic questions worth 30+ points require structured arguments: for each option, state the operational logic, then the hidden cost/risk, then your verdict.',
+    ],
+  },
+
+  {
+    id: 'eg-22-4',
+    section: 'Final Exam 2022',
+    title: 'Part IV: Industrial Partnership',
+    badge: 'Capacity + Strategy',
+    badgeType: 'queue',
+    originalExcerpt: `French company LC proposes co-producing BIORISAN (90/unit) at NEWBIO's Vienna factory. Would require dedicating 4 reactors to BIORISAN, leaving 9 for BIOTOPIN. Same COGS and production lead time.\n\nShould Elsa accept?`,
+    storyline: `LC wants to co-produce BIORISAN (90/unit, much higher margin than BIOTOPIN at 50/unit) using 4 of NEWBIO\'s reactors. This leaves 9 reactors for BIOTOPIN, pushing utilization from 82% to 91%. New reactors cost 30M each and take 1 year to deliver.`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** Capacity allocation decision with financial and operational trade-offs.',
+        '**Revenue opportunity:** 4 reactors at $17.52M$ units/yr each, margin of $(90-10) = 80$/unit. Potential profit: $17.52M \\times 4 \\times 80 = 5.6B$/yr (split with LC).',
+        '**Risk:** 9 reactors for BIOTOPIN = $\\rho = 144M / (9 \\times 17.52M) = 91\\%$. No spare capacity for maintenance, demand spikes, or emergencies.',
+        '**Solution structure:** Accept the deal (too profitable to pass up) BUT mitigate the capacity risk.',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'Should Elsa accept the industrial partnership?',
+        steps: [
+          { insight: 'The financial opportunity is enormous. Calculate the potential.', work: 'BIORISAN revenue potential: $17.52M \\times 4 \\times 80 = 5.6B$/yr (before profit split with LC)\nEven a 20% share = $1.12B$/yr — impossible to pass up.', result: null },
+          { insight: 'But the capacity risk is severe. 91% utilization with no buffer is unsustainable.', work: 'Current: 10 reactors, $\\rho = 82\\%$, 3 spare reactors for emergencies.\nProposed: 9 reactors, $\\rho = 91\\%$, 0 spare. No room for maintenance, cleaning, or demand spikes.', result: null },
+          { insight: 'Accept but mitigate: order new reactors immediately and phase in BIORISAN gradually.', work: '**Action plan:**\n1. Accept LC\'s proposal\n2. Order 3+ new reactors immediately (30M each, 1-year delivery)\n3. Phase in: dedicate 1-2 reactors to BIORISAN in year 1\n4. Full 4-reactor commitment in year 2, after new reactors arrive\n5. Protect BIOTOPIN supply chain — it is the flagship product', result: 'Accept the deal — too profitable to refuse. But order new reactors NOW and phase in production gradually to protect BIOTOPIN.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** 91% utilization is a red flag. No buffer for maintenance, demand spikes, or emergencies. Always flag high utilization even when the financial case is strong.',
+      '**Tip:** For partnership/investment questions, the answer is rarely pure yes or pure no. It is "yes, with conditions" or "no, unless." Show the conditions explicitly.',
+      '**Exam pattern:** Capacity allocation questions test whether you can balance financial opportunity against operational risk. Show both sides, then propose a phased mitigation plan.',
+    ],
+  },
+
+  // ════════════════════════════════════════════
+  // FINAL EXAM 2023 — IQ INC.
+  // ════════════════════════════════════════════
+  {
+    id: 'eg-23-1',
+    section: 'Final Exam 2023',
+    title: 'Part I: IQ After-Sales Service',
+    badge: 'Queueing (4 scenarios)',
+    badgeType: 'queue',
+    originalExcerpt: `IQ's VOXEL 3D printer has transductors that overflow once a year on average (Negative Exponential). Software detects overflow and alerts the After-Sales Service in Madrid. 4 engineers per shift, 24/7. Arrival rate: 3 calls/hr (Poisson). Service: 1 hour avg, normally distributed, std dev 15 min.\n\nAlternatives: (A) Hire 1 more engineer/shift. (B) Replace with a robot: 10 min/request, no variability, costs 6x one engineer annually. (C) Pool all 10 European centers together.\n\nAnalyze current state and all three alternatives.`,
+    storyline: `IQ's Madrid after-sales center handles printer overflow alerts. $\\lambda = 3$/hr (Poisson), $S = 4$ engineers, $t_S = 60$ min ($\\sigma = 15$ min). Fire risk if overflow unresolved > 1 hour. Three proposals to compare: add staff, automate, or pool European centers.`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** Four queueing scenarios to compare: current (4 engineers), +1 engineer (5), robot ($S = 1$, $t_S = 10$ min, $C_S = 0$), pooling (40 engineers, $\\lambda = 30$/hr).',
+        '**Extract data:** $\\lambda = 3$/hr, $C_A = 1$ (Poisson). Service: $t_S = 60$ min, $\\sigma_S = 15$ min, so $C_S = 15/60 = 0.25$.',
+        '**Key metric:** $W_q$ (wait before service starts) and $W$ (total time until overflow resolved). Fire risk increases dangerously after 1 hour total.',
+        '**Cost comparison:** Robot costs 6x one engineer. But there are 3 shifts/day, so 5 engineers/shift = 15 engineers total vs 1 robot = 6 engineer-equivalents. Robot is cheaper.',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'Analyze the current situation (4 engineers).',
+        steps: [
+          { insight: 'Standard queueing analysis with $S = 4$.', work: '$\\rho = 3/4 = 75\\%$, $C_A = 1$, $C_S = 0.25$\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 5}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.856$$\n$$W_q = 0.856/3 = 0.285 \\text{ hr} = 17.1 \\text{ min}$$\n$W = 17.1 + 60 = 77.1$ min', result: 'Average total time = 77 min — exceeds the 1-hour fire danger threshold. This is risky.' },
+        ],
+      },
+      {
+        question: 'Alternative A: Add 1 engineer per shift (S = 5).',
+        steps: [
+          { insight: 'Same arrival/service, just one more server.', work: '$\\rho = 3/5 = 60\\%$\n$$L_q = \\frac{0.6^{\\sqrt{2 \\times 6}}}{1-0.6} \\times \\frac{1 + 0.0625}{2} = 0.226$$\n$$W_q = 0.226/3 = 0.075 \\text{ hr} = 4.5 \\text{ min}$$\n$W = 4.5 + 60 = 64.5$ min', result: '$W_q$ drops from 17 min to 4.5 min. Total time 64.5 min — still above 1 hour but much safer.' },
+        ],
+      },
+      {
+        question: 'Alternative B: Replace engineers with a robot.',
+        steps: [
+          { insight: 'Robot: $S = 1$, $t_S = 10$ min ($\\mu = 6$/hr), $C_S = 0$ (deterministic). Same arrivals.', work: '$\\rho = 3/6 = 50\\%$\n$$L_q = \\frac{0.5^{\\sqrt{2 \\times 2}}}{1-0.5} \\times \\frac{1 + 0}{2} = 0.25$$\n$$W_q = 0.25/3 = 0.083 \\text{ hr} = 5 \\text{ min}$$\n$W = 5 + 10 = 15$ min', result: 'Total time = 15 min — dramatically better. And robot costs 6 engineers but replaces 4 per shift (12 total for 24/7). Robot is cheaper AND faster.' },
+        ],
+      },
+      {
+        question: 'Alternative C: Pool all 10 European centers.',
+        steps: [
+          { insight: 'Same 4 engineers/center but all 10 centers share one queue. $S = 40$, $\\lambda = 30$/hr.', work: '$\\rho = 30/40 = 75\\%$ (same as before!)\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 41}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.157$$\n$$W_q = 0.157/30 = 0.005 \\text{ hr} = 19 \\text{ seconds}$$\n$W = 0.3 + 60 = 60.3$ min', result: 'Wait drops from 17 min to **19 seconds** — no extra cost! Just let any engineer serve any printer across Europe. Same utilization, vastly better performance.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** Pooling is the most powerful lever — 17 min wait to 19 seconds with ZERO additional cost. This works because service is remote (no language barrier, no physical presence needed).',
+      '**Tip:** The robot option shows the 2nd Law in action: $C_S = 0$ (deterministic) vs $C_S = 0.25$ cuts the variability factor. Combined with faster service, total time drops to 15 min.',
+      '**Exam pattern:** When comparing multiple alternatives, use a consistent table format. For each: compute $\\rho$, $L_q$, $W_q$, $W$, and cost. Then recommend based on the full picture.',
+    ],
+  },
+
+  {
+    id: 'eg-23-2',
+    section: 'Final Exam 2023',
+    title: 'Part II: Ink Logistics at IQ',
+    badge: 'Inventory + Strategy',
+    badgeType: 'inventory',
+    originalExcerpt: `IQ printers use ink cartridges (retail 40, COGS 4-10). Customers print ~200 pages/month (std dev 40, Normal). Cartridge prints 200+ pages. Customers buy from Staples/Office Depot (30% retailer margin). Pain points: (1) ink is expensive, (2) runs out at bad times.\n\nThe "Dirty Dozen" team proposes: (A) Larger cartridges, (B) Auto-replenishment (printer orders ink when low), (C) Charge at insertion not shipment, (D) Subscription model (30/month for 200 pages).\n\nAnalyze each alternative from an operations perspective.`,
+    storyline: `IQ faces a declining printing market. Ink cartridges are expensive (40 retail, 28 net after retailer margin) and run out unpredictably. Half of customers buy cheaper third-party ink. The Dirty Dozen team proposes four progressively innovative models. This is a strategy question driven by inventory and supply chain concepts.`,
+    framework: {
+      title: 'How to approach this problem',
+      points: [
+        '**Identify:** This is an operations-driven strategy question. Each proposal changes the inventory model from the customer\'s perspective.',
+        '**Root cause of "running out":** Customers have no safety stock (batch = 1 cartridge, zero buffer). Expensive ink + low ordering cost (just drive to store) = small batches = frequent stockouts.',
+        '**Revenue math:** Retail 40/cartridge. Retailer takes 30% = 12. IQ net = 28. COGS ~7. Going direct eliminates the 12 retailer margin.',
+        '**Frame each proposal:** How does it change the customer\'s inventory model (batch size, safety stock, VP, who bears holding cost)?',
+      ],
+    },
+    questionSteps: [
+      {
+        question: 'Why do cartridges run out at inconvenient times? Should IQ offer larger cartridges?',
+        steps: [
+          { insight: 'Customer inventory model: batch = 1 cartridge, SS = 0. With zero safety stock, every cycle ends in a stockout.', work: 'Customer buys 1 cartridge when they run out (reactive, not proactive).\nNo visibility on ink level = no reorder point.\nResult: stockout every cycle. Then emergency trip to store or printing on another (non-IQ) machine.', result: null },
+          { insight: 'Larger cartridge increases batch but does not fix root cause (zero safety stock). Also expensive to implement and looks even pricier vs private labels.', work: 'Larger cartridge: maybe doubles the batch. But still zero SS = still stocks out.\nRequires redesigned printer (engineering cost).\nHigher price point increases gap with private labels.\n**Better alternative:** sell pre-packs of 2-3 cartridges with volume discount.', result: 'Larger cartridge does NOT solve the root cause. Pre-packs are cheaper and more effective.' },
+        ],
+      },
+      {
+        question: 'Should IQ adopt auto-replenishment?',
+        steps: [
+          { insight: 'Auto-replenishment gives IQ visibility on ink level = IQ controls the ROP and SS. Customer never runs out.', work: 'Printer monitors ink level continuously ($RP = 0$).\n$VP = LT = 6/30$ months (delivery time).\n$$ROP = VP \\times D_1 + z \\times \\sigma \\times \\sqrt{VP} = \\frac{6}{30} \\times 200 + 3 \\times 40 \\times \\sqrt{1/5} = 93 \\text{ pages}$$\nThat is about half a cartridge — order when half-empty.', result: null },
+          { insight: 'Going direct eliminates retailer margin (saves 12/cartridge). Even with 4 shipping cost, IQ nets 8 more per cartridge AND customer never runs out.', work: 'Store channel: IQ nets 28/cartridge. Customer stocks out.\nDirect auto-replenish: IQ nets $40 - 4 - 7 = 29$/cartridge. Customer never stocks out.\nWin-win — except retailers lose business (channel conflict).', result: 'Auto-replenishment is a clear improvement. Better margins, zero stockouts, higher loyalty.' },
+        ],
+      },
+      {
+        question: 'Should IQ charge at insertion instead of shipment? Should IQ adopt a subscription model?',
+        steps: [
+          { insight: 'Charging at insertion allows larger batches at customer\'s home without upfront cost. But risk: customer may lose/resell unpaid cartridges.', work: 'Insertion-based billing: customer holds more inventory but only pays when used.\nRisk: no tracking = potential fraud or loss.\nBenefit: customer has buffer stock = fewer stockouts.', result: null },
+          { insight: 'Subscription (30/month for 200 pages) is the most radical proposal. Analyze from operations perspective.', work: 'At 30/month: customer pays less than retail (40/cartridge/month).\nIQ cost to serve: COGS 7 + shipping (4/4 cartridges shipped at once) = 8/cartridge.\nIQ margin: $30 - 8 = 22$/month (vs 28 currently but with higher volume and loyalty).\n\n**Key advantages:**\n- Customer never runs out (IQ manages replenishment)\n- Eliminates retailer margin entirely\n- Kills private-label substitution (subscription = locked in)\n- IQ gets usage data on every customer\n- Predictable recurring revenue', result: 'Subscription is the most transformative option. Lower price for customer, higher loyalty for IQ, predictable revenue, zero stockouts. But requires managing retailer backlash carefully.' },
+        ],
+      },
+    ],
+    takeaway: [
+      '**Reminder:** The root cause of "running out at inconvenient times" is zero safety stock, not insufficient batch size. Fix the root cause (give IQ control of ROP), not the symptom (bigger cartridges).',
+      '**Tip:** When analyzing business model proposals, translate each one into inventory terms: who controls Q, ROP, SS, and who bears holding cost? This makes the comparison systematic.',
+      '**Exam pattern:** Strategy questions that list multiple proposals (A, B, C, D) expect you to analyze each, show why simpler ones fail, and build towards the most innovative solution. Show the progression.',
     ],
   },
 ]
