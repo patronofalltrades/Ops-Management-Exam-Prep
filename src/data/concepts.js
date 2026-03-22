@@ -322,6 +322,17 @@ export const conceptData = [
                 }
             },
             {
+                type: 'card',
+                title: "What is Φ⁻¹ and how to use the z-table",
+                official: "$\\Phi^{-1}$ is the inverse of the standard Normal CDF. It converts a probability into a z-value.\n\nYou need this because the newsvendor formula gives you $\\alpha$ (a probability like 0.667), but $Q^* = \\mu + z \\times \\sigma$ needs a z-value. $\\Phi^{-1}(\\alpha)$ answers: \"what z-value has $\\alpha$ probability to its left on the Normal curve?\"\n\nHow to look it up on the exam cheat sheet:\n1. Compute $\\alpha$ from costs\n2. Go to the z-table (pages 9-10 of the exam)\n3. Scan the table body for the value closest to $\\alpha$\n4. Read the z-value from the row and column headers\n\nFor safety stock, you do the same thing but in reverse: the service level (e.g., 99%) IS the probability, and you look up z directly. The shortcut table gives you the common ones: 90% → 1.28, 95% → 1.64, 99% → 2.33.",
+                dumb: "The z-table is just a two-way lookup. For safety stock: you PICK the service level (99%), look up z (2.33), done — the shortcut table has the common values. For newsvendor: you COMPUTE the service level from costs (maybe 0.667), then scan the FULL table to find what z corresponds to 0.667. Same table, different starting point.",
+                example: {
+                    story: "The bakery computed $\\alpha = 0.667$. You open the exam cheat sheet to the z-table. You need to find the z-value where the cumulative probability equals 0.667.",
+                    translate: "Scan the z-table body (page 10, positive z-values) for the value closest to 0.667.\n\nLook at $z = 0.4$ row: the column $+0.03$ gives 0.66640. That is the closest to 0.667.\nSo $z^* \\approx 0.43$.\n\nFor comparison, the shortcut table only lists 90%, 95%, 99%, 99.9% — it does NOT have 66.7%. That is why you need the full table for newsvendor problems.",
+                    solve: "$z^* = \\Phi^{-1}(0.667) \\approx 0.43$\n$Q^* = 100 + 0.43 \\times 20 = 108.6 \\approx 109$ croissants.\n\nIf $\\alpha$ had been 0.80 instead, you would find $z = 0.84$ from the table (row 0.8, column +0.04 gives 0.7995 $\\approx$ 0.80)."
+                }
+            },
+            {
                 type: 'tip',
                 content: "The newsvendor formula Q* = μ + zσ is structurally identical to safety stock: ROP = D̄₁×VP + z×σ₁×√VP. In safety stock, z comes from a chosen service level. In newsvendor, z comes from the cost-optimal critical fractile."
             },
