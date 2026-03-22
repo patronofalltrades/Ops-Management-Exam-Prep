@@ -33,6 +33,7 @@ export default function Formulas() {
         how={'Divide $L_q$ by arrival rate $\\lambda$. Little\'s Law applied to the queue.'}>
         {'$$ W_q = \\frac{L_q}{\\lambda} $$'}
       </F>
+      <Tip>{"To find Wq: first compute Lq using the queue length formula, then divide by λ. This works for ANY number of servers — you do NOT need separate M/M/1 or M/M/5 tables. The Lq approximation formula already accounts for the number of servers through the √(2(S+1)) exponent."}</Tip>
 
       <F
         label="Avg time in system"
