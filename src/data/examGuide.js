@@ -23,20 +23,20 @@ export const examGuide = [
       {
         question: 'What is the utilization rate of the system?',
         steps: [
-          { insight: 'System utilization = total demand / total capacity. But be careful — individual desk utilizations can be very different.', dumb: 'Think of it like a highway — 75% full sounds fine, but some lanes might be jammed while others are empty.', work: '$\\text{Total capacity} = 12 + 8 = 20$ customers/hr\n$$\\rho_{\\text{system}} = \\frac{\\lambda}{\\text{capacity}} = \\frac{15}{20} = 0.75 = 75\\%$$', result: '$\\rho_{\\text{system}} = 75\\%$' },
+          { insight: 'System utilization = total demand / total capacity. But be careful — individual desk utilizations can be very different.', dumb: 'Think of it like a highway — 75% full sounds fine, but some lanes might be jammed while others are empty.', work: '**Formula** $\\rho = \\lambda / (S \\times \\mu)$\n\n$\\text{Total capacity} = 12 + 8 = 20$ customers/hr\n$$\\rho_{\\text{system}} = \\frac{\\lambda}{\\text{capacity}} = \\frac{15}{20} = 0.75 = 75\\%$$', result: '$\\rho_{\\text{system}} = 75\\%$' },
         ],
       },
       {
         question: 'What is the expected number of people waiting for a representative?',
         steps: [
-          { insight: 'Even though the system is at 75%, individual desks tell a very different story. The slow desk gets the same arrival rate but has lower capacity — it is dangerously overloaded.', dumb: 'The average hides the truth. One desk is basically drowning while the other is chilling.', work: '$\\text{Fast desk: } \\rho = 7.5/12 = 62.5\\%$\n$\\text{Slow desk: } \\rho = 7.5/8 = 93.75\\%$ ← danger zone!', result: null },
+          { insight: 'Even though the system is at 75%, individual desks tell a very different story. The slow desk gets the same arrival rate but has lower capacity — it is dangerously overloaded.', dumb: 'The average hides the truth. One desk is basically drowning while the other is chilling.', work: '**Formula** $L_q = \\rho^2/(1-\\rho)$ per desk\n\n$\\text{Fast desk: } \\rho = 7.5/12 = 62.5\\%$\n$\\text{Slow desk: } \\rho = 7.5/8 = 93.75\\%$ ← danger zone!', result: null },
           { insight: 'Use the $M/M/1$ formula for each desk. Notice how a small increase in $\\rho$ causes an explosion in $L_q$ — this is the nonlinear nature of queues.', dumb: 'Just plug the numbers in. The slow desk\'s queue explodes because 94% utilization is like a highway with one lane closed during rush hour.', work: '$$L_q = \\frac{\\rho^2}{1 - \\rho} \\times \\frac{C_A^2 + C_S^2}{2}$$\n$\\text{Fast desk: } L_q = \\frac{0.625^2}{0.375} \\times 1 = 1.04$\n$\\text{Slow desk: } L_q = \\frac{0.9375^2}{0.0625} \\times 1 = 14.06$', result: '$L_q^{\\text{total}} = 1.04 + 14.06 = 15.1$ people waiting' },
         ],
       },
       {
         question: 'How can we improve the performance of the system without using more resources?',
         steps: [
-          { insight: 'The root cause is unbalanced utilization: 94% vs 63%. We can fix this by changing routing probabilities to equalize $\\rho$.', dumb: 'Stop sending equal customers to unequal desks. Send more people to the faster desk — it can handle it.', work: '$\\text{Target: } \\rho_{\\text{fast}} = \\rho_{\\text{slow}} = 0.75$\n$\\text{Fast desk: } \\lambda = 0.75 \\times 12 = 9$ → route 60% of arrivals\n$\\text{Slow desk: } \\lambda = 0.75 \\times 8 = 6$ → route 40% of arrivals', result: 'Route 60% to fast desk, 40% to slow desk. Or better: create a single pooled queue.' },
+          { insight: 'The root cause is unbalanced utilization: 94% vs 63%. We can fix this by changing routing probabilities to equalize $\\rho$.', dumb: 'Stop sending equal customers to unequal desks. Send more people to the faster desk — it can handle it.', work: '**Approach** Equalize $\\rho$ across desks\n\n$\\text{Target: } \\rho_{\\text{fast}} = \\rho_{\\text{slow}} = 0.75$\n$\\text{Fast desk: } \\lambda = 0.75 \\times 12 = 9$ → route 60% of arrivals\n$\\text{Slow desk: } \\lambda = 0.75 \\times 8 = 6$ → route 40% of arrivals', result: 'Route 60% to fast desk, 40% to slow desk. Or better: create a single pooled queue.' },
         ],
       },
     ],
@@ -68,14 +68,14 @@ export const examGuide = [
       {
         question: 'Compute the average waiting time in queue and the average service time considering the current situation.',
         steps: [
-          { insight: 'With 5 servers, $C_S = \\sigma/t_S = 25/25 = 1$, this is an $M/M/5$ system.', dumb: 'Five slow workers sharing one queue. They can barely keep up — 97% busy means almost no breathing room.', work: '$\\mu = 60/25 = 2.4$ orders/hr per server\n$\\text{Total capacity} = 5 \\times 2.4 = 12$ orders/hr\n$$\\rho = \\frac{11.67}{12} = 97.2\\%$$', result: null },
+          { insight: 'With 5 servers, $C_S = \\sigma/t_S = 25/25 = 1$, this is an $M/M/5$ system.', dumb: 'Five slow workers sharing one queue. They can barely keep up — 97% busy means almost no breathing room.', work: '**Formula** $\\rho = \\lambda/(S \\times \\mu)$\n\n$\\mu = 60/25 = 2.4$ orders/hr per server\n$\\text{Total capacity} = 5 \\times 2.4 = 12$ orders/hr\n$$\\rho = \\frac{11.67}{12} = 97.2\\%$$', result: null },
           { insight: 'At 97% utilization with 5 servers, use the $M/M/S$ queueing results.', dumb: '97% utilization is like a highway at near-standstill. Even with 5 lanes, everyone is barely crawling.', work: '**Formula:** $W = W_q + t_S$\n\n$W_q = 2.79$ hrs\n$t_S = 25/60 = 0.417$ hrs\n$$W = W_q + t_S = 2.79 + 0.417 = 3.21 \\text{ hrs}$$', result: '$W_q = 2.79$ hrs, $W = 3.21$ hrs' },
         ],
       },
       {
         question: 'What is the impact of replacing the employees with the automatic machine?',
         steps: [
-          { insight: 'The machine is 5× faster, so one machine has the **same total capacity** as 5 employees. But the topology changes from $M/M/5$ to $M/M/1$.', dumb: 'One super-fast robot vs five slow humans. Same total speed, but the robot finishes each job in 5 min instead of 25. The queue behaves differently though.', work: '$\\mu = 60/5 = 12$ orders/hr (1 server)\n$\\rho = 11.67/12 = 97.2\\%$ ← same utilization!\n$C_S = 5/5 = 1$', result: null },
+          { insight: 'The machine is 5× faster, so one machine has the **same total capacity** as 5 employees. But the topology changes from $M/M/5$ to $M/M/1$.', dumb: 'One super-fast robot vs five slow humans. Same total speed, but the robot finishes each job in 5 min instead of 25. The queue behaves differently though.', work: '**Formula** $\\rho = \\lambda/(S \\times \\mu)$ with $S = 1$\n\n$\\mu = 60/5 = 12$ orders/hr (1 server)\n$\\rho = 11.67/12 = 97.2\\%$ ← same utilization!\n$C_S = 5/5 = 1$', result: null },
           { insight: 'Despite identical utilization, the outcomes differ because of topology.', dumb: 'Same workload, different experience. The robot wins on total time because each job is done in 5 min, but the queue itself is slightly worse with just one server.', work: '**Formula:** $W = W_q + t_S$\n\nDifference: $\Delta W = 3.21 - 3.0 = 0.21$ hrs $= 12.6$ min\n\n$W_q = 2.91$ hrs (slightly worse than $M/M/5$!)\n$t_S = 5/60 = 0.083$ hrs\n$$W = 2.91 + 0.083 = 3.0 \\text{ hrs}$$\n$\\text{Savings: } 3.21 - 3.0 = 0.21$ hrs $= 12.6$ min faster', result: '$W$ drops by 12.6 min. But $W_q$ is actually slightly *worse* — the gain comes entirely from faster service, not less waiting.' },
         ],
       },
@@ -147,19 +147,19 @@ export const examGuide = [
       {
         question: 'Compute the service performance for the current situation.',
         steps: [
-          { insight: 'All 4 lines are identical. Compute once.', dumb: 'Four identical lines, four identical answers. Do the math once and you\'re done.', work: '$\\lambda_{\\text{per line}} = 3$/hr, $\\mu = 5$/hr, $\\rho = 3/5 = 0.6$\n$C_A = 1, C_S = 1$\n$$L_q = \\frac{0.6^2}{1-0.6} \\times \\frac{1+1}{2} = 0.9 \\text{ customers}$$\n$W_q = 0.9/3 = 0.3$ hr $= 18$ min\n$W = 18 + 12 = 30$ min', result: 'Every customer waits 18 min in queue, 30 min total.' },
+          { insight: 'All 4 lines are identical. Compute once.', dumb: 'Four identical lines, four identical answers. Do the math once and you\'re done.', work: '**Formula** $L_q = \\frac{\\rho^{\\sqrt{2(S+1)}}}{1-\\rho} \\times \\frac{C_A^2+C_S^2}{2}$\n\n$\\lambda_{\\text{per line}} = 3$/hr, $\\mu = 5$/hr, $\\rho = 3/5 = 0.6$\n$C_A = 1, C_S = 1$\n$$L_q = \\frac{0.6^2}{1-0.6} \\times \\frac{1+1}{2} = 0.9 \\text{ customers}$$\n$W_q = 0.9/3 = 0.3$ hr $= 18$ min\n$W = 18 + 12 = 30$ min', result: 'Every customer waits 18 min in queue, 30 min total.' },
         ],
       },
       {
         question: 'How will the service be for express customers with a dedicated line?',
         steps: [
-          { insight: 'Express line gets ALL express customers. Low $C_S = 0.2$ makes it very efficient.', dumb: 'All quick shoppers in one lane with super-consistent service times. The queue barely forms because there are no surprises.', work: '$\\lambda = 12 \\times 0.5 = 6$/hr, $\\mu = 60/5 = 12$/hr\n$\\rho = 6/12 = 0.5$, $C_A = 1$, $C_S = 1/5 = 0.2$\n$$L_q = \\frac{0.5^2}{1-0.5} \\times \\frac{1^2 + 0.2^2}{2} = 0.5 \\times 0.52 = 0.26$$\n$W_q = 0.26/6 = 0.043$ hr $= 2.6$ min\n$W = 2.6 + 5 = 7.6$ min', result: 'Express customers: $W_q$ drops from 18 min → 2.6 min!' },
+          { insight: 'Express line gets ALL express customers. Low $C_S = 0.2$ makes it very efficient.', dumb: 'All quick shoppers in one lane with super-consistent service times. The queue barely forms because there are no surprises.', work: '**Formula** Same $L_q$ with $C_S = 0.2$\n\n$\\lambda = 12 \\times 0.5 = 6$/hr, $\\mu = 60/5 = 12$/hr\n$\\rho = 6/12 = 0.5$, $C_A = 1$, $C_S = 1/5 = 0.2$\n$$L_q = \\frac{0.5^2}{1-0.5} \\times \\frac{1^2 + 0.2^2}{2} = 0.5 \\times 0.52 = 0.26$$\n$W_q = 0.26/6 = 0.043$ hr $= 2.6$ min\n$W = 2.6 + 5 = 7.6$ min', result: 'Express customers: $W_q$ drops from 18 min → 2.6 min!' },
         ],
       },
       {
         question: 'Should you implement the dedicated line?',
         steps: [
-          { insight: 'Must check impact on regular customers. Removing express customers changes the service time distribution for the remaining 3 lines.', dumb: 'You helped the fast shoppers, but did you screw over everyone else? Always check both sides.', work: 'Regular $t_S$: $12 = 0.5 \\times 5 + 0.5 \\times X \\Rightarrow X = 19$ min\n$\\mu_{\\text{regular}} = 60/19 = 3.16$/hr\n$\\lambda_{\\text{per line}} = 6/3 = 2$/hr\n$\\rho = 2/3.16 = 0.63$\n$C_S$ for regular customers is unknown (ranges 0.2 to 1)', result: null },
+          { insight: 'Must check impact on regular customers. Removing express customers changes the service time distribution for the remaining 3 lines.', dumb: 'You helped the fast shoppers, but did you screw over everyone else? Always check both sides.', work: '**Formula** $\\bar{t}_S = 0.5 \\times t_{exp} + 0.5 \\times t_{reg}$\n\nRegular $t_S$: $12 = 0.5 \\times 5 + 0.5 \\times X \\Rightarrow X = 19$ min\n$\\mu_{\\text{regular}} = 60/19 = 3.16$/hr\n$\\lambda_{\\text{per line}} = 6/3 = 2$/hr\n$\\rho = 2/3.16 = 0.63$\n$C_S$ for regular customers is unknown (ranges 0.2 to 1)', result: null },
           { insight: 'This is a trade-off. Express customers gain massively. Regular customers may be slightly worse off depending on their $C_S$.', dumb: 'Express customers love it. Regular customers might hate it. The answer is never just \'yes do it\' — it depends on which customers matter more to the business.', work: '**Decision framework:** Compare $W_q$ for express vs regular customers under the new setup\n\nIf $C_S < 0.32$ → regulars are NOT worse off\nIf $C_S$ is high → regulars wait longer\nNeed: profitability data per segment', result: 'Decision depends on whether express customers are strategically important and on the unknown $C_S$ of regular service. Dedicated resources (anti-pooling) can work when segments have very different service characteristics.' },
         ],
       },
@@ -240,7 +240,7 @@ export const examGuide = [
         question: 'If a periodic review is used, what is the optimal base stock level?',
         steps: [
           { insight: 'Use EOQ to estimate the review period, then compute the order-up-to level covering $VP = R + LT$.', dumb: 'Use EOQ to figure out how often to check inventory, then compute how much to keep on hand.', work: '**Formula:** $R = Q^*/D$ (review period from EOQ)\n$VP = R + LT$ (periodic review)\n\n$R = Q^*/D = 408/100 \\approx 4$ weeks\n$VP = R + LT = 4 + 3 = 7$ weeks', result: null },
-          { insight: 'For periodic review with fill rate $f = 0.95$, solve for $z$ using the fill rate formula, then compute $S$.', dumb: 'The fill rate formula is trickier than the simple service level. It accounts for how much demand you actually satisfy, not just whether you stock out.', work: '$f = 1 - \\frac{\\sigma\\sqrt{VP} \\cdot L(z)}{\\lambda \\cdot R}$\n$0.95 = 1 - \\frac{30\\sqrt{7} \\cdot L(z)}{100 \\times 4}$\n$L(z) = 0.252 \\Rightarrow z \\approx 0.35$\n$$S = (R + LT) \\cdot \\lambda + z \\cdot \\sigma \\cdot \\sqrt{R + LT}$$\n$$S = 7 \\times 100 + 0.35 \\times 30 \\times \\sqrt{7} \\approx 728$$', result: 'Base stock level $S \\approx 728$ bottles' },
+          { insight: 'For periodic review with fill rate $f = 0.95$, solve for $z$ using the fill rate formula, then compute $S$.', dumb: 'The fill rate formula is trickier than the simple service level. It accounts for how much demand you actually satisfy, not just whether you stock out.', work: '**Formula** Fill rate $f = 1 - \\frac{\\sigma\\sqrt{VP} \\cdot L(z)}{\\lambda R}$\n\n$f = 1 - \\frac{\\sigma\\sqrt{VP} \\cdot L(z)}{\\lambda \\cdot R}$\n$0.95 = 1 - \\frac{30\\sqrt{7} \\cdot L(z)}{100 \\times 4}$\n$L(z) = 0.252 \\Rightarrow z \\approx 0.35$\n$$S = (R + LT) \\cdot \\lambda + z \\cdot \\sigma \\cdot \\sqrt{R + LT}$$\n$$S = 7 \\times 100 + 0.35 \\times 30 \\times \\sqrt{7} \\approx 728$$', result: 'Base stock level $S \\approx 728$ bottles' },
         ],
       },
     ],
@@ -272,7 +272,7 @@ export const examGuide = [
       {
         question: 'Compute the current batch size.',
         steps: [
-          { insight: '"10 day supply" directly gives the batch.', dumb: 'They literally told you: 10 days of ice cream. 10 days times 80 liters/day. Done.', work: '$Q_{\\text{current}} = 10 \\times 80 = 800$ liters', result: '$Q_{\\text{current}} = 800$ L' },
+          { insight: '"10 day supply" directly gives the batch.', dumb: 'They literally told you: 10 days of ice cream. 10 days times 80 liters/day. Done.', work: '**Direct** Batch = days $\\times$ daily demand\n\n$Q_{\\text{current}} = 10 \\times 80 = 800$ liters', result: '$Q_{\\text{current}} = 800$ L' },
         ],
       },
       {
@@ -296,7 +296,7 @@ export const examGuide = [
       {
         question: 'Stockout frequency with current batch size?',
         steps: [
-          { insight: 'Stockout probability per cycle $= 1\\%$. Multiply by cycles per year.', dumb: 'You\'re 99% safe each time you order. But you order 36 times a year, so that 1% adds up to roughly one bad day every 3 years.', work: '$\\text{Cycles/yr} = 29200/800 = 36.5$\n$\\text{Stockouts/yr} = 0.01 \\times 36.5 = 0.365$', result: '~1 stockout every 3 years' },
+          { insight: 'Stockout probability per cycle $= 1\\%$. Multiply by cycles per year.', dumb: 'You\'re 99% safe each time you order. But you order 36 times a year, so that 1% adds up to roughly one bad day every 3 years.', work: '**Formula** Stockouts/yr $= (1-SL) \\times D/Q$\n\n$\\text{Cycles/yr} = 29200/800 = 36.5$\n$\\text{Stockouts/yr} = 0.01 \\times 36.5 = 0.365$', result: '~1 stockout every 3 years' },
         ],
       },
       {
@@ -340,7 +340,7 @@ export const examGuide = [
       {
         question: 'Is the purchasing policy appropriate?',
         steps: [
-          { insight: 'Check cost balance. If ordering $\\gg$ holding, batch is too small.', dumb: 'If you\'re spending 18x more on deliveries than on storage, you\'re ordering way too often. Buy more at once!', work: '$SS = ROP - \\bar{D} \\times VP = 5 - 1 \\times 4 = 1$ kg\nMaintenance: $(SS + Q/2) \\times v \\times i = (1+5) \\times 5 \\times 0.20 = 6$/yr\nOrdering: $(365/10) \\times 3 = 109.50$/yr', result: 'Ordering cost (110) ≫ Holding cost (6). Batch is way too small!' },
+          { insight: 'Check cost balance. If ordering $\\gg$ holding, batch is too small.', dumb: 'If you\'re spending 18x more on deliveries than on storage, you\'re ordering way too often. Buy more at once!', work: '**Formula** $SS = ROP - \\bar{D}_1 \\times VP$\n\n$SS = ROP - \\bar{D} \\times VP = 5 - 1 \\times 4 = 1$ kg\nMaintenance: $(SS + Q/2) \\times v \\times i = (1+5) \\times 5 \\times 0.20 = 6$/yr\nOrdering: $(365/10) \\times 3 = 109.50$/yr', result: 'Ordering cost (110) ≫ Holding cost (6). Batch is way too small!' },
           { insight: 'Compute optimal $Q$ with EOQ.', dumb: 'EOQ says 47 kg. But wait — 100 cheese types times 47 kg each = 2.4 tons of cheese in a tiny store. The formula is right but reality disagrees.', work: '$$EOQ = \\sqrt{\\frac{2 \\times 365 \\times 3}{5 \\times 0.20}} = \\sqrt{2{,}190} \\approx 47 \\text{ kg}$$', result: '$EOQ = 47$ kg (vs current 10 kg). But with 100 cheese types × 47 kg = 2.4 tons in store — may not be practical. Plus cheese ordered every ~47 days may spoil.' },
         ],
       },
@@ -425,7 +425,7 @@ export const examGuide = [
         question: 'How many employees and sterilization units are needed for 100 kits/day?',
         steps: [
           { insight: 'Compute capacity per resource unit, then divide demand by capacity.', dumb: 'How many kits can one employee/scale/machine handle in a 4-hour shift? Divide available minutes by minutes per kit.', work: '**Per resource unit capacity (in 240 min shift)**\nEmployee: $240/40 = 6$ kits/shift\nScale: $240/10 = 24$ kits/shift\nSterilization: $240/60 = 4$ kits/shift', result: null },
-          { insight: 'Divide demand by per-unit capacity, round up.', dumb: 'Need 100 kits. Each employee does 6. That\'s 16.67 employees — but you can\'t hire 0.67 of a person, so round up to 17.', work: 'Employees: $\\lceil 100/6 \\rceil = \\lceil 16.67 \\rceil = 17$\nScales: $\\lceil 100/24 \\rceil = \\lceil 4.17 \\rceil = 5$\nSterilization units: $\\lceil 100/4 \\rceil = 25$', result: 'Need: **17 employees**, 5 scales, **25 sterilization units**' },
+          { insight: 'Divide demand by per-unit capacity, round up.', dumb: 'Need 100 kits. Each employee does 6. That\'s 16.67 employees — but you can\'t hire 0.67 of a person, so round up to 17.', work: '**Formula** Resources $= \\lceil D / \\text{cap} \\rceil$\n\nEmployees: $\\lceil 100/6 \\rceil = \\lceil 16.67 \\rceil = 17$\nScales: $\\lceil 100/24 \\rceil = \\lceil 4.17 \\rceil = 5$\nSterilization units: $\\lceil 100/4 \\rceil = 25$', result: 'Need: **17 employees**, 5 scales, **25 sterilization units**' },
           { insight: 'Sterilization is the bottleneck (needs most units). But 17 employees at 98% utilization is risky — add buffer.', dumb: 'You need 25 sterilization machines but only 17 employees. The machines are the constraint. And running at 98% with zero slack is asking for trouble.', work: '**Utilization check:** $\rho = \text{Demand} / (\text{Resources} \times \text{Capacity per resource})$\n\nWith exactly 17 employees: $\\rho = 100/(17 \\times 6) = 98\\%$ ← dangerous\nSafer: ~20 employees + ~30 sterilization units → $\\rho \\approx 83\\%$\n\nAlso: last kit enters sterilization at 11:00, finishes at 12:00.\nIf all kits must be FULLY done by 12:00, need even more units.', result: 'Recommended: ~20 employees, ~30 sterilization units for sustainable operations.' },
         ],
       },
@@ -458,8 +458,8 @@ export const examGuide = [
       {
         question: 'With 4 employees, will they meet the ≤ 3 min SLA? If not, how many operators needed?',
         steps: [
-          { insight: 'First try $S = 4$.', dumb: 'Four operators, 83% busy. Sounds manageable, but the math says customers wait almost 11 minutes on average. Way over the 3-minute promise.', work: '$\\mu = 60/20 = 3$ calls/hr per operator\n$\\text{Total capacity} = 3 \\times 4 = 12$ calls/hr\n$\\rho = 10/12 = 0.833 = 83.3\\%$\n\n$$L_q = \\frac{0.833^{\\sqrt{2 \\times 5}}}{1 - 0.833} \\times \\frac{1^2 + 0.25^2}{2} = 1.79$$\n$$W_q = \\frac{L_q}{\\lambda} = \\frac{1.79}{10} = 0.179 \\text{ hr} = 10.75 \\text{ min}$$', result: '$W_q = 10.75$ min → **FAILS** the 3-minute SLA' },
-          { insight: 'Try $S = 5$. See how dramatically performance improves with one extra server.', dumb: 'One more person drops the wait from 11 minutes to 2.3 minutes. That\'s a 78% improvement from just one hire. Queues are weird like that.', work: '$\\text{Total capacity} = 3 \\times 5 = 15$ calls/hr\n$\\rho = 10/15 = 0.667 = 66.7\\%$\n\n$$L_q = \\frac{0.667^{\\sqrt{2 \\times 6}}}{1 - 0.667} \\times \\frac{1^2 + 0.25^2}{2} = 0.39$$\n$$W_q = \\frac{0.39}{10} = 0.039 \\text{ hr} = 2.35 \\text{ min}$$', result: '$W_q = 2.35$ min → **MEETS** the SLA. Need **5 operators** (+1).' },
+          { insight: 'First try $S = 4$.', dumb: 'Four operators, 83% busy. Sounds manageable, but the math says customers wait almost 11 minutes on average. Way over the 3-minute promise.', work: '**Formula** $\\rho = \\lambda/(S\\mu)$, $L_q$, $W_q = L_q/\\lambda$\n\n$\\mu = 60/20 = 3$ calls/hr per operator\n$\\text{Total capacity} = 3 \\times 4 = 12$ calls/hr\n$\\rho = 10/12 = 0.833 = 83.3\\%$\n\n$$L_q = \\frac{0.833^{\\sqrt{2 \\times 5}}}{1 - 0.833} \\times \\frac{1^2 + 0.25^2}{2} = 1.79$$\n$$W_q = \\frac{L_q}{\\lambda} = \\frac{1.79}{10} = 0.179 \\text{ hr} = 10.75 \\text{ min}$$', result: '$W_q = 10.75$ min → **FAILS** the 3-minute SLA' },
+          { insight: 'Try $S = 5$. See how dramatically performance improves with one extra server.', dumb: 'One more person drops the wait from 11 minutes to 2.3 minutes. That\'s a 78% improvement from just one hire. Queues are weird like that.', work: '**Same formula, $S = 5$**\n\n$\\text{Total capacity} = 3 \\times 5 = 15$ calls/hr\n$\\rho = 10/15 = 0.667 = 66.7\\%$\n\n$$L_q = \\frac{0.667^{\\sqrt{2 \\times 6}}}{1 - 0.667} \\times \\frac{1^2 + 0.25^2}{2} = 0.39$$\n$$W_q = \\frac{0.39}{10} = 0.039 \\text{ hr} = 2.35 \\text{ min}$$', result: '$W_q = 2.35$ min → **MEETS** the SLA. Need **5 operators** (+1).' },
         ],
       },
     ],
@@ -540,7 +540,7 @@ export const examGuide = [
       {
         question: 'What causes truck delays and what should Maria do?',
         steps: [
-          { insight: 'Model the dock as a queueing system. Trucks arrive randomly, each takes 30 min of paperwork.', dumb: 'Trucks lining up at a single loading dock = classic queue. One dock processing paperwork for 30 min each while trucks arrive randomly.', work: '$\\lambda = 1.64$ trucks/hr, $\\mu = 2$ trucks/hr, $S = 1$\n$\\rho = 1.64/2 = 82\\%$\n$C_A = 1$ (natural arrivals), $C_S \\approx 0.3$ (limited variability)\n$$L_q = \\frac{0.82^{\\sqrt{2 \\times 2}}}{1 - 0.82} \\times \\frac{1 + 0.09}{2} \\approx 2.04 \\text{ trucks}$$\n$$W_q = 2.04 / 1.64 = 1.24 \\text{ hrs} = 74.6 \\text{ min}$$', result: null },
+          { insight: 'Model the dock as a queueing system. Trucks arrive randomly, each takes 30 min of paperwork.', dumb: 'Trucks lining up at a single loading dock = classic queue. One dock processing paperwork for 30 min each while trucks arrive randomly.', work: '**Formula** $\\rho = \\lambda/\\mu$, $L_q$, $W_q = L_q/\\lambda$\n\n$\\lambda = 1.64$ trucks/hr, $\\mu = 2$ trucks/hr, $S = 1$\n$\\rho = 1.64/2 = 82\\%$\n$C_A = 1$ (natural arrivals), $C_S \\approx 0.3$ (limited variability)\n$$L_q = \\frac{0.82^{\\sqrt{2 \\times 2}}}{1 - 0.82} \\times \\frac{1 + 0.09}{2} \\approx 2.04 \\text{ trucks}$$\n$$W_q = 2.04 / 1.64 = 1.24 \\text{ hrs} = 74.6 \\text{ min}$$', result: null },
           { insight: 'Average 75-minute delay is very troubling. Recommend reducing service time (online paperwork) or reducing variability before adding a second dock.', dumb: 'Truck drivers are waiting over an hour on average. Fix the paperwork process before building a second dock — it\'s cheaper and faster.', work: '**Improvement levers (in order):** Reduce $t_S$ → reduce $C_S$ → add capacity ($S$)\n\nPriority 1: Move paperwork online to cut $t_S$\nPriority 2: Standardize the process to reduce $C_S$\nPriority 3: Only if neither works, build a second dock ($S = 2$)', result: 'Average truck wait = 75 min. Fix the process first, add capacity second.' },
         ],
       },
@@ -575,7 +575,7 @@ export const examGuide = [
         steps: [
           { insight: 'Compute total cost for Kuehne+Nagel (sea freight).', dumb: 'Sea freight: cheap shipping but massive inventory sitting in Mexico. With a 48% holding rate, that inventory cost is brutal.', work: '**Formula:** $SS = z \times \sigma_1 \times \sqrt{VP}$\nHolding $= (Q/2 + SS) \times v \times i$\nTransport $= (D/Q) \times S$\n\n$Q_{KN} = 20{,}000$, $VP = 0.5$ months\n$SS_{KN} = 3 \\times 2{,}000 \\times \\sqrt{0.5} = 4{,}243$ units\nHolding: $(10{,}000 + 4{,}243) \\times 50 \\times 0.48 = 342k$/yr\nTransport: $(12 \\times 12{,}000 / 20{,}000) \\times 2{,}000 = 14{,}400$/yr\n**Total = 356.5k/yr**', result: null },
           { insight: 'Compute total cost for Aeromexico (air freight).', dumb: 'Air freight: shipping costs 3x more per pallet, but inventory drops so much that the total is 156k cheaper per year.', work: '**Same formulas, different inputs:**\n\n$Q_{AM} = 10{,}000$, $VP = 2/30$ months\n$SS_{AM} = 3 \\times 2{,}000 \\times \\sqrt{2/30} = 1{,}549$ units\nHolding: $(5{,}000 + 1{,}549) \\times 50 \\times 0.48 = 157k$/yr\nTransport: $(12 \\times 12{,}000 / 10{,}000) \\times 3{,}000 = 43.2k$/yr\n**Total = 200k/yr**', result: '**Aeromexico saves ~156k/yr.** Faster delivery + smaller batches dramatically reduce inventory costs, more than offsetting the higher shipping price.' },
-          { insight: 'In-transit inventory further favors air. Use Little\'s Law.', dumb: 'Stuff on a boat for 15 days is still your inventory. By air it\'s only 2 days in transit. That\'s 7x less capital locked up on the move.', work: 'Sea in-transit: $\\lambda \\times LT = (12 \\times 12{,}000/30) \\times 15 = 6{,}000$ units\nAir in-transit: $(12 \\times 12{,}000/30) \\times 2 = 800$ units', result: 'Air freight has 7x less in-transit inventory, making it even more appealing.' },
+          { insight: 'In-transit inventory further favors air. Use Little\'s Law.', dumb: 'Stuff on a boat for 15 days is still your inventory. By air it\'s only 2 days in transit. That\'s 7x less capital locked up on the move.', work: '**Formula** In-transit $= \\lambda \\times LT$ (Little\'s Law)\n\nSea in-transit: $\\lambda \\times LT = (12 \\times 12{,}000/30) \\times 15 = 6{,}000$ units\nAir in-transit: $(12 \\times 12{,}000/30) \\times 2 = 800$ units', result: 'Air freight has 7x less in-transit inventory, making it even more appealing.' },
         ],
       },
     ],
@@ -640,7 +640,7 @@ export const examGuide = [
         question: 'Should Elsa accept the industrial partnership?',
         steps: [
           { insight: 'The financial opportunity is enormous. Calculate the potential.', dumb: 'The partnership could generate billions. You\'d be crazy to say no. But you\'d also be crazy to give up 4 reactors without a plan B.', work: '**Formula:** Revenue $= \text{units/yr per reactor} \times \text{reactors} \times \text{margin}$\n\nBIORISAN revenue potential: $17.52M \\times 4 \\times 80 = 5.6B$/yr (before profit split with LC)\nEven a 20% share = $1.12B$/yr — impossible to pass up.', result: null },
-          { insight: 'But the capacity risk is severe. 91% utilization with no buffer is unsustainable.', dumb: 'Going from 82% to 91% utilization means zero buffer. One reactor breaks down and you can\'t fill orders for your flagship product.', work: 'Current: 10 reactors, $\\rho = 82\\%$, 3 spare reactors for emergencies.\nProposed: 9 reactors, $\\rho = 91\\%$, 0 spare. No room for maintenance, cleaning, or demand spikes.', result: null },
+          { insight: 'But the capacity risk is severe. 91% utilization with no buffer is unsustainable.', dumb: 'Going from 82% to 91% utilization means zero buffer. One reactor breaks down and you can\'t fill orders for your flagship product.', work: '**Formula** $\\rho = D / \\text{Capacity}$\n\nCurrent: 10 reactors, $\\rho = 82\\%$, 3 spare reactors for emergencies.\nProposed: 9 reactors, $\\rho = 91\\%$, 0 spare. No room for maintenance, cleaning, or demand spikes.', result: null },
           { insight: 'Accept but mitigate: order new reactors immediately and phase in BIORISAN gradually.', dumb: 'Say yes to the money, but immediately order new reactors and phase in slowly. Don\'t put all your eggs in the partnership basket on day one.', work: '**Action plan**\n1. Accept LC\'s proposal\n2. Order 3+ new reactors immediately (30M each, 1-year delivery)\n3. Phase in: dedicate 1-2 reactors to BIORISAN in year 1\n4. Full 4-reactor commitment in year 2, after new reactors arrive\n5. Protect BIOTOPIN supply chain — it is the flagship product', result: 'Accept the deal — too profitable to refuse. But order new reactors NOW and phase in production gradually to protect BIOTOPIN.' },
         ],
       },
@@ -676,25 +676,25 @@ export const examGuide = [
       {
         question: 'Analyze the current situation (4 engineers).',
         steps: [
-          { insight: 'Standard queueing analysis with $S = 4$.', dumb: 'Four engineers, 75% busy, 17-minute average wait. That\'s 17 minutes where a printer could be silently overheating toward a fire.', work: '$\\rho = 3/4 = 75\\%$, $C_A = 1$, $C_S = 0.25$\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 5}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.856$$\n$$W_q = 0.856/3 = 0.285 \\text{ hr} = 17.1 \\text{ min}$$\n$W = 17.1 + 60 = 77.1$ min', result: 'Average total time = 77 min — exceeds the 1-hour fire danger threshold. This is risky.' },
+          { insight: 'Standard queueing analysis with $S = 4$.', dumb: 'Four engineers, 75% busy, 17-minute average wait. That\'s 17 minutes where a printer could be silently overheating toward a fire.', work: '**Formula** $\\rho = \\lambda/(S\\mu)$, $L_q$, $W_q$\n\n$\\rho = 3/4 = 75\\%$, $C_A = 1$, $C_S = 0.25$\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 5}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.856$$\n$$W_q = 0.856/3 = 0.285 \\text{ hr} = 17.1 \\text{ min}$$\n$W = 17.1 + 60 = 77.1$ min', result: 'Average total time = 77 min — exceeds the 1-hour fire danger threshold. This is risky.' },
         ],
       },
       {
         question: 'Alternative A: Add 1 engineer per shift (S = 5).',
         steps: [
-          { insight: 'Same arrival/service, just one more server.', dumb: 'One extra engineer drops the wait from 17 min to 4.5 min. The total time (64 min) is still above the fire-danger threshold but much safer.', work: '$\\rho = 3/5 = 60\\%$\n$$L_q = \\frac{0.6^{\\sqrt{2 \\times 6}}}{1-0.6} \\times \\frac{1 + 0.0625}{2} = 0.226$$\n$$W_q = 0.226/3 = 0.075 \\text{ hr} = 4.5 \\text{ min}$$\n$W = 4.5 + 60 = 64.5$ min', result: '$W_q$ drops from 17 min to 4.5 min. Total time 64.5 min — still above 1 hour but much safer.' },
+          { insight: 'Same arrival/service, just one more server.', dumb: 'One extra engineer drops the wait from 17 min to 4.5 min. The total time (64 min) is still above the fire-danger threshold but much safer.', work: '**Same formula, $S = 5$**\n\n$\\rho = 3/5 = 60\\%$\n$$L_q = \\frac{0.6^{\\sqrt{2 \\times 6}}}{1-0.6} \\times \\frac{1 + 0.0625}{2} = 0.226$$\n$$W_q = 0.226/3 = 0.075 \\text{ hr} = 4.5 \\text{ min}$$\n$W = 4.5 + 60 = 64.5$ min', result: '$W_q$ drops from 17 min to 4.5 min. Total time 64.5 min — still above 1 hour but much safer.' },
         ],
       },
       {
         question: 'Alternative B: Replace engineers with a robot.',
         steps: [
-          { insight: 'Robot: $S = 1$, $t_S = 10$ min ($\\mu = 6$/hr), $C_S = 0$ (deterministic). Same arrivals.', dumb: 'One robot does in 10 min what four humans do in 60. Zero variability means the queue barely forms. Total resolution time: 15 minutes.', work: '$\\rho = 3/6 = 50\\%$\n$$L_q = \\frac{0.5^{\\sqrt{2 \\times 2}}}{1-0.5} \\times \\frac{1 + 0}{2} = 0.25$$\n$$W_q = 0.25/3 = 0.083 \\text{ hr} = 5 \\text{ min}$$\n$W = 5 + 10 = 15$ min', result: 'Total time = 15 min — dramatically better. And robot costs 6 engineers but replaces 4 per shift (12 total for 24/7). Robot is cheaper AND faster.' },
+          { insight: 'Robot: $S = 1$, $t_S = 10$ min ($\\mu = 6$/hr), $C_S = 0$ (deterministic). Same arrivals.', dumb: 'One robot does in 10 min what four humans do in 60. Zero variability means the queue barely forms. Total resolution time: 15 minutes.', work: '**Robot** $S=1$, $\\mu=6$, $C_S=0$\n\n$\\rho = 3/6 = 50\\%$\n$$L_q = \\frac{0.5^{\\sqrt{2 \\times 2}}}{1-0.5} \\times \\frac{1 + 0}{2} = 0.25$$\n$$W_q = 0.25/3 = 0.083 \\text{ hr} = 5 \\text{ min}$$\n$W = 5 + 10 = 15$ min', result: 'Total time = 15 min — dramatically better. And robot costs 6 engineers but replaces 4 per shift (12 total for 24/7). Robot is cheaper AND faster.' },
         ],
       },
       {
         question: 'Alternative C: Pool all 10 European centers.',
         steps: [
-          { insight: 'Same 4 engineers/center but all 10 centers share one queue. $S = 40$, $\\lambda = 30$/hr.', dumb: 'Instead of 10 separate teams of 4, make one team of 40. Same people, same utilization, but the wait drops from 17 minutes to 19 SECONDS. This is pooling magic.', work: '$\\rho = 30/40 = 75\\%$ (same as before!)\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 41}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.157$$\n$$W_q = 0.157/30 = 0.005 \\text{ hr} = 19 \\text{ seconds}$$\n$W = 0.3 + 60 = 60.3$ min', result: 'Wait drops from 17 min to **19 seconds** — no extra cost! Just let any engineer serve any printer across Europe. Same utilization, vastly better performance.' },
+          { insight: 'Same 4 engineers/center but all 10 centers share one queue. $S = 40$, $\\lambda = 30$/hr.', dumb: 'Instead of 10 separate teams of 4, make one team of 40. Same people, same utilization, but the wait drops from 17 minutes to 19 SECONDS. This is pooling magic.', work: '**Pooling** $S=40$, $\\lambda=30$\n\n$\\rho = 30/40 = 75\\%$ (same as before!)\n$$L_q = \\frac{0.75^{\\sqrt{2 \\times 41}}}{1-0.75} \\times \\frac{1 + 0.0625}{2} = 0.157$$\n$$W_q = 0.157/30 = 0.005 \\text{ hr} = 19 \\text{ seconds}$$\n$W = 0.3 + 60 = 60.3$ min', result: 'Wait drops from 17 min to **19 seconds** — no extra cost! Just let any engineer serve any printer across Europe. Same utilization, vastly better performance.' },
         ],
       },
     ],
