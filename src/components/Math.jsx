@@ -1,5 +1,19 @@
 import React from 'react';
-import { InlineMath, BlockMath } from 'react-katex';
+import katex from 'katex';
+
+function renderKatex(math, displayMode = false) {
+    try {
+        const html = katex.renderToString(math, {
+            displayMode,
+            throwOnError: false,
+            strict: 'ignore',
+            trust: true,
+        });
+        return <span dangerouslySetInnerHTML={{ __html: html }} />;
+    } catch (e) {
+        return <span style={{ color: 'var(--red)', fontSize: '12px' }}>{e.message}</span>;
+    }
+}
 
 export function renderWithMath(text) {
     if (typeof text !== 'string') return text;
@@ -12,12 +26,12 @@ export function renderWithMath(text) {
         if (part.startsWith('$$') && part.endsWith('$$')) {
             return (
                 <div className="math-block-container" key={i}>
-                    <BlockMath math={part.slice(2, -2)} renderError={(error) => <span style={{color:'var(--red)', fontSize: '12px'}}>{error.message}</span>} />
+                    {renderKatex(part.slice(2, -2), true)}
                 </div>
             );
         }
         if (part.startsWith('$') && part.endsWith('$')) {
-            return <InlineMath key={i} math={part.slice(1, -1).trim()} renderError={(error) => <span style={{color:'var(--red)', fontSize: '12px'}}>{error.message}</span>} />;
+            return <React.Fragment key={i}>{renderKatex(part.slice(1, -1).trim(), false)}</React.Fragment>;
         }
 
         // Convert newlines and **bold** in the remaining text
