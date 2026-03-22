@@ -520,6 +520,28 @@ code {
   font-size: 1.05em;
 }
 
+.cc-symbols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 8px 0 10px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+}
+
+.cc-sym {
+  font-family: var(--fb);
+  font-size: 12px;
+  color: var(--tx2);
+  line-height: 1.6;
+}
+
+.cc-sym .katex {
+  font-size: 0.95em;
+}
+
 .cc-official .math-block-container {
   margin: 8px 0;
 }

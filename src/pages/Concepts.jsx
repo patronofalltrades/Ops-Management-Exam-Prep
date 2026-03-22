@@ -38,7 +38,7 @@ export default function Concepts() {
   );
 }
 
-function ConceptCard({ title, official, dumb, example }) {
+function ConceptCard({ title, official, dumb, example, symbols }) {
   const [open, setOpen] = useState(false);
   const [openDumb, setOpenDumb] = useState(false);
   const [openExample, setOpenExample] = useState(false);
@@ -55,6 +55,12 @@ function ConceptCard({ title, official, dumb, example }) {
           <div className="cc-official">
             {renderWithMath(official)}
           </div>
+
+          {symbols && (
+            <div className="cc-symbols">
+              {symbols.map((s, i) => <span key={i} className="cc-sym">{renderWithMath(s)}</span>)}
+            </div>
+          )}
 
           {dumb && (
             <div className="cc-collapse">

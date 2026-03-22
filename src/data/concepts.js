@@ -25,6 +25,7 @@ export const conceptData = [
                 type: 'card',
                 title: "Utilization (ρ) — how busy are the servers?",
                 official: "Utilization measures what fraction of available capacity is being used:\n$$ \\rho = \\frac{\\lambda}{S \\times \\mu} $$\n$\\rho = 0.75$ means servers are busy 75% of the time and idle 25%.\n\nIt must be less than 1 for the system to be stable — otherwise the queue grows forever.",
+                symbols: ['$\\rho$ = utilization (fraction, 0 to 1)', '$\\lambda$ = arrival rate (customers per hour)', '$S$ = number of servers', '$\\mu$ = service rate per server (customers per hour)'],
                 dumb: "If a barista can make 10 coffees an hour and 8 customers show up, she's busy 80% of the time. If 12 show up? Disaster. The line never ends. You NEED slack.",
                 example: {
                     story: "The Catalan distributor Serveis Hospitalaris SL receives an average of 10 phone calls per hour from hospitals placing orders. They currently have 4 operators, and each call takes about 20 minutes to complete (with a standard deviation of 5 minutes). Medcorp requires average waiting time not to exceed 3 minutes.",
@@ -44,6 +45,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Measuring variability: the Coefficient of Variation (CV)",
+                symbols: ['$C_A$ = coefficient of variation of arrivals', '$C_S$ = coefficient of variation of service', '$\\sigma_A$ = std dev of inter-arrival time', '$\\sigma_S$ = std dev of service time', '$t_A$ = avg inter-arrival time', '$t_S$ = avg service time'],
                 official: "Variability is measured by the Coefficient of Variation — standard deviation divided by the mean:\n\nFor arrivals:\n$$ C_A = \\frac{\\sigma_A}{t_A} $$\nFor service:\n$$ C_S = \\frac{\\sigma_S}{t_S} $$\n\nwhere $t_A$ is the average inter-arrival time and $t_S$ is the average service time.\n\nCommon cases to recognize immediately:\n• \"Poisson arrivals\" or \"exponential inter-arrivals\" → $C_A = 1$\n• \"Exponential service times\" → $C_S = 1$\n• \"Deterministic\" or \"exactly X minutes\" → $C_S = 0$\n• Given $\\sigma_S$ and $t_S$ → compute $C_S = \\sigma_S / t_S$\n• No variability info given → assume $C_A = C_S = 1$ (M/M/1 default)",
                 dumb: "CV tells you how unpredictable something is. If every customer takes exactly 5 minutes (CV=0), life is beautiful. If some take 1 minute and others take 30, life is chaos. The exam gives you clues: 'Poisson' means CV=1, 'deterministic' means CV=0.",
                 example: {
@@ -85,6 +87,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Putting it all together: Lq",
+                symbols: ['$L_q$ = avg number of customers waiting in queue', '$\\rho$ = utilization', '$S$ = number of servers', '$C_A$ = CV of arrivals', '$C_S$ = CV of service'],
                 official: "Combines utilization and variability:\n$$ L_q = \\frac{\\rho^{\\sqrt{2(S+1)}}}{1 - \\rho} \\times \\frac{C_A^2 + C_S^2}{2} $$\nThree pieces:\n1. $\\rho^{\\sqrt{2(S+1)}}$ — the \"pressure\" from being busy\n2. $\\frac{1}{1-\\rho}$ — the explosion factor as $\\rho \\to 1$\n3. $\\frac{C_A^2 + C_S^2}{2}$ — the variability multiplier",
                 dumb: "Queue length = (how busy you are) times (how unpredictable things are). High utilization + high variability = disaster. Low utilization OR low variability = manageable.",
                 example: {
@@ -96,6 +99,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "From Lq to everything else",
+                symbols: ['$W_q$ = avg wait time in queue', '$W$ = total time in system', '$L$ = avg number in system', '$PCE$ = process cycle efficiency', '$t_S$ = avg service time $= 1/\\mu$'],
                 official: "Once you have $L_q$, the rest is mechanical:\n\n• Wait time: $W_q = L_q / \\lambda$\n• Total time: $W = W_q + t_S$\n• Total in system: $L = L_q + \\rho \\times S$\n• Efficiency: $PCE = t_S / W$",
                 dumb: "Once you know how many people are in line, you can figure out everything else. Divide by arrival rate to get wait time. Add service time for total. Usually depressingly small — most services are below 15% efficiency.",
                 example: {
@@ -184,6 +188,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "WIP = TH × TT — the universal connector",
+                symbols: ['WIP = work in progress (units currently in system)', 'TH = throughput (units processed per time period)', 'TT = throughput time (time one unit spends in system)'],
                 official: "Little's Law connects three quantities:\n$$ \\text{WIP} = \\text{TH} \\times \\text{TT} $$\nUniversal — works for ANY stable system with NO assumptions. If you know any two, find the third.",
                 dumb: "If you throw 10 burgers into the fryer every minute and each takes 2 minutes to cook, there are 20 burgers in the fryer right now. Math is magic.",
                 example: {
@@ -203,6 +208,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Tracking WIP over time when inflow ≠ outflow",
+                symbols: ['$\\text{WIP}_{end}$ = inventory at end of period', '$\\text{WIP}_{start}$ = inventory at start', 'Inflow = units entering per period', 'Outflow = units leaving per period', 'Time = duration of the period'],
                 official: "When input rate $\\neq$ output rate, WIP changes:\n$$ \\text{WIP}_{end} = \\text{WIP}_{start} + (\\text{Inflow} - \\text{Outflow}) \\times \\text{Time} $$",
                 dumb: "If more stuff comes in than goes out, stuff piles up. If 600 orders arrive per day but you process 500, after 5 days you have 500 orders piling up.",
                 example: {
@@ -246,6 +252,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Decision 1: How much to order? → EOQ",
+                symbols: ['$D$ = annual demand (units per year)', '$S$ = fixed cost per order', '$v$ = unit value (price per unit)', '$i$ = annual holding cost rate (as decimal, e.g. 0.30)'],
                 official: "Balances ordering cost (favors large batches) against holding cost (favors small batches). At the optimum, ordering cost $\\approx$ holding cost.\n$$ EOQ = \\sqrt{\\frac{2DS}{vi}} $$\nThe cost curve is very FLAT around EOQ — a 10% error in $Q$ only increases costs by ~0.5%.",
                 dumb: "If you order too much, your warehouse is full and cash is tied up. If you order too little, you're constantly paying delivery fees. EOQ finds the sweet spot. And if you guess wrong by a bit, it barely matters.",
                 example: {
@@ -265,6 +272,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Decision 2: When to order? → ROP and Safety Stock",
+                symbols: ['$ROP$ = reorder point (units)', '$\\bar{D}_1$ = avg demand per period', '$VP$ = vulnerable period (LT or LT+R)', '$SS$ = safety stock (units)', '$z$ = safety factor from z-table', '$\\sigma_1$ = std dev of one period demand'],
                 official: "$ROP = \\bar{D}_1 \\times VP + SS$\n\nSafety stock: $SS = z \\times \\sigma_1 \\times \\sqrt{VP}$\n\nWhere $z$ comes from the service level (99% → $z = 2.33$).\n\nWithout safety stock, you stock out ~50% of cycles.",
                 dumb: "You order beer when there's still a 6-pack left in the fridge. That 6-pack is your safety stock — it covers you in case friends drink faster than expected before the delivery arrives.",
                 example: {
@@ -291,6 +299,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Continuous review: VP = LT",
+                symbols: ['$VP$ = vulnerable period', '$LT$ = lead time (days from order to delivery)'],
                 official: "If you monitor inventory constantly, you order the instant it hits ROP. Exposure = lead time only.\n$VP = LT$",
                 dumb: "Your smart fridge texts you the second you're low on milk. You only stress during the 2 days the milk is in the mail.",
                 example: {
@@ -302,6 +311,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Periodic review: VP = LT + R",
+                symbols: ['$VP$ = vulnerable period', '$LT$ = lead time', '$R$ = review period (days between inventory checks)'],
                 official: "If you check every $R$ periods, you could miss a demand spike between reviews.\n$VP = LT + R$\n\nThe 2024 exam: daily review ($R = 1$) with $LT = 7$ → $VP = 8$.",
                 dumb: "You only check the fridge on Sundays. If you run low on Monday, you won't realize until next Sunday PLUS the delivery time. You need to hoard way more milk.",
                 example: {
@@ -321,6 +331,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "When you only get one chance to order",
+                symbols: ['$\\alpha$ = critical fractile (optimal service level)', '$C_u = p - c$ = underage cost (lost profit per unit short)', '$C_o = c - v$ = overage cost (loss per unsold unit)', '$p$ = selling price', '$c$ = cost per unit', '$v$ = salvage value of unsold units', '$Q^*$ = optimal order quantity', '$\\mu$ = mean demand', '$\\sigma$ = std dev of demand', '$z^*$ = $\\Phi^{-1}(\\alpha)$ from z-table'],
                 official: "One ordering opportunity, uncertain demand.\n\n$C_u = p - c$ (underage cost)\n$C_o = c - v$ (overage cost)\n\n$$\\alpha = \\frac{C_u}{C_u + C_o}$$\n$$Q^* = \\mu + z^* \\times \\sigma$$",
                 dumb: "If leftover Christmas trees go in the trash (high overage cost), buy fewer. If missing a sale means huge lost profit (high underage cost), over-order aggressively.",
                 example: {
