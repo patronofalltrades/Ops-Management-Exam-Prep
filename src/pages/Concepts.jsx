@@ -1,6 +1,14 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { conceptData } from '../data/concepts';
 import { renderWithMath } from '../components/Math';
+
+const UtilizationCurve = lazy(() => import('../components/diagrams/UtilizationCurve'));
+const EOQCostCurve = lazy(() => import('../components/diagrams/EOQCostCurve'));
+
+const DIAGRAMS = {
+  'utilization-curve': UtilizationCurve,
+  'eoq-cost-curve': EOQCostCurve,
+}
 
 export default function Concepts() {
   return (
@@ -18,6 +26,10 @@ export default function Concepts() {
             if (item.type === 'tip') return <Tip key={idj}>{item.content}</Tip>;
             if (item.type === 'warn') return <Warn key={idj}>{item.content}</Warn>;
             if (item.type === 'card') return <ConceptCard key={idj} {...item} />;
+            if (item.type === 'diagram') {
+              const Comp = DIAGRAMS[item.id];
+              return Comp ? <Suspense key={idj} fallback={<div style={{padding:20,textAlign:'center',color:'var(--tx3)'}}>Loading chart...</div>}><Comp /></Suspense> : null;
+            }
             return null;
           })}
         </div>

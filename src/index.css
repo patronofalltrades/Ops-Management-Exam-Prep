@@ -975,6 +975,140 @@ code {
   display: block;
 }
 
+/* ═══ Interactive Diagrams ═══ */
+.diagram-card {
+  border: 1px solid var(--bd);
+  border-radius: var(--r2);
+  padding: 20px;
+  margin: 18px 0;
+  background: var(--bg3);
+}
+
+.diagram-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.diagram-desc {
+  font-size: 13px;
+  color: var(--tx2);
+  margin: 0 0 14px;
+}
+
+.diagram-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.diagram-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tx2);
+}
+
+.diagram-label select,
+.diagram-label input {
+  padding: 5px 8px;
+  border: 1px solid var(--bd);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--fm);
+  font-size: 12px;
+  min-width: 80px;
+}
+
+.diagram-label select:focus,
+.diagram-label input:focus {
+  outline: none;
+  border-color: var(--ac);
+}
+
+.diagram-toggle-group {
+  display: flex;
+  gap: 2px;
+}
+
+.diagram-toggle {
+  padding: 4px 10px;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  color: var(--tx2);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--fm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.diagram-toggle:first-child { border-radius: 5px 0 0 5px; }
+.diagram-toggle:last-child { border-radius: 0 5px 5px 0; }
+
+.diagram-toggle.active {
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #fff;
+}
+
+.diagram-toggle:hover:not(.active) {
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+.diagram-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.diagram-slider-label {
+  font-family: var(--fm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tx);
+  min-width: 120px;
+}
+
+.diagram-slider {
+  flex: 1;
+  accent-color: var(--ac);
+  height: 6px;
+}
+
+.diagram-chart-wrap {
+  height: 280px;
+  margin-bottom: 12px;
+}
+
+.diagram-readout {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--bgc);
+  border-radius: var(--r);
+  font-family: var(--fm);
+  font-size: 13px;
+  color: var(--tx);
+}
+
+.diagram-readout strong {
+  color: var(--ac);
+}
+
+@media (max-width: 700px) {
+  .diagram-chart-wrap { height: 220px; }
+  .diagram-controls { gap: 6px; }
+  .diagram-readout { font-size: 11px; gap: 10px; }
+}
+
 /* ═══ Tables ═══ */
 .tw {
   overflow-x: auto;

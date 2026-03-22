@@ -105,6 +105,10 @@ export const conceptData = [
                 }
             },
             {
+                type: 'diagram',
+                id: 'utilization-curve'
+            },
+            {
                 type: 'heading',
                 title: "Pooling Principle"
             },
@@ -253,6 +257,10 @@ export const conceptData = [
             {
                 type: 'tip',
                 content: "Quick audit trick: if ordering cost >> holding cost, your batch is too small. If holding >> ordering, your batch is too large. At EOQ, they should be roughly equal."
+            },
+            {
+                type: 'diagram',
+                id: 'eoq-cost-curve'
             },
             {
                 type: 'card',
