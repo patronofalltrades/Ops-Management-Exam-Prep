@@ -100,7 +100,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "From Lq to everything else",
-                symbols: ['$W_q$ = avg wait time in queue', '$W$ = total time in system', '$L$ = avg number in system', '$PCE$ = process cycle efficiency', '$t_S$ = avg service time $= 1/\\mu$'],
+                symbols: ['$L_q$ = avg number waiting in queue', '$W_q$ = avg wait time in queue', '$\\lambda$ = arrival rate (customers/hr)', '$W$ = total time in system (wait + service)', '$t_S$ = avg service time $= 1/\\mu$', '$L$ = avg number in entire system (queue + being served)', '$\\rho$ = utilization', '$S$ = number of servers', '$PCE$ = process cycle efficiency (fraction of time in actual service)'],
                 official: "Once you have $L_q$, the rest is mechanical:\n\n• Wait time: $W_q = L_q / \\lambda$\n• Total time: $W = W_q + t_S$\n• Total in system: $L = L_q + \\rho \\times S$\n• Efficiency: $PCE = t_S / W$",
                 dumb: "Once you know how many people are in line, you can figure out everything else. Divide by arrival rate to get wait time. Add service time for total. Usually depressingly small — most services are below 15% efficiency.",
                 example: {
