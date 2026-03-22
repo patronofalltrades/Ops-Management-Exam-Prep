@@ -938,6 +938,43 @@ code {
   background: var(--redl);
 }
 
+/* ── Flashcard all-time stats ── */
+.fc-alltime {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.fc-alltime-item {
+  text-align: center;
+  padding: 10px 8px;
+  background: var(--bgc);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+}
+
+.fc-alltime-num {
+  display: block;
+  font-family: var(--fm);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tx);
+}
+
+.fc-alltime-green { color: var(--green); }
+.fc-alltime-red { color: var(--red); }
+
+.fc-alltime-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tx3);
+  margin-top: 2px;
+  display: block;
+}
+
 /* ═══ Tables ═══ */
 .tw {
   overflow-x: auto;
@@ -1287,6 +1324,120 @@ td.hl {
 .eg-reveal-all-btn:hover {
   border-color: var(--ac);
   color: var(--ac);
+}
+
+.eg-questions-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.eg-practice-toggle {
+  background: none;
+  border: 1px solid var(--bd);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tx3);
+  cursor: pointer;
+  font-family: var(--fb);
+  transition: all 0.15s ease;
+}
+
+.eg-practice-toggle:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.eg-practice-active {
+  background: var(--purplel);
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.eg-practice-area {
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 16px;
+}
+
+.eg-practice-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--fm);
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 8px;
+}
+
+.eg-practice-textarea:focus {
+  outline: none;
+  border-color: var(--purple);
+}
+
+.eg-practice-textarea::placeholder {
+  color: var(--tx3);
+}
+
+.eg-practice-reveal-btn {
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--fb);
+  transition: background 0.15s;
+}
+
+.eg-practice-reveal-btn:hover:not(:disabled) {
+  background: var(--ac2);
+}
+
+.eg-practice-reveal-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.eg-sidebyside {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  animation: egFadeIn 0.3s ease;
+}
+
+.eg-attempt-panel {
+  padding: 12px;
+  background: var(--purplel);
+  border: 1px solid var(--purple);
+  border-radius: var(--r);
+}
+
+.eg-attempt-content {
+  font-family: var(--fm);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--tx);
+  margin-top: 4px;
+}
+
+.eg-solution-panel {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .eg-sidebyside {
+    grid-template-columns: 1fr;
+  }
 }
 
 .eg-question-block {

@@ -87,6 +87,9 @@ function GuideCard({ problem }) {
   const [showStoryline, setShowStoryline] = useState(true)
   const [showFramework, setShowFramework] = useState(true)
   const [openQuestions, setOpenQuestions] = useState({})
+  const [practiceMode, setPracticeMode] = useState(false)
+  const [attempts, setAttempts] = useState({})
+  const [revealed, setRevealed] = useState({})
   const badgeClass = `badge badge-${problem.badgeType || 'queue'}`
 
   const toggle = useCallback(() => {
@@ -96,6 +99,9 @@ function GuideCard({ problem }) {
       setShowStoryline(true)
       setShowFramework(true)
       setOpenQuestions({})
+      setPracticeMode(false)
+      setAttempts({})
+      setRevealed({})
     }
   }, [open])
 
@@ -178,9 +184,17 @@ function GuideCard({ problem }) {
           <div className="eg-questions-section">
             <div className="eg-questions-header">
               <span className="eg-label">Questions & Solutions</span>
-              <button className="eg-reveal-all-btn" onClick={openAllQuestions}>
-                Reveal All
-              </button>
+              <div className="eg-questions-actions">
+                <button
+                  className={`eg-practice-toggle${practiceMode ? ' eg-practice-active' : ''}`}
+                  onClick={() => setPracticeMode(p => !p)}
+                >
+                  {practiceMode ? '✎ Practice ON' : '✎ Practice'}
+                </button>
+                <button className="eg-reveal-all-btn" onClick={openAllQuestions}>
+                  Reveal All
+                </button>
+              </div>
             </div>
 
             {problem.questionSteps.map((qs, qi) => (
@@ -196,31 +210,66 @@ function GuideCard({ problem }) {
 
                 {openQuestions[qi] && (
                   <div className="eg-question-solution">
-                    {qs.steps.map((step, si) => (
-                      <div key={si} className="eg-sol-step">
-                        <div className="eg-sol-step-header">
-                          <span className="eg-sol-step-num">{si + 1}</span>
-                          <div className="eg-sol-insight">
-                            <div className="eg-math-text">{renderWithMath(step.insight)}</div>
-                          </div>
-                        </div>
-
-                        {step.work && (
-                          <div className="eg-sol-work">
-                            <span className="eg-label">Work</span>
-                            <div className="eg-sol-work-content eg-math-text">
-                              {renderWithMath(step.work)}
-                            </div>
-                          </div>
-                        )}
-
-                        {step.result && (
-                          <div className="eg-sol-result">
-                            <div className="eg-math-text">{renderWithMath(step.result)}</div>
-                          </div>
-                        )}
+                    {/* Practice mode: textarea before solution */}
+                    {practiceMode && !revealed[qi] && (
+                      <div className="eg-practice-area">
+                        <span className="eg-label">Your attempt</span>
+                        <textarea
+                          className="eg-practice-textarea"
+                          placeholder="Write your solution here before revealing the answer..."
+                          value={attempts[qi] || ''}
+                          onChange={e => setAttempts(a => ({ ...a, [qi]: e.target.value }))}
+                          rows={5}
+                        />
+                        <button
+                          className="eg-practice-reveal-btn"
+                          onClick={() => setRevealed(r => ({ ...r, [qi]: true }))}
+                          disabled={!(attempts[qi] || '').trim()}
+                        >
+                          Check Answer
+                        </button>
                       </div>
-                    ))}
+                    )}
+
+                    {/* Show solution: side-by-side if practice mode + revealed */}
+                    {(!practiceMode || revealed[qi]) && (
+                      <div className={revealed[qi] && attempts[qi] ? 'eg-sidebyside' : ''}>
+                        {revealed[qi] && attempts[qi] && (
+                          <div className="eg-attempt-panel">
+                            <span className="eg-label">Your attempt</span>
+                            <div className="eg-attempt-content">{attempts[qi]}</div>
+                          </div>
+                        )}
+                        <div className={revealed[qi] && attempts[qi] ? 'eg-solution-panel' : ''}>
+                          {revealed[qi] && attempts[qi] && <span className="eg-label">Solution</span>}
+                          {qs.steps.map((step, si) => (
+                            <div key={si} className="eg-sol-step">
+                              <div className="eg-sol-step-header">
+                                <span className="eg-sol-step-num">{si + 1}</span>
+                                <div className="eg-sol-insight">
+                                  <div className="eg-math-text">{renderWithMath(step.insight)}</div>
+                                </div>
+                              </div>
+
+                              {step.work && (
+                                <div className="eg-sol-work">
+                                  <span className="eg-label">Work</span>
+                                  <div className="eg-sol-work-content eg-math-text">
+                                    {renderWithMath(step.work)}
+                                  </div>
+                                </div>
+                              )}
+
+                              {step.result && (
+                                <div className="eg-sol-result">
+                                  <div className="eg-math-text">{renderWithMath(step.result)}</div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
