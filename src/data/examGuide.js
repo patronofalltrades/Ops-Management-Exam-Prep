@@ -518,7 +518,25 @@ export const examGuide = [
     title: 'Part I: Central Warehouse Operations',
     badge: 'Capacity + Inventory + Queueing',
     badgeType: 'queue',
-    originalExcerpt: `NEWBIO produces BIOTOPIN via a 20-day biological process in 10 reactors of 50,000L each (96% yield). Bottled in 50ml syringes. Yearly sales: Normal with mean 144M units, std dev 7.75M. Central warehouse next to plant, single dock, 30 min paperwork per truck. Min order = 10,000 units. Price = 50/unit, COGS = 10/unit.\n\nMaria Freud (COO) faces: (1) inventory mismatch — sometimes too much, sometimes too little; (2) truck drivers complaining about delays.\n\nWhat inventory policy do you recommend? What causes truck delays and what should Maria do?`,
+    originalExcerpt: `NEWBIO is a pharmaceutical company based in Austria, specializing in the manufacturing of generic drugs. NEWBIO has started manufacturing biological drugs for cancer treatment and got approval for their first generic biological product, BIOTOPIN. It is sold to 12 pharmaceutical companies.
+
+BIOTOPIN is produced via a 20 days-long biological process, which takes place in 10 reactors of 50,000L each. The minimum production batch is 50,000L. Three additional reactors are not used on a regular basis, but are employed whenever there is need.
+
+The yield of this process is 96%; in other words, 4% of the 50,000L in each reactor is wasted. When the biological process finishes, BIOTOPIN is bottled in 50ml syringes without being diluted and then boxed. These last two stages are highly automatized, and hence quite fast.
+
+NEWBIO does not accept orders smaller than 10,000 units. The price is $50 per unit, irrespective of the size of the order. The COGS is $10 per unit.
+
+I. Central Warehouse Operations
+
+The yearly sales of BIOTOPIN follow a Normal distribution with mean 144M units and standard deviation of 7.75M units. All sales are fulfilled from the inventory in NEWBIO's central warehouse, and it is done in trucks. The vast majority of the orders are equal to the minimum order quantity (10,000 units) each. The warehouse works 24/7.
+
+The time needed to load a pallet is short, but the time to process the paperwork of each order requires 30 min. A specific part of the warehouse has a single dock (with its administrative team) available for trucks to pick up their orders.
+
+Maria Freud, COO of NEWBIO, is facing two issues:
+- Mismatch of the sales that need to be picked up and the available inventory of BIOTOPIN in the warehouse
+- Some truck drivers have complained about excessive delays in the pick-up of sales
+
+What would you recommend Maria regarding the inventory management policy of BIOTOPIN? What causes truck delays, how bad are they, and what should Maria do about them?`,
     storyline: `NEWBIO manufactures BIOTOPIN, a biological cancer drug. 10 reactors, 50,000L each, 20-day process, 96% yield. Bottled in 50ml syringes (1L = 1,000ml = 20 syringes). Yearly demand: $\\mu = 144M$ units, $\\sigma = 7.75M$. Single warehouse dock, 30 min paperwork per truck. This problem combines capacity, inventory, AND queueing.`,
     framework: {
       title: 'How to approach this problem',
@@ -558,7 +576,15 @@ export const examGuide = [
     title: 'Part II: Distribution in Latin America',
     badge: 'Inventory + Supplier Comparison',
     badgeType: 'inventory',
-    originalExcerpt: `LdM (Mexico) sells BIOTOPIN at 120/unit. Monthly demand: Normal, mean 12,000, std dev 2,000. Holding cost 48% of procurement cost.\n\nOption A — Kuehne+Nagel (sea): 2,000/pallet (20,000 units), LT = 15 days.\nOption B — Aeromexico (air): 3,000/pallet (10,000 units), LT = 2 days.\n\nWhich logistics provider should LdM use?`,
+    originalExcerpt: `II. Distribution in Latin America
+
+Laboratorios de Mexico (LdM), based in Mexico City, sells BIOTOPIN in Mexico and in five other countries in Central America, at an average price of $120 per unit. Their aggregate monthly demand is estimated as a Normal distribution with mean 12,000 units and standard deviation 2,000 units. The yearly inventory holding cost for LdM is 48% of their procurement cost (LdM is highly leveraged).
+
+LdM buys in batches of 20,000 units - the number of units that can fit in a standard ship-freight pallet - that the logistics company Kuehne+Nagel delivers through its international maritime freight services for a cost of $2,000 per ship-freight pallet. The lead time is 15 days, and the company can guarantee the preservation of the cold chain.
+
+Francisco Arenas has been asked to evaluate an offer from AEROMEXICO. AEROMEXICO has daily cargo flights from Vienna to Mexico City. Accounting for customs, AEROMEXICO can deliver BIOTOPIN to LdM in 2 days, and can also guarantee the preservation of the cold chain. It allows batches of 10,000 units - the number of units that can fit in a standard air-freight pallet. The price offered by AEROMEXICO is $3,000 per air-freight pallet.
+
+What would you recommend Francisco regarding the supply of BIOTOPIN?`,
     storyline: `Laboratorios de Mexico sells BIOTOPIN across Latin America. Monthly demand: $\\mu = 12{,}000$, $\\sigma = 2{,}000$. Holding cost $i = 48\\%$ (highly leveraged company). Two shipping options: sea freight (cheap, slow, big batches) vs air freight (expensive, fast, small batches).`,
     framework: {
       title: 'How to approach this problem',
@@ -592,7 +618,16 @@ export const examGuide = [
     title: 'Part III: Growth Strategy',
     badge: 'Strategy',
     badgeType: 'strategy',
-    originalExcerpt: `NEWBIO expects highest growth in Latin America. CEO Elsa considers: (A) Open a LatAm plant, (B) Subcontract production to LdM, (C) Bulk shipments for local bottling, (D) Consignment stock at LdM. Any other ideas?\n\nWhat would you advise?`,
+    originalExcerpt: `III. Growth Strategy
+
+The Latin American market for BIOTOPIN is considered of strategic importance to NEWBIO, as it is there where the company is expecting to have the highest growth rates. Elsa Schwarz, CEO of NEWBIO, is convinced that this growth will only be possible if NEWBIO manages to combine high service levels with competitive pricing. She is considering a number of proposals:
+
+- Open a manufacturing plant in Latin America, as a means to establish a dominant position in the region
+- Subcontract the production of BIOTOPIN corresponding to Latin America to LdM
+- Send bulk shipments of BIOTOPIN to LdM, and then have LdM do the final bottling and boxing phases
+- Keep a significant stock of finished goods (pallets of bottled and boxed BIOTOPIN) in consignment, in LdM's facility
+
+Elsa is also wondering whether these are the only viable alternatives, or if there exists a different out-of-the-box one. What would you advise her to do?`,
     storyline: `NEWBIO sees Latin America as strategic for growth. Asia is blocked by cheap Chinese/Indian competitors (35/unit). Four options on the table, each with hidden costs or risks. The exam wants you to analyze all four AND propose something better.`,
     framework: {
       title: 'How to approach this problem',
@@ -624,7 +659,15 @@ export const examGuide = [
     title: 'Part IV: Industrial Partnership',
     badge: 'Capacity + Strategy',
     badgeType: 'queue',
-    originalExcerpt: `French company LC proposes co-producing BIORISAN (90/unit) at NEWBIO's Vienna factory. Would require dedicating 4 reactors to BIORISAN, leaving 9 for BIOTOPIN. Same COGS and production lead time.\n\nShould Elsa accept?`,
+    originalExcerpt: `IV. Industrial Partnership
+
+A French pharmaceutical company, Laboratoires Chamonix (LC), also specializing in the manufacturing of biological drugs, has approached Elsa Schwarz and proposed an industrial partnership: to co-produce BIORISAN - a biological drug somewhat different to BIOTOPIN, whose intellectual property is held by LC - at NEWBIO's Vienna factory.
+
+Changing production from one drug to the other would require a very long and complicated cleaning process of the reactors. After considering the production volumes proposed by LC, Elsa realized that accepting this proposal would require NEWBIO to effectively commit the capacity of 4 reactors to the production of BIORISAN and leave the other 9 dedicated to BIOTOPIN.
+
+The production lead time and the COGS of the two drugs are very similar. The selling price of BIORISAN, $90 per unit, is significantly higher than that of BIOTOPIN.
+
+What would you recommend Elsa to do?`,
     storyline: `LC wants to co-produce BIORISAN (90/unit, much higher margin than BIOTOPIN at 50/unit) using 4 of NEWBIO\'s reactors. This leaves 9 reactors for BIOTOPIN, pushing utilization from 82% to 91%. New reactors cost 30M each and take 1 year to deliver.`,
     framework: {
       title: 'How to approach this problem',
@@ -661,7 +704,25 @@ export const examGuide = [
     title: 'Part I: IQ After-Sales Service',
     badge: 'Queueing (4 scenarios)',
     badgeType: 'queue',
-    originalExcerpt: `IQ's VOXEL 3D printer has transductors that overflow once a year on average (Negative Exponential). Software detects overflow and alerts the After-Sales Service in Madrid. 4 engineers per shift, 24/7. Arrival rate: 3 calls/hr (Poisson). Service: 1 hour avg, normally distributed, std dev 15 min.\n\nAlternatives: (A) Hire 1 more engineer/shift. (B) Replace with a robot: 10 min/request, no variability, costs 6x one engineer annually. (C) Pool all 10 European centers together.\n\nAnalyze current state and all three alternatives.`,
+    originalExcerpt: `I. IQ's After-Sales Service
+
+In 2018, IQ launched its first 3D printer: the IQ VOXEL. The new printer had 200 transductors that had the tendency to generate a transducent overflow. Any printer would present a transducent overflow situation "once a year, on average" (the time between overflows was distributed as a Negative Exponential). The affected transductor would generate progressive overheating and, if left unattended too long, could cause a fire.
+
+IQ installed software that would continuously control all 200 transductors. The moment it detected an overflow, it would send an alarm to the After-Sales Service Department, which would then remotely connect, run tests, and solve the issue.
+
+The Spanish after-sale service operated 24/7 from Madrid. Alex Lake was in charge:
+
+"We get an average of three calls per hour and the arrival process is distributed like a Poisson. Once we get a call, one of our engineers remotely connects to the printer, finds the faulty transductor, re-sets it, and re-launches the printer. These operations are done in seconds.
+
+Subsequently our engineer has to remain connected running post-intervention tests. The whole process takes on average 1 hour (normally distributed, standard deviation of 15 minutes).
+
+We currently have 4 engineers in every shift but the probability of generating a fire really gets dangerous after a transductor has been in overflow for more than one hour. I have been contemplating alternatives:
+
+A. Hire an additional engineer per shift.
+B. Our labs have developed a robot that can do what an engineer does in 10 minutes, with no fluctuations whatsoever. It costs 6 times the annual cost of an engineer.
+C. In Europe we have 250,000 printers served from 10 identical centers. Why not allow any European engineer to serve any printer?"
+
+How do you see the current situation? How would alternatives A, B, and C change it?`,
     storyline: `IQ's Madrid after-sales center handles printer overflow alerts. $\\lambda = 3$/hr (Poisson), $S = 4$ engineers, $t_S = 60$ min ($\\sigma = 15$ min). Fire risk if overflow unresolved > 1 hour. Three proposals to compare: add staff, automate, or pool European centers.`,
     framework: {
       title: 'How to approach this problem',
@@ -711,7 +772,21 @@ export const examGuide = [
     title: 'Part II: Ink Logistics at IQ',
     badge: 'Inventory + Strategy',
     badgeType: 'inventory',
-    originalExcerpt: `IQ printers use ink cartridges (retail 40, COGS 4-10). Customers print ~200 pages/month (std dev 40, Normal). Cartridge prints 200+ pages. Customers buy from Staples/Office Depot (30% retailer margin). Pain points: (1) ink is expensive, (2) runs out at bad times.\n\nThe "Dirty Dozen" team proposes: (A) Larger cartridges, (B) Auto-replenishment (printer orders ink when low), (C) Charge at insertion not shipment, (D) Subscription model (30/month for 200 pages).\n\nAnalyze each alternative from an operations perspective.`,
+    originalExcerpt: `II. Ink Logistics at IQ
+
+IQ's printing business accounted for 35% of revenue. Supplies (ink) represented 60%. The printing industry used the "razor and blades" model: discount the printer, profit from ink cartridges. Top retailers had margins of roughly 30%.
+
+Consumer ink cartridges ranged from $30 to $50 (printing 200+ pages). The COGS ranged from $4 to $10. Half of customers purchased cheaper third-party ink cartridges.
+
+Data showed that pages printed per month were normally distributed with mean 200 and standard deviation 40. Cartridge retail price: $40. Interest rate: 5%.
+
+The "Dirty Dozen" team identified two pain points: high ink price and cartridges running out at inconvenient times. They proposed several alternatives:
+
+A. When and how are customers purchasing cartridges from office supply stores? Why? What is the impact on IQ?
+B. Shall IQ offer printers with larger cartridges?
+C. Shall IQ adopt an auto-replenishment model, where the printer automatically orders ink when running low? (Customer pays retail, IQ pays $4 delivery via UPS/FedEx)
+D. Shall IQ charge at the time of insertion, as opposed to the time of shipment?
+E. Shall IQ adopt a subscription model? (e.g., $30/month for 200 pages, $50 for 1000 pages, $15 for 50 pages — IQ provides the ink whenever the customer runs out)`,
     storyline: `IQ faces a declining printing market. Ink cartridges are expensive (40 retail, 28 net after retailer margin) and run out unpredictably. Half of customers buy cheaper third-party ink. The Dirty Dozen team proposes four progressively innovative models. This is a strategy question driven by inventory and supply chain concepts.`,
     framework: {
       title: 'How to approach this problem',
