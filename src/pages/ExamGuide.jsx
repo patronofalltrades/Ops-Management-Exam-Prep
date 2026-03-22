@@ -3,13 +3,45 @@ import { examGuide } from '../data/examGuide'
 import { renderWithMath } from '../components/Math'
 
 const sections = [...new Set(examGuide.map(p => p.section))]
+const groups = {
+  gym: { label: 'OM Gym', desc: 'Practice problems from the Queueing and Inventory gyms', sections: sections.filter(s => s.startsWith('OM Gym')) },
+  exams: { label: 'Past Exams', desc: 'Full final exams with step-by-step solutions (2022–2024)', sections: sections.filter(s => s.startsWith('Final Exam')) },
+}
 
 export default function ExamGuide() {
+  const [activeGroup, setActiveGroup] = useState(null)
+
+  if (!activeGroup) {
+    return (
+      <>
+        <h1 className="h1">Exam Guide</h1>
+        <p className="sub">Choose a focus area to get started.</p>
+        <div className="eg-group-picker">
+          {Object.entries(groups).map(([key, g]) => (
+            <button key={key} className="eg-group-card" onClick={() => setActiveGroup(key)}>
+              <span className="eg-group-icon">{key === 'gym' ? '🏋️' : '📝'}</span>
+              <div>
+                <h3>{g.label}</h3>
+                <p>{g.desc}</p>
+                <span className="eg-group-count">{g.sections.length} sets · {examGuide.filter(p => g.sections.includes(p.section)).length} problems</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </>
+    )
+  }
+
+  const group = groups[activeGroup]
+
   return (
     <>
-      <h1 className="h1">Exam Guide</h1>
-      <p className="sub">Step-by-step deconstruction of every OM Gym and Final Exam problem. Understand the approach, not just the answer.</p>
-      {sections.map(sec => (
+      <div className="eg-top-bar">
+        <button className="eg-back-btn" onClick={() => setActiveGroup(null)}>← Back</button>
+        <h1 className="h1" style={{ marginBottom: 0 }}>{group.label}</h1>
+      </div>
+      <p className="sub">{group.desc}</p>
+      {group.sections.map(sec => (
         <div key={sec}>
           <h2 className="h2">{sec}</h2>
           {examGuide.filter(p => p.section === sec).map(p => (

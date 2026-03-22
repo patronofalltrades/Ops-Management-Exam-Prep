@@ -985,6 +985,96 @@ td.hl {
 }
 
 /* ═══ Exam Guide ═══ */
+.eg-group-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.eg-group-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--bd);
+  border-radius: var(--r2);
+  background: var(--bg3);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--fb);
+  transition: all 0.2s ease;
+}
+
+.eg-group-card:hover {
+  border-color: var(--ac);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .eg-group-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.eg-group-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.eg-group-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--tx);
+}
+
+.eg-group-card p {
+  font-size: 14px;
+  color: var(--tx2);
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.eg-group-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ac);
+  font-family: var(--fm);
+}
+
+.eg-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.eg-back-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--tx2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--fb);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.eg-back-btn:hover {
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+@media (max-width: 700px) {
+  .eg-group-picker {
+    grid-template-columns: 1fr;
+  }
+}
+
 .eg-content {
   font-family: var(--fb);
 }
