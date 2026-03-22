@@ -70,7 +70,6 @@ function FrameworkPoint({ text }) {
       <button className="eg-fw-point-toggle" onClick={() => setExpanded(e => !e)}>
         <span className="eg-fw-chevron">{expanded ? '▾' : '▸'}</span>
         <span className="eg-fw-label">{label}</span>
-        {!expanded && <span className="eg-fw-preview">{detail.replace(/\$[^$]*\$/g, '…').substring(0, 60)}{detail.length > 60 ? '…' : ''}</span>}
       </button>
       {expanded && (
         <div className="eg-fw-detail eg-math-text">

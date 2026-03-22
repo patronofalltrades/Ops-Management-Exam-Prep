@@ -669,11 +669,12 @@ code {
 
 .badge {
   font-size: 10px;
-  font-family: var(--fm);
+  font-family: var(--fb);
   padding: 3px 8px;
   border-radius: 4px;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
 .badge-queue {
@@ -702,9 +703,9 @@ code {
   border-radius: var(--r);
   padding: 10px 14px;
   margin: 8px 0;
-  font-family: var(--fm);
-  font-size: 12.5px;
-  line-height: 1.8;
+  font-family: var(--fb);
+  font-size: 13px;
+  line-height: 1.7;
   white-space: pre-wrap;
 }
 
@@ -809,7 +810,8 @@ code {
 }
 
 .fc-stats strong {
-  font-family: var(--fm);
+  font-family: var(--fb);
+  font-weight: 700;
   color: var(--tx);
 }
 
@@ -956,7 +958,7 @@ code {
 
 .fc-alltime-num {
   display: block;
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 20px;
   font-weight: 700;
   color: var(--tx);
@@ -1261,9 +1263,9 @@ td.hl {
 
 .eg-group-count {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ac);
-  font-family: var(--fm);
+  font-family: var(--fb);
 }
 
 .eg-top-bar {
@@ -1554,7 +1556,7 @@ td.hl {
   border-radius: var(--r);
   background: var(--bg);
   color: var(--tx);
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 13px;
   line-height: 1.7;
   resize: vertical;
@@ -1608,7 +1610,7 @@ td.hl {
 }
 
 .eg-attempt-content {
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 13px;
   line-height: 1.7;
   white-space: pre-wrap;
@@ -1672,14 +1674,16 @@ td.hl {
   font-size: 11px;
   font-weight: 700;
   border-radius: 4px;
-  font-family: var(--fm);
+  font-family: var(--fb);
   flex-shrink: 0;
   margin-top: 1px;
+  letter-spacing: 0.02em;
 }
 
 .eg-q-text {
   flex: 1;
-  font-size: 14px;
+  font-family: var(--fb);
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--tx);
   line-height: 1.5;
@@ -1728,7 +1732,7 @@ td.hl {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-family: var(--fm);
+  font-family: var(--fb);
   margin-top: 2px;
 }
 
@@ -1803,7 +1807,7 @@ td.hl {
   position: absolute;
   left: 0;
   font-weight: 700;
-  font-family: var(--fm);
+  font-family: var(--fb);
   font-size: 12px;
 }
 
