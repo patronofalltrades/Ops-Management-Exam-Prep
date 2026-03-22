@@ -1,8 +1,6 @@
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 export const MODELS = [
-  { id: 'nvidia/nemotron-3-super-120b-a12b:free', label: 'Nemotron 120B' },
-  { id: 'nvidia/nemotron-3-nano-30b-a3b:free', label: 'Nemotron 30B' },
   { id: 'stepfun/step-3.5-flash:free', label: 'Step 3.5 Flash' },
   { id: 'arcee-ai/trinity-large-preview:free', label: 'Arcee Trinity Large' },
   { id: 'liquid/lfm-2.5-1.2b-instruct:free', label: 'Liquid LFM 2.5' },

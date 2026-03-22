@@ -13,6 +13,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "The three building blocks",
+                symbols: ['$\\lambda$ = arrival rate (customers/hr)', '$S$ = number of servers', '$\\mu$ = service rate per server (customers/hr)', '$t_S = 1/\\mu$ = avg service time'],
                 official: "Every queue system has three components:\n\n1. Arrivals — customers showing up. We measure the arrival rate: $\\lambda$ = how many arrive per hour.\n\n2. Servers — the resources that process customers. $S$ servers, each at rate $\\mu$ (customers/hr).\n\n3. Queue — where customers wait when all servers are busy.\n\nThe relationship between demand ($\\lambda$) and capacity ($S \\times \\mu$) determines everything.",
                 dumb: "Picture a restaurant. People walk in (arrivals), waiters serve them (servers), and if all tables are full, people stand around the entrance looking annoyed (queue). Every queue problem is just a restaurant with different names.",
                 example: {
@@ -284,6 +285,7 @@ export const conceptData = [
             {
                 type: 'card',
                 title: "Q and SS are independent decisions",
+                symbols: ['$Q$ = order quantity (batch size)', '$SS$ = safety stock', '$D, S, v, i$ = demand, ordering cost, unit value, holding rate → determine $Q$', '$z, \\sigma, VP$ = safety factor, demand std dev, vulnerable period → determine $SS$'],
                 official: "Changing $Q$ does NOT change $SS$.\n\n$Q$ depends on: $D$, $S$, $v$, $i$ (cost)\n$SS$ depends on: $z$, $\\sigma$, $VP$ (service)\n\nThey share no variables.",
                 dumb: "How much beer you buy at once is a different question from how many beers you keep as emergency reserves. Buying bigger doesn't mean you need more reserves.",
                 example: {
