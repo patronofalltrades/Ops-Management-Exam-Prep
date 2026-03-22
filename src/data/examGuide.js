@@ -409,7 +409,21 @@ export const examGuide = [
     title: 'Part II: Kit Preparation — Capacity Analysis',
     badge: 'Capacity',
     badgeType: 'queue',
-    originalExcerpt: `When a hospital needs to perform a surgery requiring any of the company's devices, they must prepare a kit: a medium SAMSONITE suitcase that includes two or three plastic boxes.\n\nThe Madrid warehouse has several employees who, from 8:00 to 12:00, prepare the new kits. Preparing a kit requires the employee to go to one of the warehouse semi-automated picking stations, pack the different components and tools in the plastic boxes, weigh the different boxes on a precision scale that detects if a single screw is missing, and then take the plastic boxes to one of the sterilization units. A sterilization unit can only sterilize one kit at the time. The times needed for each operation are:\n\n• Getting the different components from the warehouse: 30 minutes/kit\n• Checking (and possibly correcting the units picked) using the precision scale: 10 minutes/kit\n• Sterilization: 60 minutes/kit\n\nII.1. (20 points) If the company needs to prepare 100 kits per day, how many employees should be dedicated to this task? And how many sterilization units are needed?`,
+    originalExcerpt: `II. Preparing surgical kits
+
+When a hospital needs to perform a surgery requiring any of the company's devices, they must prepare a kit: a medium SAMSONITE suitcase that includes two or three plastic boxes. One contains all the equipment (drill, screw drivers, etc.) the surgeons will need. The other boxes include the components (screws, rods, plates, etc.) to be implanted.
+
+Once the operation is over, the distributor recovers the kit, checks which components have been implanted (to bill the hospital), and returns the suitcase to the warehouse where the boxes are thoroughly cleaned, sorted and stored.
+
+When a new order arrives, the warehouse employees prepare a new kit and then sterilize each plastic box before sending the new kit to the distributor.
+
+The Madrid warehouse has several employees who, from 8:00 to 12:00, prepare the new kits (during the afternoons they deal with used kits from distributors). Preparing a kit requires the employee to go to a semi-automated picking station, pack the components in plastic boxes, weigh them on a precision scale that detects if a single screw is missing, and then take the boxes to a sterilization unit (similar to a large home oven). A sterilization unit can only sterilize one kit at a time. The times needed:
+
+- Getting components from the warehouse: 30 minutes/kit
+- Checking using the precision scale: 10 minutes/kit
+- Sterilization: 60 minutes/kit (loading/unloading takes just seconds)
+
+II.1. (20 points) If the company needs to prepare 100 kits per day, how many employees should be dedicated to this task? And how many sterilization units are needed?`,
     storyline: `Medcorp's Madrid warehouse prepares surgical kits (8:00–12:00, 4-hour shift). Per kit: picking = 30 min (employee), checking = 10 min (employee + scale), sterilization = 60 min (machine, 1 kit at a time). Target: 100 kits/day.`,
     framework: {
       title: 'How to approach this problem',
