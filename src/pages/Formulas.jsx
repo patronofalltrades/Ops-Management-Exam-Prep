@@ -9,49 +9,49 @@ export default function Formulas() {
       <h2 className="h2">1. Queueing</h2>
       <F
         label="Utilization"
-        why="Think of this as 'how busy is the system.' If it hits 100%, your queue grows forever and never recovers. Even above 85%, things start getting ugly fast. Always check this number first."
-        when="The very first thing you compute in any queueing problem. The exam gives you an arrival rate and service time — just divide to get this."
-        how="Customers showing up per hour, divided by how many you can serve per hour. If you have multiple servers, multiply their individual rates. Make sure everything is in the same units (per hour, per minute, etc.).">
+        why="How busy the system is. Above 85% waits grow fast. At 100% the queue never recovers."
+        when="First thing to compute in any queueing problem. Arrival rate and service time are always given."
+        how="Arrival rate divided by total capacity. Match units (both per hour or both per minute).">
         {'$$ \\rho = \\frac{\\lambda}{S \\times \\mu} $$'}
       </F>
 
       <F
         label="Avg queue length"
-        why="How many people are standing in line, annoyed, waiting to be served. This is the number that tells you if your system is overwhelmed. Once you have this, you can figure out wait times and everything else."
-        when={'After you know utilization ($\\rho$) and variability ($C_A$, $C_S$). The exam will give you enough info to compute all three. \'Poisson\' means $C_A = 1$. Given $\\sigma$ and mean? Divide them to get $C_S$.'}
-        how="Plug in your numbers. The formula looks intimidating but it is just: (how busy) times (how unpredictable). High utilization + high randomness = a LOT of people waiting. Low variability cuts the queue nearly in half.">
+        why="How many people are waiting (not being served). Core metric — everything else derives from this."
+        when={'After you have $\\rho$, $C_A$, $C_S$. Poisson = $C_A = 1$. Given $\\sigma$ and mean? $C_S = \\sigma / t_S$.'}
+        how="(How busy) times (how unpredictable). High utilization + high randomness = long queue. Low variability cuts it in half.">
         {'$$ L_q = \\frac{\\rho^{\\sqrt{2(S+1)}}}{1 - \\rho} \\times \\frac{C_A^2 + C_S^2}{2} $$'}
       </F>
 
       <F
         label="Avg wait in queue"
-        why="How long a customer is stuck in line before anyone even starts helping them. This is what people complain about — 'I waited 20 minutes!' If there is an SLA (like max 3 min wait), this is the number you check."
-        when="Whenever the problem asks 'how long do customers wait?' or gives you a target like 'wait must not exceed X minutes.'"
-        how={'You already have the number of people waiting ($L_q$). Divide by how fast new people arrive ($\\lambda$). Done. It is just Little\'s Law applied to the queue.'}>
+        why="How long customers wait before being served. Check this against SLAs (e.g. max 3 min)."
+        when="Problem asks 'how long do customers wait?' or gives a wait time target."
+        how={'Divide $L_q$ by arrival rate $\\lambda$. Little\'s Law applied to the queue.'}>
         {'$$ W_q = \\frac{L_q}{\\lambda} $$'}
       </F>
 
       <F
         label="Avg time in system"
-        why="The full experience — waiting in line PLUS actually being served. A customer walks in, waits, gets served, walks out. This measures that entire journey."
-        when={'When comparing two setups. For example: 5 slow servers vs 1 fast machine might have similar wait times, but totally different service times — so the total experience ($W$) is what matters.'}
-        how={'Just add the queue wait ($W_q$) to the service time. Service time is $t_S = 1/\\mu$ (if the server handles 12 customers/hr, each one takes 5 min = 1/12 hr).'}>
+        why="Total customer experience: waiting + being served. What matters for satisfaction."
+        when={'Comparing system designs (e.g. 5 slow servers vs 1 fast machine — same $W_q$, different $t_S$).'}
+        how={'Queue wait ($W_q$) + service time ($t_S = 1/\\mu$). Simple addition.'}>
         {'$$ W = W_q + t_S \\quad \\text{where } t_S = \\frac{1}{\\mu} $$'}
       </F>
 
       <F
         label="Avg # in system"
-        why="Everyone inside the building — people in line AND people being served right now. Use this when there is a cost attached to every person in the system (like the Hiring Decision problem where each case costs 100/hr while in the pipeline)."
-        when="When the problem puts a price tag on items 'in the system' (not just 'waiting'). Also useful for figuring out how big your waiting room needs to be."
-        how={'People waiting ($L_q$) + people being served ($\\rho \\times S$). That is it.'}>
+        why="Everyone inside — waiting + being served. Use when there is a cost per item in system (e.g. 100/hr per case in the pipeline)."
+        when="Problem assigns cost to items 'in the system,' not just 'waiting.' Also for sizing space."
+        how={'$L_q$ + people being served ($\\rho \\times S$).'}>
         {'$$ L = L_q + \\rho \\times S $$'}
       </F>
 
       <F
         label="Variables"
-        why="These are your five ingredients. Every single queueing problem boils down to finding these from the problem text. Get these right and everything else is just plugging into formulas."
-        when={'Step one of every queueing problem: read the text and write down $\\lambda$, $\\mu$, $S$, $C_A$, $C_S$. Do this BEFORE touching any formula.'}
-        how={'Look for magic words: \'Poisson\' or \'exponential arrivals\' means $C_A = 1$. \'Exponential service\' means $C_S = 1$. \'Exactly 5 minutes every time\' (deterministic) means $C_S = 0$. Given standard deviation and mean, just divide: $C = \\sigma / \\text{mean}$. PCE tells you what percent of the total time was actually useful service.'}>
+        why="Five ingredients. Extract these from the problem text first, then everything is just plugging in."
+        when={'Step one: find $\\lambda$, $\\mu$, $S$, $C_A$, $C_S$ before touching any formula.'}
+        how={'Poisson/exponential arrivals = $C_A = 1$. Exponential service = $C_S = 1$. Deterministic = $C_S = 0$. Given $\\sigma$ and mean: $C = \\sigma / \\text{mean}$.'}>
         {'$$ \\lambda = \\text{arrival rate} \\quad \\mu = \\text{service rate} \\quad S = \\text{servers} $$ $$ C_A = \\frac{\\sigma_A}{t_A} \\quad C_S = \\frac{\\sigma_S}{t_S} $$ $$ \\text{PCE} = \\frac{t_S}{W} = 1 - \\frac{W_q}{W} $$'}
       </F>
       <Tip>{"\"Poisson\" or \"exponential\" arrivals → CA = 1. \"Exponential\" service → CS = 1. \"Deterministic\" → CV = 0. Given σ and mean → CV = σ/mean."}</Tip>
@@ -59,108 +59,108 @@ export default function Formulas() {
       <h2 className="h2">2. Capacity & Little's Law</h2>
       <F
         label="Little's Law"
-        why="The Swiss Army knife of OM. It connects three things: how many items are inside a system, how fast they flow through, and how long each one stays. Know any two and you get the third for free. Works everywhere — hospitals, factories, restaurants."
-        when="Whenever a problem gives you two out of three (WIP, throughput, time) and asks for the missing one. Also great for sanity-checking: if someone says throughput time is 5 hours and throughput is 20/hr, WIP should be 100. If they say 50, something is wrong."
-        how="Multiply throughput rate by time, or divide WIP by throughput. Just make sure your units match — if throughput is per hour, time must be in hours, not minutes.">
+        why="Universal connector. Know any two of WIP, throughput, time — get the third. No assumptions needed."
+        when="Given 2 of 3 (WIP, throughput, time), find the missing one. Also for sanity-checking answers."
+        how="WIP = throughput × time. Match units (throughput per hour → time in hours).">
         {'$$ \\text{WIP} = \\text{TH} \\times \\text{TT} $$'}
       </F>
 
       <F
         label="Bathtub"
-        why="If more stuff comes in than goes out, it piles up. If more goes out than comes in, the pile shrinks. That is literally all this formula says. Think of a bathtub with the faucet running and the drain open."
-        when="Rush hour problems: 'demand is 600/day but capacity is 500/day — after 5 days, how much backlog?' Also shift handover situations where one shift leaves unfinished work for the next."
-        how="Start with what you have now, add (what came in minus what went out) times how long. If inflow was 600 and outflow was 500 over 5 days: 0 + (600-500) × 5 = 500 units piled up.">
+        why="More in than out = stuff piles up. More out than in = pile shrinks. That is it."
+        when="Demand temporarily exceeds capacity (rush hour, shift handover backlog)."
+        how="Current WIP + (inflow − outflow) × time. Example: (600−500) × 5 days = 500 backlog.">
         {'$$ \\text{WIP}_{end} = \\text{WIP}_{start} + (\\text{Inflow} - \\text{Outflow}) \\times \\text{Time} $$'}
       </F>
 
       <F
         label="Resource capacity"
-        why="Answers the most basic operations question: 'how many people (or machines) do I need to hire (or buy)?' This is what the 2024 exam Part II was about — figuring out employees and sterilization units."
-        when="Any time the problem says 'how many resources are needed for X units/day?' Make a table: list each resource type, how many minutes it uses per unit, and how many minutes it has per shift."
-        how="Available time ÷ time per unit = how many units one resource can handle. Then demand ÷ that number = how many resources you need. Always round UP — you cannot hire half a person.">
+        why="How many people or machines you need. 2024 exam Part II: employees and sterilization units."
+        when="Problem asks 'how many resources needed for X units/day?'"
+        how="Available time ÷ time per unit = capacity per resource. Demand ÷ capacity = resources needed. Round UP.">
         {'$$ \\text{Capacity} = \\frac{\\text{Available time}}{\\text{Time per unit}} $$ $$ \\text{Resources needed} = \\lceil \\frac{\\text{Demand}}{\\text{Capacity per resource}} \\rceil $$'}
       </F>
 
       <h2 className="h2">3. Inventory — EOQ</h2>
       <F
         label="Economic Order Quantity"
-        why="Finding the sweet spot between 'I order too often and pay too many delivery fees' and 'I order too much and my warehouse is full of stuff I am paying to store.' The beautiful thing: even if you get it slightly wrong, it barely affects cost — the curve is super flat around the optimum."
-        when="Whenever you need to decide how many units to order at a time. Demand should be relatively steady (no huge seasonal spikes). The exam will give you demand, ordering cost, unit price, and holding rate — plug them in."
-        how={'Four numbers go in: annual demand ($D$), cost per order ($S$), price per unit ($v$), and yearly holding cost rate ($i$). Make sure they are all annual. Out comes the optimal order size.'}>
+        why="Sweet spot between ordering too often (high delivery fees) and ordering too much (cash tied up). Cost curve is flat around EOQ — 10% error costs only ~0.5% more."
+        when="Steady demand, need optimal batch size. Exam gives D, S, v, i — plug them in."
+        how={'$D$ = annual demand, $S$ = cost per order, $v$ = unit price, $i$ = holding rate. All annual.'}>
         {'$$ \\text{EOQ} = \\sqrt{\\frac{2 \\cdot D \\cdot S}{v \\cdot i}} $$'}
       </F>
 
       <F
         label="Total Cost at EOQ"
-        why="A shortcut. Instead of computing ordering cost and holding cost separately and adding them, this gives you the minimum total directly. Heads up: this is ONLY ordering + cycle holding — it does not include the cost of actually buying the product or safety stock."
-        when="Quick supplier comparison: compute this for each supplier, add the purchasing cost (unit price × demand), and compare. Whoever has the lower total wins."
-        how="Same four inputs as EOQ, but now you multiply them all under the square root instead of dividing some.">
+        why="Shortcut for minimum ordering + holding cost. Does NOT include purchasing or SS holding."
+        when="Quick supplier comparison: compute for each, add purchasing cost, compare totals."
+        how="Same four inputs as EOQ, multiplied under the root instead of divided.">
         {'$$ \\text{TC}^* = \\sqrt{2 \\cdot D \\cdot S \\cdot v \\cdot i} $$'}
       </F>
 
       <F
         label="Cost components"
-        why="When you need to see where the money actually goes. Super useful for auditing: if your ordering cost is 18x your holding cost (like the cheese store), your batch size is way too small. At EOQ, these two should be roughly equal."
-        when="When the problem asks 'what is the annual ordering cost?' or 'compute the savings.' Also when auditing: compare ordering vs holding to see if the current policy makes sense."
-        how={'Ordering: how many orders per year ($D/Q$) times cost per order ($S$). Holding for cycle stock: average inventory sitting around ($Q/2$) times what it costs to hold. Safety stock holding: same idea but for the safety buffer.'}>
+        why="See where money goes. If ordering >> holding, batch too small. At EOQ they are roughly equal."
+        when="Problem asks for specific costs, savings, or policy audit."
+        how={'Ordering: ($D/Q$) × $S$. Cycle holding: ($Q/2$) × $v$ × $i$. SS holding: $SS$ × $v$ × $i$.'}>
         {'$$ \\text{Ordering} = \\frac{D}{Q} \\times S $$ $$ \\text{Holding (cycle)} = \\frac{Q}{2} \\times v \\times i $$ $$ \\text{Holding (SS)} = \\text{SS} \\times v \\times i $$'}
       </F>
 
       <h2 className="h2">4. Safety Stock & ROP</h2>
       <F
         label="Safety Stock"
-        why="Your emergency stash. Demand is unpredictable — some weeks customers buy more, some weeks less. Without a buffer, you run out of stock about half the time. Safety stock is that extra reserve so you only run out 1% of the time (or 5%, depending on how safe you want to be)."
-        when={'Every inventory problem that mentions demand uncertainty ($\\sigma$) and a service level (like 95% or 99%). Safety stock has NOTHING to do with batch size — compute it separately.'}
-        how={'Three things multiplied: (1) $z$ from the z-table based on your service level — 99% gives you 2.33. (2) How unpredictable demand is ($\\sigma$ per period). (3) How long you are exposed ($\\sqrt{VP}$ — the vulnerability period).'}>
+        why="Buffer against demand uncertainty. Without it you stock out ~50% of cycles."
+        when={'Problem mentions $\\sigma$ and a service level (95%, 99%). Independent of EOQ — compute separately.'}
+        how={'$z$ from z-table (99% → 2.33), times $\\sigma_1$ (per-period std dev), times $\\sqrt{VP}$.'}>
         {'$$ \\text{SS} = z \\times \\sigma_1 \\times \\sqrt{\\text{VP}} $$'}
       </F>
 
       <F
         label="SS (variable LT)"
-        why="Sometimes not only is demand unpredictable, but the delivery truck might be late too. This formula handles both sources of randomness at once."
-        when={'Only when the problem gives you TWO standard deviations — one for demand ($\\sigma_1$) and one for lead time ($\\sigma_{LT}$). If only demand variability is mentioned, use the simpler formula above.'}
-        how={'Both types of uncertainty get squared, weighted, and added inside a square root. The first part is demand risk; the second is delivery risk. Then multiply by $z$ from the z-table.'}>
+        why="When both demand AND delivery time are uncertain — double source of risk."
+        when={'Problem gives TWO standard deviations: one for demand ($\\sigma_1$), one for lead time ($\\sigma_{LT}$).'}
+        how={'Both variances squared, weighted, summed under one root. Multiply by $z$.'}>
         {'$$ \\text{SS} = z \\times \\sqrt{\\sigma_1^2 \\times \\text{VP} + \\sigma_{\\text{VP}}^2 \\times \\bar{D}_1^2} $$'}
       </F>
 
       <F
         label="Reorder Point"
-        why="The alarm bell. When your inventory drops to this number, it is time to order. Set it right and your safety stock covers you until the delivery arrives. Set it too low and you run out before the truck shows up."
-        when="Continuous review systems — where you can check inventory and place an order at any moment (think: a smart system that monitors stock in real time)."
-        how="Two pieces added together: (1) how much you expect to sell while waiting for delivery (average demand times vulnerability period), plus (2) your safety cushion (SS) for the unpredictable part.">
+        why="Trigger level: when inventory hits this, order. Too low = stockout before delivery arrives."
+        when="Continuous review (can order anytime). ROP = when to order, EOQ = how much."
+        how="Expected demand during VP + safety buffer. Average part + worst-case part.">
         {'$$ \\text{ROP} = \\bar{D}_1 \\times \\text{VP} + \\text{SS} $$'}
       </F>
 
       <F
         label="Periodic Review"
-        why="For systems where someone only checks the stock at fixed times — like every morning at 8 AM or every Tuesday. Between checks, you are blind to what is happening. So you need MORE safety stock than continuous review."
-        when={'When the problem says things like \'inventory is reviewed daily at 8:00\' or \'orders are placed every R days.\' The key trap: $VP = LT + R$, NOT just $LT$. The 2024 exam tested exactly this.'}
-        how={'Same idea as ROP, but the vulnerability period is longer ($LT + R$). At each review you order up to level $S$, which covers expected demand plus safety stock over the entire vulnerability window.'}>
+        why="Stock checked at fixed intervals (daily, weekly). Between checks you are blind — need more SS."
+        when={'Problem says "checked daily at 8:00" or "orders placed every R days." Trap: $VP = LT + R$, not just $LT$.'}
+        how={'Same as ROP but $VP = LT + R$. Order up to level $S$ each review.'}>
         {'$$ S = \\bar{D}_1 \\times (\\text{LT}+R) + z \\times \\sigma_1 \\times \\sqrt{\\text{LT}+R} $$ $$ \\text{VP} = \\text{LT (continuous)} \\mid \\text{LT}+R \\text{ (periodic)} $$'}
       </F>
 
       <F
         label="Stockouts"
-        why="Turns the abstract '99% service level' into something concrete. With 99% per cycle and 36 orders a year, you STILL expect to run out once every 3 years. Smaller batches mean more orders, which means more chances to get unlucky."
-        when="When a problem asks 'how many times per year will you stock out?' or when you need to show the practical difference between current batch and optimal batch."
-        how="Your failure rate per cycle (1 minus service level) times how many cycles you go through per year (annual demand divided by batch size). That is it.">
+        why="99% per cycle sounds great, but with 36 orders/year that is 1 stockout every 3 years. Smaller Q = more chances."
+        when="Problem asks 'how often will you stock out?' or comparing batch size impact."
+        how="Failure rate (1 − SL) times cycles per year (D/Q).">
         {'$$ \\text{Stockouts/yr} = (1 - \\text{SL}) \\times \\frac{D}{Q} $$'}
       </F>
 
       <h2 className="h2">5. Newsvendor</h2>
       <F
         label="Critical Fractile"
-        why="You are ordering something you can only sell once — tomorrow's croissants, this season's winter coats, today's newspaper. Leftovers go in the trash. Order too few and you miss sales. Order too many and you eat the loss. This formula tells you the perfect balance point."
-        when="Any one-shot ordering decision: perishable food, seasonal fashion, event merchandise, daily print runs. The key signal: you cannot reorder once you see demand."
-        how={'Figure out how much it hurts to have too few ($C_u$ = selling price minus cost) and how much it hurts to have too many ($C_o$ = cost minus salvage value). Divide the underage pain by the total pain. The result IS your target service level.'}>
+        why="One-shot ordering: perishable goods, seasonal items. Balances underage pain vs overage pain."
+        when="Cannot reorder after seeing demand. Croissants, fashion, newspapers, event merch."
+        how={'$C_u$ = profit lost if too few, $C_o$ = cost if too many. Divide $C_u$ by total. Result IS optimal service level.'}>
         {'$$ \\alpha = \\frac{C_u}{C_u + C_o} $$ $$ C_u = p - c \\quad C_o = c - v $$'}
       </F>
 
       <F
         label="Optimal Q*"
-        why={'Turns the service level you just computed ($\\alpha$) into an actual number of units to order. Fun fact: this formula is structurally identical to safety stock — mean demand plus a buffer. The only difference is where the $z$ comes from.'}
-        when={'Right after you compute $\\alpha$. Look up $z$ in the exact same z-table you use for safety stock. Then plug into this formula.'}
-        how={'Mean demand ($\\mu$) plus a buffer ($z \\times \\sigma$). If $\\alpha > 0.5$, you order MORE than the average (underage hurts more). If $\\alpha < 0.5$, you order LESS (overage hurts more). If exactly 0.5, order the mean.'}>
+        why={'Converts $\\alpha$ into order quantity. Same structure as safety stock — mean + buffer.'}
+        when={'After computing $\\alpha$. Use same z-table as safety stock.'}
+        how={'$\\mu + z \\times \\sigma$. If $\\alpha > 0.5$ order above mean. If $< 0.5$ order below.'}>
         {'$$ Q^* = \\mu + z^* \\times \\sigma $$'}
       </F>
 
