@@ -9,6 +9,7 @@ export default function Formulas() {
       <h2 className="h2">1. Queueing</h2>
       <F
         label="Utilization"
+        symbols={['$\\rho$ = utilization (0 to 1)', '$\\lambda$ = arrival rate (customers/hr)', '$S$ = number of servers', '$\\mu$ = service rate per server (customers/hr)']}
         why="How busy the system is. Above 85% waits grow fast. At 100% the queue never recovers."
         when="First thing to compute in any queueing problem. Arrival rate and service time are always given."
         how="Arrival rate divided by total capacity. Match units (both per hour or both per minute).">
@@ -17,6 +18,7 @@ export default function Formulas() {
 
       <F
         label="Avg queue length"
+        symbols={['$L_q$ = avg number waiting in queue', '$\\rho$ = utilization', '$S$ = servers', '$C_A$ = CV of inter-arrival times', '$C_S$ = CV of service times']}
         why="How many people are waiting (not being served). Core metric — everything else derives from this."
         when={'After you have $\\rho$, $C_A$, $C_S$. Poisson = $C_A = 1$. Given $\\sigma$ and mean? $C_S = \\sigma / t_S$.'}
         how="(How busy) times (how unpredictable). High utilization + high randomness = long queue. Low variability cuts it in half.">
@@ -25,6 +27,7 @@ export default function Formulas() {
 
       <F
         label="Avg wait in queue"
+        symbols={['$W_q$ = avg wait time in queue', '$L_q$ = avg queue length', '$\\lambda$ = arrival rate']}
         why="How long customers wait before being served. Check this against SLAs (e.g. max 3 min)."
         when="Problem asks 'how long do customers wait?' or gives a wait time target."
         how={'Divide $L_q$ by arrival rate $\\lambda$. Little\'s Law applied to the queue.'}>
@@ -33,6 +36,7 @@ export default function Formulas() {
 
       <F
         label="Avg time in system"
+        symbols={['$W$ = total time in system', '$W_q$ = wait time in queue', '$t_S$ = service time $= 1/\\mu$']}
         why="Total customer experience: waiting + being served. What matters for satisfaction."
         when={'Comparing system designs (e.g. 5 slow servers vs 1 fast machine — same $W_q$, different $t_S$).'}
         how={'Queue wait ($W_q$) + service time ($t_S = 1/\\mu$). Simple addition.'}>
@@ -41,6 +45,7 @@ export default function Formulas() {
 
       <F
         label="Avg # in system"
+        symbols={['$L$ = avg number in system (queue + service)', '$L_q$ = avg in queue only', '$\\rho$ = utilization', '$S$ = servers']}
         why="Everyone inside — waiting + being served. Use when there is a cost per item in system (e.g. 100/hr per case in the pipeline)."
         when="Problem assigns cost to items 'in the system,' not just 'waiting.' Also for sizing space."
         how={'$L_q$ + people being served ($\\rho \\times S$).'}>
@@ -59,6 +64,7 @@ export default function Formulas() {
       <h2 className="h2">2. Capacity & Little's Law</h2>
       <F
         label="Little's Law"
+        symbols={['WIP = work in progress (units in system)', 'TH = throughput (units/time)', 'TT = throughput time (time per unit)']}
         why="Universal connector. Know any two of WIP, throughput, time — get the third. No assumptions needed."
         when="Given 2 of 3 (WIP, throughput, time), find the missing one. Also for sanity-checking answers."
         how="WIP = throughput × time. Match units (throughput per hour → time in hours).">
@@ -67,6 +73,7 @@ export default function Formulas() {
 
       <F
         label="Bathtub"
+        symbols={['$\\text{WIP}_{end}$ = inventory at end', '$\\text{WIP}_{start}$ = inventory at start', 'Inflow = units entering/time', 'Outflow = units leaving/time']}
         why="More in than out = stuff piles up. More out than in = pile shrinks. That is it."
         when="Demand temporarily exceeds capacity (rush hour, shift handover backlog)."
         how="Current WIP + (inflow − outflow) × time. Example: (600−500) × 5 days = 500 backlog.">
@@ -84,6 +91,7 @@ export default function Formulas() {
       <h2 className="h2">3. Inventory — EOQ</h2>
       <F
         label="Economic Order Quantity"
+        symbols={['$D$ = annual demand (units/yr)', '$S$ = fixed cost per order', '$v$ = unit value (price per unit)', '$i$ = annual holding cost rate (%)']}
         why="Sweet spot between ordering too often (high delivery fees) and ordering too much (cash tied up). Cost curve is flat around EOQ — 10% error costs only ~0.5% more."
         when="Steady demand, need optimal batch size. Exam gives D, S, v, i — plug them in."
         how={'$D$ = annual demand, $S$ = cost per order, $v$ = unit price, $i$ = holding rate. All annual.'}>
@@ -92,6 +100,7 @@ export default function Formulas() {
 
       <F
         label="Total Cost at EOQ"
+        symbols={['$TC^*$ = minimum ordering + holding cost', '$D$, $S$, $v$, $i$ = same as EOQ']}
         why="Shortcut for minimum ordering + holding cost. Does NOT include purchasing or SS holding."
         when="Quick supplier comparison: compute for each, add purchasing cost, compare totals."
         how="Same four inputs as EOQ, multiplied under the root instead of divided.">
@@ -100,6 +109,7 @@ export default function Formulas() {
 
       <F
         label="Cost components"
+        symbols={['$D$ = annual demand', '$Q$ = order quantity', '$S$ = cost per order', '$v$ = unit value', '$i$ = holding rate', '$SS$ = safety stock']}
         why="See where money goes. If ordering >> holding, batch too small. At EOQ they are roughly equal."
         when="Problem asks for specific costs, savings, or policy audit."
         how={'Ordering: ($D/Q$) × $S$. Cycle holding: ($Q/2$) × $v$ × $i$. SS holding: $SS$ × $v$ × $i$.'}>
@@ -109,6 +119,7 @@ export default function Formulas() {
       <h2 className="h2">4. Safety Stock & ROP</h2>
       <F
         label="Safety Stock"
+        symbols={['$SS$ = safety stock (units)', '$z$ = safety factor from z-table', '$\\sigma_1$ = std dev of one period demand', '$VP$ = vulnerable period (days or weeks)']}
         why="Buffer against demand uncertainty. Without it you stock out ~50% of cycles."
         when={'Problem mentions $\\sigma$ and a service level (95%, 99%). Independent of EOQ — compute separately.'}
         how={'$z$ from z-table (99% → 2.33), times $\\sigma_1$ (per-period std dev), times $\\sqrt{VP}$.'}>
@@ -117,6 +128,7 @@ export default function Formulas() {
 
       <F
         label="SS (variable LT)"
+        symbols={['$\\sigma_1$ = std dev of demand per period', '$\\sigma_{VP}$ = std dev of lead time', '$\\bar{D}_1$ = avg demand per period', '$VP$ = vulnerable period']}
         why="When both demand AND delivery time are uncertain — double source of risk."
         when={'Problem gives TWO standard deviations: one for demand ($\\sigma_1$), one for lead time ($\\sigma_{LT}$).'}
         how={'Both variances squared, weighted, summed under one root. Multiply by $z$.'}>
@@ -125,6 +137,7 @@ export default function Formulas() {
 
       <F
         label="Reorder Point"
+        symbols={['$ROP$ = reorder point (units)', '$\\bar{D}_1$ = avg demand per period', '$VP$ = vulnerable period', '$SS$ = safety stock']}
         why="Trigger level: when inventory hits this, order. Too low = stockout before delivery arrives."
         when="Continuous review (can order anytime). ROP = when to order, EOQ = how much."
         how="Expected demand during VP + safety buffer. Average part + worst-case part.">
@@ -133,6 +146,7 @@ export default function Formulas() {
 
       <F
         label="Periodic Review"
+        symbols={['$S$ = order-up-to level (base stock)', '$LT$ = lead time', '$R$ = review period', '$VP$ = $LT + R$ (periodic) or $LT$ (continuous)']}
         why="Stock checked at fixed intervals (daily, weekly). Between checks you are blind — need more SS."
         when={'Problem says "checked daily at 8:00" or "orders placed every R days." Trap: $VP = LT + R$, not just $LT$.'}
         how={'Same as ROP but $VP = LT + R$. Order up to level $S$ each review.'}>
@@ -141,6 +155,7 @@ export default function Formulas() {
 
       <F
         label="Stockouts"
+        symbols={['$SL$ = service level (e.g. 0.99)', '$D$ = annual demand', '$Q$ = order quantity', '$D/Q$ = order cycles per year']}
         why="99% per cycle sounds great, but with 36 orders/year that is 1 stockout every 3 years. Smaller Q = more chances."
         when="Problem asks 'how often will you stock out?' or comparing batch size impact."
         how="Failure rate (1 − SL) times cycles per year (D/Q).">
@@ -150,6 +165,7 @@ export default function Formulas() {
       <h2 className="h2">5. Newsvendor</h2>
       <F
         label="Critical Fractile"
+        symbols={['$\\alpha$ = critical fractile (optimal service level)', '$C_u$ = underage cost ($p - c$, profit lost per unit short)', '$C_o$ = overage cost ($c - v$, loss per unsold unit)', '$p$ = selling price', '$c$ = cost', '$v$ = salvage value']}
         why="One-shot ordering: perishable goods, seasonal items. Balances underage pain vs overage pain."
         when="Cannot reorder after seeing demand. Croissants, fashion, newspapers, event merch."
         how={'$C_u$ = profit lost if too few, $C_o$ = cost if too many. Divide $C_u$ by total. Result IS optimal service level.'}>
@@ -158,6 +174,7 @@ export default function Formulas() {
 
       <F
         label="Optimal Q*"
+        symbols={['$Q^*$ = optimal order quantity', '$\\mu$ = mean demand', '$\\sigma$ = std dev of demand', '$z^*$ = $\\Phi^{-1}(\\alpha)$ from z-table']}
         why={'Converts $\\alpha$ into order quantity. Same structure as safety stock — mean + buffer.'}
         when={'After computing $\\alpha$. Use same z-table as safety stock.'}
         how={'$\\mu + z \\times \\sigma$. If $\\alpha > 0.5$ order above mean. If $< 0.5$ order below.'}>
@@ -176,11 +193,16 @@ export default function Formulas() {
   )
 }
 
-function F({ label, why, when, how, children }) {
+function F({ label, why, when, how, symbols, children }) {
   return (
     <div className="fbox">
       <span className="fl">{label}</span>
       {renderWithMath(children)}
+      {symbols && (
+        <div className="fbox-symbols">
+          {symbols.map((s, i) => <span key={i} className="fbox-sym">{renderWithMath(s)}</span>)}
+        </div>
+      )}
       {(why || when || how) && (
         <div className="fbox-details">
           {why && <p><strong>Why use it:</strong> {renderWithMath(why)}</p>}
