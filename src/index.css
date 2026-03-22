@@ -2094,10 +2094,57 @@ td.hl {
   line-height: 1.65;
 }
 
+.tutor-md-h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 10px 0 4px;
+  color: var(--tx2);
+}
+
 .tutor-md-hr {
   border: none;
   border-top: 1px solid var(--bd);
   margin: 12px 0;
+}
+
+.tutor-md-codeblock {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  margin: 8px 0;
+  overflow-x: auto;
+}
+
+.tutor-md-codeblock code {
+  font-family: var(--fm);
+  font-size: 12.5px;
+  line-height: 1.7;
+  background: none;
+  padding: 0;
+  color: var(--tx);
+}
+
+.tutor-md-math-block {
+  margin: 10px 0;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.tutor-md-math-block .katex {
+  font-size: 1.1em;
+}
+
+.tutor-md .katex {
+  font-size: 1em;
+}
+
+.tutor-md ol.tutor-md-list {
+  list-style: decimal;
+}
+
+.tutor-md ul.tutor-md-list {
+  list-style: disc;
 }
 
 .tutor-followup {

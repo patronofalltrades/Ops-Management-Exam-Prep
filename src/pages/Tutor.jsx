@@ -1,16 +1,53 @@
 import { useState, useRef, useCallback, useMemo } from 'react'
 import { problems } from '../data/problems'
 import { askTutor, MODELS } from '../lib/ai'
+import katex from 'katex'
+
+function renderKatexSafe(math, displayMode) {
+  try {
+    return katex.renderToString(math.trim(), { throwOnError: false, strict: 'ignore', displayMode })
+  } catch {
+    return `<code>${math}</code>`
+  }
+}
 
 function formatMarkdown(text) {
   if (!text) return null
-  const escaped = text
+
+  // 1. Extract code blocks first (protect from other processing)
+  const codeBlocks = []
+  let processed = text.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    const idx = codeBlocks.length
+    codeBlocks.push(`<pre class="tutor-md-codeblock"><code>${code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`)
+    return `\x00CODEBLOCK${idx}\x00`
+  })
+
+  // 2. Extract block math $$...$$ (protect from other processing)
+  const mathBlocks = []
+  processed = processed.replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => {
+    const idx = mathBlocks.length
+    mathBlocks.push(`<div class="tutor-md-math-block">${renderKatexSafe(math, true)}</div>`)
+    return `\x00MATHBLOCK${idx}\x00`
+  })
+
+  // 3. Extract inline math $...$ (no newlines)
+  const mathInlines = []
+  processed = processed.replace(/\$([^$\n]+?)\$/g, (_, math) => {
+    const idx = mathInlines.length
+    mathInlines.push(renderKatexSafe(math, false))
+    return `\x00MATHINLINE${idx}\x00`
+  })
+
+  // 4. Escape HTML in remaining text
+  processed = processed
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
 
-  const html = escaped
-    // headings
+  // 5. Markdown formatting
+  processed = processed
+    // headings (must be before bold)
+    .replace(/^#### (.+)$/gm, '<h6 class="tutor-md-h4">$1</h6>')
     .replace(/^### (.+)$/gm, '<h5 class="tutor-md-h3">$1</h5>')
     .replace(/^## (.+)$/gm, '<h4 class="tutor-md-h2">$1</h4>')
     .replace(/^# (.+)$/gm, '<h3 class="tutor-md-h1">$1</h3>')
@@ -22,16 +59,65 @@ function formatMarkdown(text) {
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     // horizontal rule
     .replace(/^---$/gm, '<hr class="tutor-md-hr"/>')
-    // bullet lists
-    .replace(/^[•\-\*] (.+)$/gm, '<li>$1</li>')
-    // numbered lists
-    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
-    // wrap consecutive <li> in <ul>
-    .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul class="tutor-md-list">$1</ul>')
-    // paragraphs (double newline)
-    .replace(/\n\n/g, '</p><p>')
-    // single newlines
-    .replace(/\n/g, '<br/>')
+
+  // 6. Lists — process line by line for proper nesting
+  const lines = processed.split('\n')
+  let html = ''
+  let inList = false
+  let listType = null
+
+  for (const line of lines) {
+    const bulletMatch = line.match(/^[\s]*[-*•]\s+(.+)/)
+    const numMatch = line.match(/^[\s]*\d+\.\s+(.+)/)
+
+    if (bulletMatch) {
+      if (!inList || listType !== 'ul') {
+        if (inList) html += `</${listType}>`
+        html += '<ul class="tutor-md-list">'
+        listType = 'ul'
+        inList = true
+      }
+      html += `<li>${bulletMatch[1]}</li>`
+    } else if (numMatch) {
+      if (!inList || listType !== 'ol') {
+        if (inList) html += `</${listType}>`
+        html += '<ol class="tutor-md-list">'
+        listType = 'ol'
+        inList = true
+      }
+      html += `<li>${numMatch[1]}</li>`
+    } else {
+      if (inList) {
+        html += `</${listType}>`
+        inList = false
+        listType = null
+      }
+      // Empty line = paragraph break
+      if (line.trim() === '') {
+        html += '</p><p>'
+      } else {
+        html += line + '<br/>'
+      }
+    }
+  }
+  if (inList) html += `</${listType}>`
+
+  // 7. Clean up: remove trailing <br/> before block elements, empty paragraphs
+  html = html
+    .replace(/<br\/><\/p>/g, '</p>')
+    .replace(/<p><\/p>/g, '')
+    .replace(/<br\/>\s*(<h[3-6])/g, '$1')
+    .replace(/(<\/h[3-6]>)\s*<br\/>/g, '$1')
+    .replace(/<br\/>\s*(<ul|<ol)/g, '$1')
+    .replace(/(<\/ul>|<\/ol>)\s*<br\/>/g, '$1')
+    .replace(/<br\/>\s*(<hr)/g, '$1')
+    .replace(/<br\/>\s*(<div class="tutor-md-math)/g, '$1')
+    .replace(/<br\/>\s*(<pre class="tutor-md-codeblock)/g, '$1')
+
+  // 8. Restore protected blocks
+  html = html.replace(/\x00CODEBLOCK(\d+)\x00/g, (_, idx) => codeBlocks[+idx])
+  html = html.replace(/\x00MATHBLOCK(\d+)\x00/g, (_, idx) => mathBlocks[+idx])
+  html = html.replace(/\x00MATHINLINE(\d+)\x00/g, (_, idx) => mathInlines[+idx])
 
   return <div className="tutor-md" dangerouslySetInnerHTML={{ __html: `<p>${html}</p>` }} />
 }
@@ -53,7 +139,13 @@ Your job:
 3. Use the exact formulas from the OM course (EOQ, Lq, SS, ROP, etc.).
 4. Be Socratic — after your feedback, ask ONE follow-up question to deepen their understanding.
 5. Be encouraging but precise. Do not give away the full answer — guide them to find it.
-6. Use plain text with line breaks for readability. Use * for emphasis.`
+
+Formatting rules:
+- Use markdown: **bold**, *italic*, ## headings, - bullet lists, 1. numbered lists
+- Use LaTeX math: inline $\\rho = 0.75$ and block $$L_q = \\frac{\\rho^2}{1-\\rho}$$
+- Use code blocks for calculations: \`\`\`
+- Structure your response with clear sections (## Step 1, ## Step 2, etc.)
+- Keep paragraphs short — use blank lines between sections`
 
 export default function Tutor() {
   const [selectedProblem, setSelectedProblem] = useState('')
