@@ -116,6 +116,7 @@ export default function Formulas() {
         how={'Ordering: ($D/Q$) × $S$. Cycle holding: ($Q/2$) × $v$ × $i$. SS holding: $SS$ × $v$ × $i$.'}>
         {'$$ \\text{Ordering} = \\frac{D}{Q} \\times S $$ $$ \\text{Holding (cycle)} = \\frac{Q}{2} \\times v \\times i $$ $$ \\text{Holding (SS)} = \\text{SS} \\times v \\times i $$'}
       </F>
+      <Tip>{"Three holding formulas — when to use which: (1) Q/2 × v × i = cycle stock only. Use when comparing EOQ options where SS is the same or unknown. (2) SS × v × i = safety stock only. Use when comparing suppliers with different lead times (different SS). (3) (SS + Q/2) × v × i = total holding. Use when auditing a full policy or computing total inventory cost. The 2024 exam uses all three in different parts."}</Tip>
 
       <h2 className="h2">4. Safety Stock & ROP</h2>
       <F
