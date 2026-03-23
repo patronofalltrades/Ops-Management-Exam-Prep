@@ -43,7 +43,7 @@ export default function App() {
             <button className="hdr-btn" onClick={toggleTheme} title="Toggle dark mode" aria-label="Toggle dark mode">
               {dark ? '☀️' : '🌙'}
             </button>
-            <a className="hdr-btn" href="/om-cheatsheet-2026.pdf" download="OM_Exam_Cheatsheet_2026.pdf" title="Download Cheatsheet" aria-label="Download Cheatsheet">🖨</a>
+            <a className="hdr-btn" href="/om-cheatsheet-2026.pdf" download="OM_Exam_Cheatsheet_2026.pdf" title="Download Cheatsheet" aria-label="Download Cheatsheet" style={{fontSize:'12px',textDecoration:'none'}}>⬇</a>
           </div>
         </div>
       </header>
