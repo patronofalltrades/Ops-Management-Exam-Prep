@@ -494,7 +494,24 @@ II.1. (20 points) If the company needs to prepare 100 kits per day, how many emp
     title: 'Part IV: Red Carpet — Strategic Analysis',
     badge: 'Strategy',
     badgeType: 'strategy',
-    originalExcerpt: `After a few years Medcorp decided to make some changes. "I knew it was going to be a disaster" Miguel explains. "Headquarters hired a consulting firm and asked them to find ways to improve service and reduce costs. And guess what, the guys had this fantastic idea to replicate the distribution model Medcorp had in the US here in Europe. How? They reached an agreement with a multinational express transport group that covers the whole of Europe and has its major hub in the airport of Brussels. Medcorp was going to store all the inventory and kits in the facilities of the transport group, our customers would place their orders directly with them, and they would deliver the kits to any European hospital in under 48 hours. They called the service "Red Carpet"."\n\nSales in Spain plummeted by 60% in one month. Miguel decided to act. He fabricated a huge export to a Middle Eastern country. He received the kits and stored them in the Spanish warehouse. He then used this inventory to continue operating as the company had been operating for years. One month after setting up his scheme, sales were miraculously back to their previous levels.\n\nIV.1 (30 points) What was the rationale behind the consultant's proposal? What were, most probably, the pros and cons of his proposal? What was the rationale behind Miguel's decision?\nIV.2 (10 points) What should the company do about an employee like Miguel?`,
+    originalExcerpt: `IV. Operational improvements
+
+After a few years Medcorp decided to make some changes. "I knew it was going to be a disaster" Miguel explains. "Headquarters hired a consulting firm and asked them to find ways to improve service and reduce costs. And guess what, the guys had this fantastic idea to replicate the distribution model Medcorp had in the US here in Europe. How? They reached an agreement with a multinational express transport group that covers the whole of Europe and has its major hub in the airport of Brussels. Medcorp was going to store all the inventory and kits in the facilities of the transport group, our customers would place their orders directly with them, and they would deliver the kits to any European hospital in under 48 hours. They called the service 'Red Carpet'."
+
+"In Spain our customers suffered the worst service ever. The orders were full of mistakes but, worse, kits were being delivered to the hospitals by these express transport group guys who didn't understand how a hospital works. You can't deliver kits to the logistics department of a hospital, even if they have one. You need to know your way and take them directly to the operating theater that will need them. But in order to be allowed to get there, you need to have friends, you follow me? You need to invite a nurse to a Barca match or a doctor and his family to a trip to Hawaii. That's why we used distributors! To be able to do this sort of things."
+
+Sales in Spain plummeted by 60% in one month. Customers were phoning Miguel. Distributors were livid. A very important competitive bidding was lost due to "unacceptable level of service."
+
+Miguel travelled three times to Boston trying to get Spain exempt from Red Carpet. He also tried to have the kits delivered from Brussels to the Spanish distributors: "Let them do the final delivery to the hospitals." Nobody listened to him.
+
+Three months after Red Carpet was implemented, Serveis Hospitalaris SL gave Miguel an ultimatum: either the new system was rolled back, or they would sue Medcorp Spain and start working for a competitor.
+
+Miguel decided to act. He fabricated a huge export to a Middle Eastern country. He received the kits and stored them in the Spanish warehouse. He then used this inventory to continue operating as the company had been operating for years. One month after setting up his scheme, sales were miraculously back to their previous levels.
+
+When his bosses understood what had happened Miguel was asked to travel to Boston ASAP.
+
+IV.1 (30 points) What was the rationale behind the consultant's proposal? What were, most probably, the pros and cons of his proposal? What was the rationale behind Miguel's decision?
+IV.2 (10 points) What should the company do about an employee like Miguel?`,
     storyline: `Medcorp's consultants proposed "Red Carpet" — centralizing all European inventory in a Brussels hub with 48-hour delivery. Result: Spain sales dropped 60% in one month. Miguel secretly diverted inventory back to the old system — sales recovered fully. He had tried 3 times to convince Boston before acting unilaterally.`,
     framework: {
       title: 'How to approach this problem',
