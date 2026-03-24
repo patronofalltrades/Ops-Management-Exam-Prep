@@ -78,12 +78,17 @@ function ConceptCard({ title, official, dumb, example, symbols }) {
               </button>
               {openExample && (
                 <div className="cc-content cc-example-content">
-                  <div className="cc-example-story">
-                    <span className="cc-example-label">Story</span>
-                    <div>{renderWithMath(example.story)}</div>
+                  <div className="cc-practice-flow">
+                    <div className="cc-practice-step">
+                      <span className="cc-practice-step-num">1</span>
+                      <div className="cc-practice-step-body">
+                        <span className="cc-practice-step-label">Read the problem</span>
+                        <div className="cc-practice-story">{renderWithMath(example.story)}</div>
+                      </div>
+                    </div>
+                    <ExampleStep num="2" label="Translate — extract the data" content={example.translate} />
+                    <ExampleStep num="3" label="Solve" content={example.solve} isAnswer />
                   </div>
-                  <ExampleReveal label="Translation — What is this really asking?" content={example.translate} />
-                  <ExampleReveal label="Solution" content={example.solve} isAnswer />
                 </div>
               )}
             </div>
@@ -94,18 +99,22 @@ function ConceptCard({ title, official, dumb, example, symbols }) {
   );
 }
 
-function ExampleReveal({ label, content, isAnswer }) {
+function ExampleStep({ num, label, content, isAnswer }) {
   const [show, setShow] = useState(false);
   return (
-    <div className={`cc-example-reveal${isAnswer ? ' cc-example-reveal-answer' : ''}`}>
-      <button className="cc-example-reveal-btn" onClick={() => setShow(s => !s)}>
-        <span style={{ fontSize: 10 }}>{show ? '▾' : '▸'}</span> {label}
-      </button>
-      {show && (
-        <div className={`cc-example-reveal-content${isAnswer ? ' cc-example-a' : ''}`}>
-          {renderWithMath(content)}
-        </div>
-      )}
+    <div className="cc-practice-step">
+      <span className={`cc-practice-step-num${isAnswer ? ' cc-practice-num-answer' : ''}`}>{num}</span>
+      <div className="cc-practice-step-body">
+        <button className="cc-practice-reveal-btn" onClick={() => setShow(s => !s)}>
+          <span className="cc-practice-step-label">{label}</span>
+          <span className="cc-practice-reveal-hint">{show ? '▾ Hide' : '▸ Reveal'}</span>
+        </button>
+        {show && (
+          <div className={`cc-practice-answer${isAnswer ? ' cc-practice-answer-final' : ''}`}>
+            {renderWithMath(content)}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

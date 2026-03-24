@@ -607,64 +607,106 @@ code {
   color: var(--green);
 }
 
-.cc-example-story {
-  margin-bottom: 10px;
-  padding: 12px 14px;
-  background: var(--bgc);
-  border-radius: var(--r);
-  border-left: 3px solid var(--ac);
+.cc-practice-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cc-practice-step {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bd);
+}
+
+.cc-practice-step:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cc-practice-step:first-child {
+  padding-top: 0;
+}
+
+.cc-practice-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ac);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--fb);
+}
+
+.cc-practice-num-answer {
+  background: var(--green);
+}
+
+.cc-practice-step-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cc-practice-step-label {
+  font-family: var(--fb);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tx3);
+}
+
+.cc-practice-story {
+  margin-top: 6px;
   font-family: var(--fd);
   font-size: 14px;
   line-height: 1.75;
+  color: var(--tx);
 }
 
-.cc-example-reveal {
-  margin-bottom: 8px;
-}
-
-.cc-example-reveal-btn {
+.cc-practice-reveal-btn {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  justify-content: space-between;
   background: none;
-  border: 1px dashed var(--bd2);
-  border-radius: var(--r);
+  border: none;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--tx2);
+  padding: 0;
   font-family: var(--fb);
   text-align: left;
-  transition: all 0.15s;
 }
 
-.cc-example-reveal-btn:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  background: var(--bluel);
+.cc-practice-reveal-hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ac);
+  flex-shrink: 0;
 }
 
-.cc-example-reveal-answer .cc-example-reveal-btn:hover {
-  border-color: var(--green);
-  color: var(--green);
-  background: var(--greenl);
+.cc-practice-reveal-btn:hover .cc-practice-step-label {
+  color: var(--ac);
 }
 
-.cc-example-reveal-content {
-  margin-top: 6px;
+.cc-practice-answer {
+  margin-top: 8px;
   padding: 10px 14px;
   background: var(--bluel);
-  border: 1px solid var(--blue);
-  border-radius: var(--r);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 var(--r) var(--r) 0;
   font-family: var(--fd);
   font-size: 14px;
   line-height: 1.75;
   animation: fadeInDown 0.2s ease-out;
 }
 
-.cc-example-reveal-content.cc-example-a {
+.cc-practice-answer-final {
   background: var(--greenl);
   border-color: var(--green);
   color: var(--green);
