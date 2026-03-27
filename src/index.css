@@ -2276,6 +2276,111 @@ td.hl {
   color: var(--tx3);
 }
 
+/* ═══ Lock Screen ═══ */
+.lock-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 24px;
+}
+
+.lock-card {
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  padding: 48px 36px;
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+}
+
+[data-theme="dark"] .lock-card {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.lock-title {
+  font-family: var(--fd);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ac);
+  margin: 0 0 20px;
+  letter-spacing: -0.02em;
+}
+
+.lock-message {
+  font-family: var(--fd);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--tx);
+  margin: 0 0 24px;
+}
+
+.lock-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--bd);
+  margin: 0 auto 20px;
+}
+
+.lock-sub {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tx3);
+  margin: 0 0 12px;
+}
+
+.lock-form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.lock-input {
+  padding: 10px 16px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--fb);
+  font-size: 14px;
+  width: 200px;
+  text-align: center;
+}
+
+.lock-input:focus {
+  outline: none;
+  border-color: var(--ac);
+}
+
+.lock-btn {
+  padding: 10px 20px;
+  background: var(--ac);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--fb);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lock-btn:hover {
+  background: var(--ac2);
+}
+
+.lock-error {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 600;
+}
+
 /* ═══ Responsive ═══ */
 @media (max-width: 700px) {
   .container {

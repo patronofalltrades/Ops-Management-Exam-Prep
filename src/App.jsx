@@ -16,9 +16,25 @@ const tabs = [
 
 const panels = { concepts: Concepts, formulas: Formulas, flashcards: FlashCards, examguide: ExamGuide, tutor: Tutor }
 
+const PASS = 'BARCELONA2027'
+
 export default function App() {
   const [tab, setTab] = useState('concepts')
   const [dark, setDark] = useState(() => document.documentElement.dataset.theme === 'dark')
+  const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem('om-unlocked') === '1')
+  const [passInput, setPassInput] = useState('')
+  const [passError, setPassError] = useState(false)
+
+  const handleUnlock = useCallback((e) => {
+    e.preventDefault()
+    if (passInput === PASS) {
+      sessionStorage.setItem('om-unlocked', '1')
+      setUnlocked(true)
+      setPassError(false)
+    } else {
+      setPassError(true)
+    }
+  }, [passInput])
 
   const toggleTheme = useCallback(() => {
     const next = dark ? 'light' : 'dark'
@@ -31,6 +47,31 @@ export default function App() {
     setTab(key)
     window.scrollTo({ top: 0 })
   }, [])
+
+  if (!unlocked) {
+    return (
+      <div className="lock-screen">
+        <div className="lock-card">
+          <h1 className="lock-title">OM Exam Lab</h1>
+          <p className="lock-message">Congratulations on finishing your exams! Have a nice break and see everyone in the third term!</p>
+          <div className="lock-divider"></div>
+          <p className="lock-sub">Admin access</p>
+          <form onSubmit={handleUnlock} className="lock-form">
+            <input
+              type="password"
+              className="lock-input"
+              placeholder="Enter password"
+              value={passInput}
+              onChange={e => { setPassInput(e.target.value); setPassError(false) }}
+              autoFocus
+            />
+            <button type="submit" className="lock-btn">Enter</button>
+          </form>
+          {passError && <p className="lock-error">Incorrect password</p>}
+        </div>
+      </div>
+    )
+  }
 
   const Panel = panels[tab]
 
